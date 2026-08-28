@@ -126,9 +126,12 @@ h2{font-size:42px;line-height:.94;letter-spacing:-.045em;font-weight:700;text-tr
 .cap .ac{color:var(--accent)}
 .linkline{
   font-family:var(--mono);font-size:8.6px;letter-spacing:.06em;color:var(--accent);
-  margin-top:7px;
+  margin-top:7px;display:flex;flex-wrap:wrap;gap:3px 16px;
 }
-.linkline span{color:var(--faint);letter-spacing:.14em;text-transform:uppercase;margin-right:7px}
+.linkline .lk{display:inline-flex;align-items:baseline;gap:7px}
+.linkline i{
+  font-style:normal;color:var(--faint);letter-spacing:.14em;text-transform:uppercase;
+}
 
 .chips{display:flex;flex-wrap:wrap;gap:4px}
 .chip{
@@ -209,20 +212,21 @@ h2{font-size:42px;line-height:.94;letter-spacing:-.045em;font-weight:700;text-tr
         <h1>Raphael<span class="ghost">Pelerin</span></h1>
 
         <p class="tagline" style="font-size:12px;margin-top:13px">
-          Software engineering · Epitech, class of 2027
+          AI internship, end of studies · from March 2027
         </p>
 
         <p class="body" style="max-width:74ch;margin-top:12px;font-size:11.6px">
-          I build across the stack, and most of what I have made lives where the layers
-          meet — a front end bound by a scheduling constraint, an image pipeline that has
-          to fit in 8&nbsp;GB of VRAM, an audio plugin whose interface is drawn by the same
-          code that reads the envelope. Five projects, four of them used by people who are
-          not me.
+          I am looking for an end-of-studies internship in AI — the kind where I
+          <strong>add something to the technology rather than only consume it</strong>.
+          Calling an API is the easy part; the interface on top I can already build.
+          I want the engineering in between. Five projects follow, four of them used by
+          people who are not me.
         </p>
 
         <div class="cover-foot" style="margin-top:11mm">
           <div class="cf"><span class="mono">Email</span><b>raphael_pelerin@yahoo.com.au</b></div>
           <div class="cf"><span class="mono">Phone</span><b>+33 6 11 72 45 88</b></div>
+          <div class="cf"><span class="mono">Portfolio</span><b>{{site}}</b></div>
           <div class="cf"><span class="mono">Languages</span><b>FR · EN bilingual · 中文 HSK3</b></div>
         </div>
       </div>
@@ -249,8 +253,8 @@ h2{font-size:42px;line-height:.94;letter-spacing:-.045em;font-weight:700;text-tr
 
     <div class="flow">
       <p class="big-quote">
-        Fifth-year software engineering student at Epitech.
-        <span>I would rather ship something narrow that works than something broad that almost does.</span>
+        I am looking for an end-of-studies internship in AI.
+        <span>The kind where I add something to the technology rather than only consume it.</span>
       </p>
 
       <div class="cols">
@@ -259,7 +263,7 @@ h2{font-size:42px;line-height:.94;letter-spacing:-.045em;font-weight:700;text-tr
           <div class="panel">
             <p class="mono" style="color:var(--ink)"><span class="dot"></span>Open to offers</p>
             <p class="body" style="margin-top:8px;font-size:10.8px">
-              <strong>End-of-studies internship, 4–6 months</strong><br>
+              <strong>AI internship, end of studies · 4–6 months</strong><br>
               Starting March 2027
             </p>
           </div>
@@ -458,13 +462,14 @@ h2{font-size:42px;line-height:.94;letter-spacing:-.045em;font-weight:700;text-tr
             a software engineering problem, not a prompting one.
           </p>
           <p>
-            Forge solves it with <strong>recipes</strong>: presets that own the style, resolution,
-            sampler and post-processing for a category of asset. The user supplies only the
-            subject, so two characters generated six months apart go through an identical pipeline
-            and match.
+            Forge answers it <strong>as a service</strong>: a FastAPI backend driving SDXL on a
+            local GPU, so a game pipeline can call it like any other endpoint. Behind it are
+            <strong>recipes</strong> — presets that own the style, resolution, sampler and
+            post-processing for a category of asset. The user supplies only the subject, so two
+            characters generated six months apart go through an identical pipeline and match.
           </p>
           <p>
-            It runs entirely on a local GPU. No API, no subscription, no account, and
+            It runs entirely on your own hardware. No subscription, no account, and
             <strong>no image ever leaves the machine</strong>. Nine-slice UI panels are not trusted
             to come out symmetrical — the tool keeps one corner, mirrors it, and <em>measures</em>
             the border thickness by scanning inward until the colour goes flat.
@@ -592,6 +597,7 @@ h2{font-size:42px;line-height:.94;letter-spacing:-.045em;font-weight:700;text-tr
         </div>
         <h2>Keys GPT</h2>
         <p class="tagline">Describe a part, get a MIDI file</p>
+        {{link_keysgpt}}
       </div>
 
       <div>
@@ -659,6 +665,7 @@ h2{font-size:42px;line-height:.94;letter-spacing:-.045em;font-weight:700;text-tr
         </div>
         <h2>Appolonia</h2>
         <p class="tagline">Casino floor management, where a mistake takes a machine offline</p>
+        {{link_appolonia}}
       </div>
 
       <div class="cols cols--wide">
@@ -759,7 +766,7 @@ h2{font-size:42px;line-height:.94;letter-spacing:-.045em;font-weight:700;text-tr
           <div class="panel">
             <p class="mono" style="color:var(--ink)"><span class="dot"></span>Open to offers</p>
             <p class="body" style="margin-top:8px;font-size:10.8px">
-              <strong>End-of-studies internship, 4–6 months</strong><br>
+              <strong>AI internship, end of studies · 4–6 months</strong><br>
               Starting March 2027
             </p>
           </div>
@@ -774,6 +781,9 @@ h2{font-size:42px;line-height:.94;letter-spacing:-.045em;font-weight:700;text-tr
         <div class="cover-foot" style="margin-top:9mm">
           <div class="cf"><span class="mono">Email</span><b>raphael_pelerin@yahoo.com.au</b></div>
           <div class="cf"><span class="mono">Phone</span><b>+33 6 11 72 45 88</b></div>
+          <div class="cf"><span class="mono">Portfolio</span><b>{{site}}</b></div>
+          <div class="cf"><span class="mono">GitHub</span><b>github.com/RaphaelPelerin</b></div>
+          <div class="cf"><span class="mono">LinkedIn</span><b>linkedin.com/in/raphael-pelerin</b></div>
           <div class="cf"><span class="mono">Based in</span><b>Biot, France · 06</b></div>
         </div>
       </div>

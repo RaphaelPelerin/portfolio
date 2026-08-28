@@ -33,6 +33,20 @@ LINK_FILES = {
     "keys": ("KEYS GPT/Link.txt", ""),
 }
 
+# Public source, verified against the GitHub API. A live link is optional - team
+# and client work often has none - but the repo is what a reader can actually
+# open, so it is worth printing even when there is no product URL.
+REPOS = {
+    "syntheza": "https://github.com/Syntheza-DEV",
+    "forge": "https://github.com/RaphaelPelerin/forge-asset-generator",
+    "keys": "https://github.com/RaphaelPelerin/keys-gpt-vst",
+    "keysgpt": "https://github.com/RaphaelPelerin/keys-gpt",
+}
+LIVE_EXTRA = {
+    "appolonia": "https://www.appolonia.fr/index.php/fr/",
+}
+SITE = "https://portfolio-raphael-pelerin.vercel.app"
+
 
 def find_chrome():
     for c in CHROME_CANDIDATES:
@@ -57,11 +71,17 @@ def read_links():
     return out
 
 
-def link_markup(url):
-    if not url:
-        return ""
-    label = url.replace("https://", "").replace("http://", "").rstrip("/")
-    return f'<p class="linkline"><span>Live</span>{label}</p>'
+def label_of(url):
+    return url.replace("https://", "").replace("http://", "").rstrip("/")
+
+
+def link_markup(live, repo):
+    bits = []
+    if live:
+        bits.append(f'<span class="lk"><i>Live</i>{label_of(live)}</span>')
+    if repo:
+        bits.append(f'<span class="lk"><i>Source</i>{label_of(repo)}</span>')
+    return f'<p class="linkline">{"".join(bits)}</p>' if bits else ""
 
 
 def main():
@@ -73,8 +93,13 @@ def main():
     for name, svg in shapes.items():
         html = html.replace("{{" + name + "}}", svg)
 
-    for key, url in read_links().items():
-        html = html.replace("{{link_" + key + "}}", link_markup(url))
+    live = read_links()
+    live.update(LIVE_EXTRA)
+    for key in set(live) | set(REPOS):
+        html = html.replace(
+            "{{link_" + key + "}}", link_markup(live.get(key, ""), REPOS.get(key, ""))
+        )
+    html = html.replace("{{site}}", label_of(SITE))
 
     if "{{" in html:
         leftover = html[html.index("{{"): html.index("{{") + 40]

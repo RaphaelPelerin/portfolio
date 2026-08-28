@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Raphael Pelerin — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ==========================================================
+   Tokens — same palette, type and accents as the website
+   ========================================================== */
+:root{
+  --bg:#08090b; --raise:#0e1014;
+  --ink:#e9ecf1; --dim:#9aa2b1; --faint:#5c6472;
+  --line:rgba(255,255,255,.09);
+  --line-soft:rgba(255,255,255,.045);
+  --line-strong:rgba(255,255,255,.20);
+  --accent:#c6f24e;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#050608}
+body{
+  font-family:var(--display);
+  color:var(--ink);
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+  -webkit-font-smoothing:antialiased;
+}
+
+@page{ size:A4; margin:0; }
+
+.page{
+  position:relative;
+  width:210mm; height:297mm;
+  overflow:hidden;
+  background:var(--bg);
+  padding:15mm 14mm 12mm;
+  display:flex; flex-direction:column;
+  break-after:page; page-break-after:always;
+}
+.page:last-child{break-after:auto;page-break-after:auto}
+@media screen{ .page{margin:0 auto 10px;box-shadow:0 0 0 1px #1a1d22} }
+
+/* ---------- page furniture ---------- */
+.grid-bg{
+  position:absolute; inset:-40mm;
+  background-image:
+    linear-gradient(to right,var(--line-soft) 1px,transparent 1px),
+    linear-gradient(to bottom,var(--line-soft) 1px,transparent 1px);
+  background-size:26mm 26mm;
+  -webkit-mask-image:radial-gradient(ellipse 80% 65% at 55% 40%,#000 15%,transparent 76%);
+  mask-image:radial-gradient(ellipse 80% 65% at 55% 40%,#000 15%,transparent 76%);
+  opacity:.85;
+}
+.stars{position:absolute;inset:0;width:100%;height:100%}
+.vig{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 58% at 55% 42%,transparent 45%,rgba(5,6,8,.55) 100%),
+    linear-gradient(to bottom,rgba(5,6,8,.5) 0%,transparent 16%,transparent 88%,rgba(5,6,8,.6) 100%);
+}
+.inner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%}
+/* Blocks distribute down the page instead of stacking at the top and leaving
+   a third of the sheet empty. gap sets the floor so they never collide. */
+.flow{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:6mm;padding:7mm 0 4mm}
+.flow--end{justify-content:flex-end;gap:0}
+
+/* ---------- type ---------- */
+.mono{font-family:var(--mono);font-size:8.2px;letter-spacing:.17em;text-transform:uppercase;color:var(--faint)}
+.mono b{color:var(--ink);font-weight:400}
+.mono .ac{color:var(--accent)}
+
+.pg-top{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding-bottom:6px;border-bottom:1px solid var(--line);
+}
+.pg-foot{
+  margin-top:auto;padding-top:7px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+}
+
+h1{font-size:86px;line-height:.83;letter-spacing:-.055em;font-weight:700;text-transform:uppercase}
+h1 .ghost{color:transparent;-webkit-text-stroke:1.4px var(--faint);display:block}
+h2{font-size:42px;line-height:.94;letter-spacing:-.045em;font-weight:700;text-transform:uppercase}
+
+.tagline{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.01em;margin-top:8px}
+.body{font-size:11px;line-height:1.62;color:var(--dim);letter-spacing:.004em}
+.body p+p{margin-top:7px}
+.body strong{color:var(--ink);font-weight:500}
+
+/* ---------- eyebrow ---------- */
+.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.eyebrow .n{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.14em}
+.eyebrow .rule{height:1px;width:24px;background:var(--line-strong)}
+.eyebrow .t{font-family:var(--mono);font-size:8.2px;letter-spacing:.17em;text-transform:uppercase;color:var(--faint)}
+
+/* title row with a project logo */
+.titlerow{display:flex;align-items:center;gap:12px}
+.logo{width:38px;height:38px;object-fit:contain;flex:0 0 auto}
+
+/* ---------- layout blocks ---------- */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10mm;align-items:start}
+.cols--wide{grid-template-columns:1.25fr 1fr}
+.cols--shot{grid-template-columns:1fr 27mm;gap:5mm;align-items:start}
+
+.art{position:relative;color:var(--accent);display:flex;align-items:center;justify-content:center}
+.art .solid,.art .orbits{position:absolute;inset:0;width:100%;height:100%}
+.art .orbits{opacity:.6}
+.art--pg{height:70mm}
+
+/* ---------- screenshots ---------- */
+.shot{
+  display:block;width:100%;height:auto;
+  border:1px solid var(--line-strong);
+  border-radius:3px;
+  background:#0b0d11;
+}
+.cap{
+  margin-top:5px;font-family:var(--mono);font-size:7.2px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--faint);
+}
+.cap .ac{color:var(--accent)}
+.linkline{
+  font-family:var(--mono);font-size:8.6px;letter-spacing:.06em;color:var(--accent);
+  margin-top:7px;
+}
+.linkline span{color:var(--faint);letter-spacing:.14em;text-transform:uppercase;margin-right:7px}
+
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{
+  font-family:var(--mono);font-size:7.6px;letter-spacing:.05em;color:var(--dim);
+  padding:2.5px 7px;border:1px solid var(--line);border-radius:100px;background:rgba(14,16,20,.6);
+}
+.chip--ac{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 0}
+.stat b{display:block;font-size:20px;font-weight:700;letter-spacing:-.04em;color:var(--ink);
+  font-variant-numeric:tabular-nums;line-height:1.05}
+.stat span{font-family:var(--mono);font-size:7.2px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);display:block;margin-top:3px;line-height:1.4}
+
+/* numbered findings */
+.finds{display:grid;grid-template-columns:1fr 1fr;gap:6px 10mm}
+.find{display:grid;grid-template-columns:15px 1fr;gap:7px;align-items:start}
+.find i{font-family:var(--mono);font-style:normal;font-size:8px;color:var(--accent);padding-top:2px}
+.find p{font-size:9.8px;line-height:1.5;color:var(--dim)}
+.find p b{color:var(--ink);font-weight:500}
+
+/* key/value rows */
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:32mm 1fr;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+.row .k{font-family:var(--mono);font-size:7.8px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);padding-top:2px}
+.row .v{font-size:10.4px;line-height:1.52;color:var(--dim)}
+.row .v b{color:var(--ink);font-weight:500;display:block;font-size:11.2px;letter-spacing:-.01em}
+.row .v em{display:block;margin-bottom:3px;font-style:normal;font-family:var(--mono);font-size:8.2px;color:var(--faint);letter-spacing:.06em}
+
+/* availability panel */
+.panel{border:1px solid var(--line);border-radius:3px;background:rgba(14,16,20,.55);padding:9px 11px}
+.panel .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block;margin-right:6px;vertical-align:middle}
+
+/* language meters */
+.langs{display:grid;gap:6px}
+.lang{display:grid;grid-template-columns:20mm 1fr 18mm;gap:9px;align-items:center}
+.lang .nm{font-size:10.4px;color:var(--ink)}
+.lang .lv{font-family:var(--mono);font-size:7.4px;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);text-align:right}
+.meter{height:2px;background:var(--line);position:relative}
+.meter i{position:absolute;inset:0 auto 0 0;background:var(--accent);display:block}
+
+/* skills matrix */
+.skills{border-top:1px solid var(--line)}
+.skill{display:grid;grid-template-columns:7mm 34mm 1fr;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);align-items:start}
+.skill .no{font-family:var(--mono);font-size:7.8px;color:var(--faint);padding-top:3px}
+.skill .nm{font-size:12.4px;font-weight:600;letter-spacing:-.025em}
+.skill .ls{font-family:var(--mono);font-size:8.2px;line-height:1.72;color:var(--dim);letter-spacing:.03em}
+
+/* cover */
+.cover-foot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid var(--line);padding-top:10px}
+.cf b{display:block;font-size:11px;color:var(--ink);font-weight:500;letter-spacing:-.01em;margin-top:3px}
+
+.big-quote{font-size:16.5px;line-height:1.35;letter-spacing:-.028em;font-weight:500;color:var(--ink);max-width:62ch}
+.big-quote span{color:var(--faint)}
+</style>
+</head>
+<body>
+
+<!-- =====================================================================
+     01 — COVER
+     ===================================================================== -->
+<section class="page" style="--accent:#c6f24e">
+  <div class="grid-bg"></div><svg class="stars" viewBox="0 0 794 1123" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#9aa2b1"><circle cx="257" cy="169" r="0.5" opacity="0.15"/><circle cx="425" cy="411" r="0.5" opacity="0.51"/><circle cx="170" cy="97" r="1.0" opacity="0.15"/><circle cx="72" cy="477" r="1.4" opacity="0.17"/><circle cx="177" cy="705" r="0.5" opacity="0.37"/><circle cx="315" cy="1096" r="0.5" opacity="0.36"/><circle cx="106" cy="471" r="1.4" opacity="0.17"/><circle cx="245" cy="917" r="0.6" opacity="0.16"/><circle cx="454" cy="211" r="0.5" opacity="0.36"/><circle cx="50" cy="67" r="0.6" opacity="0.33"/><circle cx="422" cy="873" r="1.0" opacity="0.37"/><circle cx="360" cy="337" r="0.6" opacity="0.42"/><circle cx="194" cy="645" r="1.4" opacity="0.33"/><circle cx="273" cy="504" r="1.4" opacity="0.54"/><circle cx="94" cy="470" r="0.8" opacity="0.19"/><circle cx="388" cy="44" r="0.5" opacity="0.45"/><circle cx="455" cy="983" r="0.8" opacity="0.27"/><circle cx="278" cy="558" r="1.0" opacity="0.15"/><circle cx="74" cy="303" r="0.5" opacity="0.15"/><circle cx="557" cy="727" r="1.0" opacity="0.24"/><circle cx="306" cy="751" r="0.5" opacity="0.52"/><circle cx="282" cy="686" r="1.0" opacity="0.15"/><circle cx="610" cy="145" r="0.6" opacity="0.29"/><circle cx="728" cy="558" r="0.6" opacity="0.31"/><circle cx="436" cy="992" r="1.0" opacity="0.49"/><circle cx="221" cy="466" r="0.8" opacity="0.41"/><circle cx="302" cy="259" r="0.5" opacity="0.2"/><circle cx="184" cy="262" r="1.0" opacity="0.48"/><circle cx="145" cy="317" r="0.6" opacity="0.3"/><circle cx="293" cy="636" r="0.6" opacity="0.42"/><circle cx="409" cy="694" r="0.5" opacity="0.32"/><circle cx="692" cy="1069" r="1.4" opacity="0.29"/><circle cx="317" cy="116" r="1.0" opacity="0.15"/><circle cx="53" cy="234" r="0.6" opacity="0.17"/><circle cx="477" cy="115" r="1.4" opacity="0.19"/><circle cx="81" cy="408" r="0.5" opacity="0.15"/><circle cx="165" cy="423" r="0.8" opacity="0.53"/><circle cx="478" cy="532" r="0.5" opacity="0.49"/><circle cx="789" cy="523" r="1.0" opacity="0.25"/><circle cx="114" cy="842" r="0.8" opacity="0.33"/><circle cx="549" cy="580" r="0.6" opacity="0.53"/><circle cx="419" cy="165" r="1.4" opacity="0.51"/><circle cx="602" cy="335" r="0.5" opacity="0.42"/><circle cx="207" cy="412" r="0.6" opacity="0.27"/><circle cx="177" cy="608" r="1.4" opacity="0.26"/><circle cx="177" cy="911" r="0.6" opacity="0.47"/><circle cx="650" cy="831" r="0.6" opacity="0.21"/><circle cx="391" cy="821" r="0.5" opacity="0.46"/><circle cx="375" cy="217" r="1.4" opacity="0.53"/><circle cx="355" cy="1052" r="0.8" opacity="0.53"/><circle cx="290" cy="248" r="0.6" opacity="0.32"/><circle cx="268" cy="542" r="1.4" opacity="0.48"/><circle cx="381" cy="733" r="0.5" opacity="0.48"/><circle cx="95" cy="436" r="0.6" opacity="0.33"/><circle cx="142" cy="886" r="0.8" opacity="0.16"/><circle cx="751" cy="811" r="1.0" opacity="0.29"/><circle cx="752" cy="814" r="0.6" opacity="0.55"/><circle cx="22" cy="663" r="1.0" opacity="0.47"/><circle cx="116" cy="928" r="1.0" opacity="0.4"/><circle cx="278" cy="616" r="0.6" opacity="0.13"/><circle cx="635" cy="816" r="0.5" opacity="0.35"/><circle cx="741" cy="487" r="0.6" opacity="0.48"/><circle cx="168" cy="283" r="0.8" opacity="0.34"/><circle cx="606" cy="366" r="1.4" opacity="0.3"/><circle cx="104" cy="1022" r="0.8" opacity="0.51"/><circle cx="526" cy="915" r="1.4" opacity="0.3"/><circle cx="729" cy="563" r="1.4" opacity="0.19"/><circle cx="405" cy="980" r="0.6" opacity="0.38"/><circle cx="616" cy="168" r="0.6" opacity="0.32"/><circle cx="576" cy="625" r="0.8" opacity="0.41"/><circle cx="421" cy="542" r="0.5" opacity="0.5"/><circle cx="45" cy="215" r="0.5" opacity="0.45"/><circle cx="403" cy="631" r="0.5" opacity="0.31"/><circle cx="486" cy="568" r="1.4" opacity="0.21"/><circle cx="220" cy="571" r="1.0" opacity="0.34"/><circle cx="197" cy="588" r="0.8" opacity="0.52"/><circle cx="709" cy="228" r="1.0" opacity="0.18"/><circle cx="97" cy="496" r="0.5" opacity="0.41"/><circle cx="340" cy="239" r="0.8" opacity="0.46"/><circle cx="712" cy="173" r="0.8" opacity="0.18"/><circle cx="701" cy="1087" r="0.6" opacity="0.44"/><circle cx="75" cy="994" r="0.6" opacity="0.55"/><circle cx="661" cy="181" r="1.0" opacity="0.55"/><circle cx="321" cy="473" r="0.8" opacity="0.26"/><circle cx="573" cy="22" r="1.4" opacity="0.32"/><circle cx="558" cy="432" r="1.4" opacity="0.39"/><circle cx="407" cy="72" r="0.6" opacity="0.54"/><circle cx="83" cy="298" r="0.5" opacity="0.51"/><circle cx="144" cy="849" r="1.0" opacity="0.49"/><circle cx="537" cy="1062" r="1.0" opacity="0.18"/><circle cx="730" cy="641" r="0.8" opacity="0.16"/><circle cx="46" cy="773" r="1.0" opacity="0.5"/><circle cx="214" cy="19" r="0.5" opacity="0.46"/><circle cx="66" cy="962" r="0.5" opacity="0.23"/><circle cx="97" cy="13" r="1.4" opacity="0.3"/><circle cx="727" cy="698" r="0.5" opacity="0.35"/><circle cx="189" cy="123" r="0.6" opacity="0.23"/><circle cx="144" cy="1047" r="0.8" opacity="0.35"/><circle cx="163" cy="501" r="0.6" opacity="0.24"/><circle cx="638" cy="1117" r="0.5" opacity="0.13"/><circle cx="582" cy="619" r="0.6" opacity="0.34"/><circle cx="195" cy="502" r="1.0" opacity="0.4"/><circle cx="433" cy="998" r="1.4" opacity="0.25"/><circle cx="171" cy="258" r="0.6" opacity="0.48"/><circle cx="561" cy="714" r="1.0" opacity="0.55"/><circle cx="780" cy="940" r="0.5" opacity="0.15"/><circle cx="588" cy="287" r="0.6" opacity="0.14"/><circle cx="528" cy="428" r="1.4" opacity="0.41"/><circle cx="224" cy="272" r="0.8" opacity="0.14"/><circle cx="147" cy="302" r="0.5" opacity="0.23"/><circle cx="764" cy="1092" r="1.4" opacity="0.26"/><circle cx="27" cy="991" r="0.6" opacity="0.27"/><circle cx="1" cy="429" r="1.0" opacity="0.24"/><circle cx="521" cy="279" r="0.5" opacity="0.16"/><circle cx="649" cy="162" r="1.4" opacity="0.14"/><circle cx="18" cy="342" r="0.6" opacity="0.16"/><circle cx="760" cy="958" r="0.6" opacity="0.4"/><circle cx="568" cy="987" r="1.0" opacity="0.45"/><circle cx="572" cy="555" r="0.8" opacity="0.43"/><circle cx="511" cy="49" r="1.4" opacity="0.39"/><circle cx="583" cy="912" r="0.6" opacity="0.51"/><circle cx="598" cy="638" r="0.5" opacity="0.48"/><circle cx="464" cy="1003" r="0.6" opacity="0.16"/><circle cx="33" cy="715" r="0.5" opacity="0.28"/><circle cx="358" cy="57" r="0.5" opacity="0.39"/><circle cx="540" cy="549" r="0.5" opacity="0.32"/><circle cx="56" cy="1047" r="1.4" opacity="0.16"/><circle cx="418" cy="837" r="1.0" opacity="0.23"/><circle cx="59" cy="298" r="0.6" opacity="0.22"/><circle cx="516" cy="517" r="1.0" opacity="0.15"/><circle cx="723" cy="323" r="0.5" opacity="0.39"/><circle cx="510" cy="87" r="0.6" opacity="0.26"/><circle cx="517" cy="778" r="1.4" opacity="0.36"/><circle cx="10" cy="68" r="0.8" opacity="0.54"/><circle cx="79" cy="244" r="1.0" opacity="0.25"/><circle cx="410" cy="522" r="1.0" opacity="0.45"/><circle cx="789" cy="617" r="0.8" opacity="0.54"/><circle cx="743" cy="20" r="1.0" opacity="0.15"/><circle cx="402" cy="1117" r="0.8" opacity="0.29"/><circle cx="728" cy="1045" r="0.5" opacity="0.37"/><circle cx="113" cy="589" r="0.8" opacity="0.18"/><circle cx="651" cy="571" r="0.5" opacity="0.42"/><circle cx="184" cy="1008" r="1.0" opacity="0.29"/><circle cx="126" cy="1067" r="1.0" opacity="0.29"/><circle cx="577" cy="467" r="1.0" opacity="0.26"/><circle cx="667" cy="2" r="0.8" opacity="0.48"/><circle cx="95" cy="1040" r="0.5" opacity="0.51"/><circle cx="230" cy="418" r="1.0" opacity="0.29"/><circle cx="691" cy="86" r="1.0" opacity="0.44"/><circle cx="678" cy="315" r="0.5" opacity="0.48"/><circle cx="227" cy="1051" r="0.6" opacity="0.54"/><circle cx="346" cy="354" r="0.8" opacity="0.46"/><circle cx="340" cy="33" r="1.0" opacity="0.51"/><circle cx="747" cy="617" r="0.5" opacity="0.14"/><circle cx="581" cy="506" r="0.6" opacity="0.4"/><circle cx="227" cy="55" r="1.4" opacity="0.17"/><circle cx="375" cy="386" r="0.8" opacity="0.23"/><circle cx="587" cy="733" r="1.0" opacity="0.4"/><circle cx="239" cy="626" r="1.0" opacity="0.17"/><circle cx="511" cy="84" r="1.4" opacity="0.51"/><circle cx="395" cy="247" r="0.8" opacity="0.55"/><circle cx="357" cy="157" r="0.6" opacity="0.22"/><circle cx="139" cy="624" r="0.8" opacity="0.22"/><circle cx="205" cy="640" r="0.5" opacity="0.44"/><circle cx="328" cy="465" r="1.4" opacity="0.21"/><circle cx="215" cy="845" r="1.0" opacity="0.24"/><circle cx="768" cy="141" r="1.4" opacity="0.35"/><circle cx="628" cy="953" r="0.5" opacity="0.24"/><circle cx="197" cy="449" r="1.0" opacity="0.31"/><circle cx="248" cy="915" r="0.5" opacity="0.17"/><circle cx="338" cy="858" r="1.0" opacity="0.54"/><circle cx="389" cy="82" r="1.4" opacity="0.49"/><circle cx="772" cy="279" r="0.5" opacity="0.22"/><circle cx="121" cy="1091" r="0.5" opacity="0.52"/><circle cx="573" cy="727" r="1.0" opacity="0.16"/><circle cx="617" cy="2" r="0.6" opacity="0.22"/><circle cx="730" cy="725" r="0.8" opacity="0.53"/><circle cx="497" cy="593" r="1.0" opacity="0.42"/><circle cx="89" cy="79" r="1.4" opacity="0.53"/><circle cx="152" cy="293" r="1.4" opacity="0.12"/><circle cx="427" cy="1119" r="0.8" opacity="0.53"/><circle cx="512" cy="992" r="1.0" opacity="0.35"/><circle cx="434" cy="33" r="1.0" opacity="0.42"/><circle cx="244" cy="24" r="1.0" opacity="0.5"/><circle cx="514" cy="91" r="0.6" opacity="0.41"/><circle cx="735" cy="255" r="0.5" opacity="0.42"/><circle cx="570" cy="407" r="1.0" opacity="0.21"/><circle cx="633" cy="830" r="1.4" opacity="0.15"/><circle cx="394" cy="225" r="0.6" opacity="0.22"/><circle cx="176" cy="854" r="0.8" opacity="0.17"/></g></svg><div class="vig"></div>
+  <div class="inner">
+
+    <div class="pg-top">
+      <span class="mono">Portfolio <span class="ac">/</span> 2026</span>
+      <span class="mono">Biot <span class="ac">·</span> France</span>
+    </div>
+
+    <div class="art" style="position:absolute;top:20mm;right:-14mm;width:108mm;height:108mm">
+      <svg class="solid" viewBox="-200 -200 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<defs><radialGradient id="glow-ico"><stop offset="0" stop-color="currentColor" stop-opacity="0.34"/><stop offset=".55" stop-color="currentColor" stop-opacity="0.095"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></radialGradient></defs>
+<circle cx="0" cy="0" r="195" fill="url(#glow-ico)"/>
+<g stroke="currentColor" fill="none" stroke-width="1.1" stroke-linecap="round"><line x1="-87.6" y1="20.2" x2="-95.7" y2="118.1" stroke-opacity="0.285"/><line x1="-87.6" y1="20.2" x2="-147.7" y2="-32.6" stroke-opacity="0.297"/><line x1="-87.6" y1="20.2" x2="62.9" y2="-32.6" stroke-opacity="0.152"/><line x1="-87.6" y1="20.2" x2="-49.7" y2="-125.7" stroke-opacity="0.214"/><line x1="-87.6" y1="20.2" x2="34.4" y2="118.1" stroke-opacity="0.195"/><line x1="-95.7" y1="118.1" x2="-147.7" y2="-32.6" stroke-opacity="0.419"/><line x1="-95.7" y1="118.1" x2="49.7" y2="125.7" stroke-opacity="0.471"/><line x1="-95.7" y1="118.1" x2="34.4" y2="118.1" stroke-opacity="0.317"/><line x1="-95.7" y1="118.1" x2="-62.9" y2="32.6" stroke-opacity="0.533"/><line x1="-147.7" y1="-32.6" x2="-34.4" y2="-118.1" stroke-opacity="0.502"/><line x1="-147.7" y1="-32.6" x2="-49.7" y2="-125.7" stroke-opacity="0.348"/><line x1="-147.7" y1="-32.6" x2="-62.9" y2="32.6" stroke-opacity="0.545"/><line x1="49.7" y1="125.7" x2="34.4" y2="118.1" stroke-opacity="0.381"/><line x1="49.7" y1="125.7" x2="-62.9" y2="32.6" stroke-opacity="0.597"/><line x1="49.7" y1="125.7" x2="87.6" y2="-20.2" stroke-opacity="0.586"/><line x1="49.7" y1="125.7" x2="147.7" y2="32.6" stroke-opacity="0.452"/><line x1="-34.4" y1="-118.1" x2="-49.7" y2="-125.7" stroke-opacity="0.419"/><line x1="-34.4" y1="-118.1" x2="-62.9" y2="32.6" stroke-opacity="0.616"/><line x1="-34.4" y1="-118.1" x2="87.6" y2="-20.2" stroke-opacity="0.605"/><line x1="-34.4" y1="-118.1" x2="95.7" y2="-118.1" stroke-opacity="0.483"/><line x1="62.9" y1="-32.6" x2="-49.7" y2="-125.7" stroke-opacity="0.203"/><line x1="62.9" y1="-32.6" x2="34.4" y2="118.1" stroke-opacity="0.184"/><line x1="62.9" y1="-32.6" x2="95.7" y2="-118.1" stroke-opacity="0.267"/><line x1="62.9" y1="-32.6" x2="147.7" y2="32.6" stroke-opacity="0.255"/><line x1="-49.7" y1="-125.7" x2="95.7" y2="-118.1" stroke-opacity="0.329"/><line x1="34.4" y1="118.1" x2="147.7" y2="32.6" stroke-opacity="0.298"/><line x1="-62.9" y1="32.6" x2="87.6" y2="-20.2" stroke-opacity="0.648"/><line x1="87.6" y1="-20.2" x2="95.7" y2="-118.1" stroke-opacity="0.515"/><line x1="87.6" y1="-20.2" x2="147.7" y2="32.6" stroke-opacity="0.503"/><line x1="95.7" y1="-118.1" x2="147.7" y2="32.6" stroke-opacity="0.381"/></g>
+<g fill="currentColor" stroke="none"><circle cx="-87.6" cy="20.2" r="1.9" fill-opacity="0.22"/><circle cx="-95.7" cy="118.1" r="1.9" fill-opacity="0.48"/><circle cx="-147.7" cy="-32.6" r="1.9" fill-opacity="0.51"/><circle cx="49.7" cy="125.7" r="1.9" fill-opacity="0.62"/><circle cx="-34.4" cy="-118.1" r="1.9" fill-opacity="0.66"/><circle cx="62.9" cy="-32.6" r="1.9" fill-opacity="0.20"/><circle cx="-49.7" cy="-125.7" r="1.9" fill-opacity="0.33"/><circle cx="34.4" cy="118.1" r="1.9" fill-opacity="0.29"/><circle cx="-62.9" cy="32.6" r="1.9" fill-opacity="0.75"/><circle cx="87.6" cy="-20.2" r="1.9" fill-opacity="0.73"/><circle cx="95.7" cy="-118.1" r="1.9" fill-opacity="0.47"/><circle cx="147.7" cy="32.6" r="1.9" fill-opacity="0.44"/></g>
+</svg><svg class="orbits" viewBox="-200 -200 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<g stroke="currentColor" fill="none" stroke-width="1"><ellipse cx="0" cy="0" rx="176" ry="53" transform="rotate(-26)" stroke-opacity="0.42"/><ellipse cx="0" cy="0" rx="176" ry="81" transform="rotate(26)" stroke-opacity="0.30"/><ellipse cx="0" cy="0" rx="176" ry="109" transform="rotate(78)" stroke-opacity="0.18"/></g>
+</svg>
+    </div>
+
+    <div class="flow flow--end">
+      <div>
+        <h1>Raphael<span class="ghost">Pelerin</span></h1>
+
+        <p class="tagline" style="font-size:12px;margin-top:13px">
+          Software engineering · Epitech, class of 2027
+        </p>
+
+        <p class="body" style="max-width:74ch;margin-top:12px;font-size:11.6px">
+          I build across the stack, and most of what I have made lives where the layers
+          meet — a front end bound by a scheduling constraint, an image pipeline that has
+          to fit in 8&nbsp;GB of VRAM, an audio plugin whose interface is drawn by the same
+          code that reads the envelope. Five projects, four of them used by people who are
+          not me.
+        </p>
+
+        <div class="cover-foot" style="margin-top:11mm">
+          <div class="cf"><span class="mono">Email</span><b>raphael_pelerin@yahoo.com.au</b></div>
+          <div class="cf"><span class="mono">Phone</span><b>+33 6 11 72 45 88</b></div>
+          <div class="cf"><span class="mono">Languages</span><b>FR · EN bilingual · 中文 HSK3</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pg-foot">
+      <span class="mono">Raphael Pelerin</span>
+      <span class="mono"><b>01</b> / 08</span>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     02 — PROFILE
+     ===================================================================== -->
+<section class="page" style="--accent:#c6f24e">
+  <div class="grid-bg"></div><svg class="stars" viewBox="0 0 794 1123" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#9aa2b1"><circle cx="131" cy="775" r="0.8" opacity="0.33"/><circle cx="172" cy="890" r="1.4" opacity="0.2"/><circle cx="419" cy="885" r="0.5" opacity="0.28"/><circle cx="465" cy="78" r="0.6" opacity="0.52"/><circle cx="551" cy="491" r="1.0" opacity="0.38"/><circle cx="27" cy="369" r="1.0" opacity="0.42"/><circle cx="515" cy="1053" r="0.5" opacity="0.19"/><circle cx="649" cy="140" r="0.5" opacity="0.31"/><circle cx="438" cy="385" r="1.0" opacity="0.18"/><circle cx="528" cy="528" r="0.6" opacity="0.15"/><circle cx="157" cy="757" r="1.4" opacity="0.55"/><circle cx="56" cy="629" r="1.4" opacity="0.48"/><circle cx="160" cy="1037" r="1.4" opacity="0.3"/><circle cx="290" cy="507" r="1.0" opacity="0.26"/><circle cx="385" cy="298" r="0.5" opacity="0.19"/><circle cx="569" cy="1103" r="0.5" opacity="0.33"/><circle cx="437" cy="840" r="0.6" opacity="0.37"/><circle cx="253" cy="1101" r="0.5" opacity="0.2"/><circle cx="135" cy="391" r="0.8" opacity="0.27"/><circle cx="474" cy="344" r="0.5" opacity="0.19"/><circle cx="733" cy="195" r="1.0" opacity="0.28"/><circle cx="543" cy="759" r="0.6" opacity="0.3"/><circle cx="785" cy="1080" r="1.4" opacity="0.13"/><circle cx="275" cy="568" r="0.6" opacity="0.52"/><circle cx="195" cy="631" r="1.0" opacity="0.47"/><circle cx="614" cy="543" r="0.8" opacity="0.14"/><circle cx="205" cy="326" r="1.0" opacity="0.23"/><circle cx="313" cy="977" r="0.6" opacity="0.54"/><circle cx="592" cy="538" r="0.8" opacity="0.18"/><circle cx="516" cy="1024" r="1.0" opacity="0.13"/><circle cx="168" cy="941" r="0.6" opacity="0.5"/><circle cx="477" cy="478" r="1.4" opacity="0.51"/><circle cx="379" cy="156" r="1.4" opacity="0.24"/><circle cx="610" cy="11" r="0.6" opacity="0.53"/><circle cx="19" cy="667" r="0.6" opacity="0.49"/><circle cx="464" cy="289" r="1.0" opacity="0.44"/><circle cx="645" cy="156" r="0.6" opacity="0.16"/><circle cx="75" cy="28" r="1.0" opacity="0.46"/><circle cx="57" cy="134" r="0.8" opacity="0.17"/><circle cx="428" cy="364" r="1.0" opacity="0.5"/><circle cx="493" cy="204" r="1.0" opacity="0.21"/><circle cx="591" cy="850" r="1.4" opacity="0.43"/><circle cx="694" cy="869" r="0.5" opacity="0.29"/><circle cx="686" cy="447" r="1.4" opacity="0.2"/><circle cx="565" cy="284" r="1.4" opacity="0.25"/><circle cx="33" cy="437" r="0.8" opacity="0.43"/><circle cx="786" cy="918" r="1.4" opacity="0.33"/><circle cx="455" cy="613" r="0.5" opacity="0.34"/><circle cx="583" cy="1086" r="0.8" opacity="0.25"/><circle cx="496" cy="851" r="0.6" opacity="0.15"/><circle cx="647" cy="1097" r="0.8" opacity="0.15"/><circle cx="522" cy="472" r="0.5" opacity="0.4"/><circle cx="497" cy="907" r="1.0" opacity="0.34"/><circle cx="752" cy="764" r="1.0" opacity="0.32"/><circle cx="407" cy="983" r="0.5" opacity="0.22"/><circle cx="39" cy="487" r="0.6" opacity="0.24"/><circle cx="468" cy="454" r="1.0" opacity="0.32"/><circle cx="188" cy="433" r="1.0" opacity="0.22"/><circle cx="726" cy="735" r="0.5" opacity="0.33"/><circle cx="391" cy="805" r="0.6" opacity="0.46"/><circle cx="498" cy="852" r="1.4" opacity="0.42"/><circle cx="542" cy="275" r="1.0" opacity="0.29"/><circle cx="488" cy="926" r="0.5" opacity="0.19"/><circle cx="160" cy="983" r="0.6" opacity="0.16"/><circle cx="139" cy="587" r="1.4" opacity="0.53"/><circle cx="589" cy="519" r="0.5" opacity="0.55"/><circle cx="132" cy="487" r="0.8" opacity="0.28"/><circle cx="462" cy="212" r="0.5" opacity="0.53"/><circle cx="256" cy="286" r="0.6" opacity="0.51"/><circle cx="403" cy="268" r="0.8" opacity="0.43"/><circle cx="125" cy="441" r="1.0" opacity="0.31"/><circle cx="490" cy="315" r="0.6" opacity="0.41"/><circle cx="494" cy="111" r="0.6" opacity="0.13"/><circle cx="643" cy="1050" r="0.8" opacity="0.13"/><circle cx="398" cy="44" r="1.4" opacity="0.31"/><circle cx="357" cy="1113" r="1.4" opacity="0.18"/><circle cx="772" cy="214" r="0.8" opacity="0.5"/><circle cx="294" cy="152" r="1.0" opacity="0.35"/><circle cx="39" cy="211" r="1.0" opacity="0.5"/><circle cx="194" cy="646" r="1.4" opacity="0.52"/><circle cx="702" cy="20" r="1.4" opacity="0.15"/><circle cx="346" cy="935" r="0.6" opacity="0.19"/><circle cx="395" cy="591" r="1.4" opacity="0.39"/><circle cx="374" cy="899" r="0.8" opacity="0.19"/><circle cx="122" cy="323" r="0.5" opacity="0.5"/><circle cx="56" cy="76" r="1.4" opacity="0.16"/><circle cx="658" cy="404" r="0.8" opacity="0.15"/><circle cx="29" cy="556" r="1.0" opacity="0.19"/><circle cx="83" cy="1045" r="1.4" opacity="0.23"/><circle cx="158" cy="217" r="1.4" opacity="0.3"/><circle cx="258" cy="246" r="1.4" opacity="0.14"/><circle cx="280" cy="598" r="0.6" opacity="0.13"/><circle cx="293" cy="537" r="1.0" opacity="0.47"/><circle cx="720" cy="763" r="0.6" opacity="0.41"/><circle cx="514" cy="692" r="1.4" opacity="0.51"/><circle cx="770" cy="438" r="1.0" opacity="0.52"/><circle cx="630" cy="13" r="0.8" opacity="0.19"/><circle cx="211" cy="28" r="1.0" opacity="0.4"/><circle cx="128" cy="1045" r="1.4" opacity="0.34"/><circle cx="328" cy="254" r="1.4" opacity="0.36"/><circle cx="616" cy="831" r="0.8" opacity="0.51"/><circle cx="190" cy="673" r="0.8" opacity="0.35"/><circle cx="647" cy="407" r="0.6" opacity="0.55"/><circle cx="724" cy="1072" r="0.5" opacity="0.54"/><circle cx="588" cy="833" r="0.6" opacity="0.52"/><circle cx="415" cy="1005" r="1.4" opacity="0.25"/><circle cx="128" cy="744" r="1.4" opacity="0.4"/><circle cx="612" cy="844" r="0.6" opacity="0.23"/><circle cx="342" cy="425" r="1.0" opacity="0.33"/><circle cx="32" cy="964" r="0.6" opacity="0.14"/><circle cx="653" cy="659" r="0.8" opacity="0.44"/><circle cx="580" cy="1116" r="1.0" opacity="0.18"/><circle cx="26" cy="873" r="1.4" opacity="0.25"/><circle cx="661" cy="514" r="1.0" opacity="0.22"/><circle cx="583" cy="912" r="1.0" opacity="0.41"/><circle cx="22" cy="1029" r="0.6" opacity="0.33"/><circle cx="366" cy="437" r="1.0" opacity="0.38"/><circle cx="550" cy="972" r="0.5" opacity="0.28"/><circle cx="199" cy="878" r="0.5" opacity="0.52"/><circle cx="158" cy="952" r="0.5" opacity="0.44"/><circle cx="197" cy="146" r="0.8" opacity="0.16"/><circle cx="490" cy="725" r="1.4" opacity="0.21"/><circle cx="395" cy="801" r="0.6" opacity="0.13"/><circle cx="715" cy="1035" r="1.4" opacity="0.28"/><circle cx="153" cy="158" r="0.5" opacity="0.23"/><circle cx="655" cy="68" r="1.4" opacity="0.4"/><circle cx="17" cy="814" r="1.4" opacity="0.42"/><circle cx="387" cy="604" r="1.4" opacity="0.28"/><circle cx="505" cy="714" r="0.8" opacity="0.18"/><circle cx="319" cy="498" r="1.0" opacity="0.43"/><circle cx="465" cy="493" r="0.6" opacity="0.13"/><circle cx="511" cy="511" r="0.6" opacity="0.45"/><circle cx="716" cy="841" r="0.8" opacity="0.33"/><circle cx="131" cy="897" r="0.8" opacity="0.42"/><circle cx="238" cy="1083" r="1.0" opacity="0.2"/><circle cx="120" cy="701" r="0.6" opacity="0.22"/><circle cx="89" cy="600" r="0.5" opacity="0.39"/><circle cx="97" cy="139" r="0.6" opacity="0.35"/><circle cx="67" cy="272" r="1.4" opacity="0.36"/><circle cx="194" cy="485" r="1.4" opacity="0.42"/><circle cx="645" cy="449" r="0.8" opacity="0.47"/><circle cx="546" cy="993" r="1.0" opacity="0.13"/><circle cx="396" cy="1001" r="1.4" opacity="0.33"/><circle cx="30" cy="719" r="0.8" opacity="0.45"/><circle cx="571" cy="596" r="0.6" opacity="0.24"/><circle cx="295" cy="551" r="0.8" opacity="0.29"/><circle cx="636" cy="60" r="0.8" opacity="0.37"/><circle cx="386" cy="922" r="0.6" opacity="0.44"/><circle cx="119" cy="346" r="0.5" opacity="0.24"/><circle cx="538" cy="1018" r="0.5" opacity="0.28"/></g></svg><div class="vig"></div>
+  <div class="inner">
+
+    <div class="pg-top">
+      <span class="mono">Profile <span class="ac">·</span> Education <span class="ac">·</span> Capabilities</span>
+      <span class="mono">00</span>
+    </div>
+
+    <div class="flow">
+      <p class="big-quote">
+        Fifth-year software engineering student at Epitech.
+        <span>I would rather ship something narrow that works than something broad that almost does.</span>
+      </p>
+
+      <div class="cols">
+        <div>
+          <div class="eyebrow"><span class="n">A</span><span class="rule"></span><span class="t">Availability</span></div>
+          <div class="panel">
+            <p class="mono" style="color:var(--ink)"><span class="dot"></span>Open to offers</p>
+            <p class="body" style="margin-top:8px;font-size:10.8px">
+              <strong>End-of-studies internship, 4–6 months</strong><br>
+              Starting March 2027
+            </p>
+          </div>
+
+          <div class="eyebrow" style="margin-top:7mm"><span class="n">B</span><span class="rule"></span><span class="t">Languages</span></div>
+          <div class="langs">
+            <div class="lang"><span class="nm">French</span><span class="meter"><i style="width:100%"></i></span><span class="lv">Native</span></div>
+            <div class="lang"><span class="nm">English</span><span class="meter"><i style="width:100%"></i></span><span class="lv">Bilingual</span></div>
+            <div class="lang"><span class="nm">Mandarin</span><span class="meter"><i style="width:46%"></i></span><span class="lv">HSK 3</span></div>
+            <div class="lang"><span class="nm">Italian</span><span class="meter"><i style="width:22%"></i></span><span class="lv">Basic</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="eyebrow"><span class="n">C</span><span class="rule"></span><span class="t">Education</span></div>
+          <div class="rows">
+            <div class="row">
+              <span class="k">2022 — 2027</span>
+              <span class="v">
+                <b>Epitech Technology</b>
+                <em>Master's, Computer Engineering · Nice</em>
+                Functional and object-oriented programming, Unix, assembly, systems
+                and network programming. Specialisations in DevOps, AI, web and mobile,
+                and cybersecurity.
+              </span>
+            </div>
+            <div class="row">
+              <span class="k">2025 — 2026</span>
+              <span class="v">
+                <b>Beijing Jiaotong University</b>
+                <em>Fourth year abroad · Beijing, China</em>
+                Software engineering, alongside Mandarin to HSK 3.
+              </span>
+            </div>
+            <div class="row">
+              <span class="k">2022</span>
+              <span class="v">
+                <b>Lycée Simone Veil</b>
+                <em>General Baccalaureate</em>
+                Computer Science (NSI) and Mathematics.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="eyebrow"><span class="n">D</span><span class="rule"></span><span class="t">Earlier</span></div>
+        <div class="rows">
+          <div class="row" style="grid-template-columns:22mm 1fr">
+            <span class="k">2023</span>
+            <span class="v"><b>ARD</b><em>Mobile development intern</em>
+              An Angular application to manage NFC cards and user profiles for alarm systems,
+              including card scanning to display cardholder information.</span>
+          </div>
+          <div class="row" style="grid-template-columns:22mm 1fr">
+            <span class="k">2022</span>
+            <span class="v"><b>Intel · AI for Youth</b><em>Competition — 2nd place, team</em>
+              Computer vision and object recognition in Python with TensorFlow.</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="eyebrow"><span class="n">E</span><span class="rule"></span><span class="t">Capabilities</span></div>
+        <div class="skills">
+          <div class="skill"><span class="no">01</span><span class="nm">Web &amp; mobile</span>
+            <span class="ls">React · React Native · Angular · Ionic · Node.js · Express · Android · iOS</span></div>
+          <div class="skill"><span class="no">02</span><span class="nm">Backend</span>
+            <span class="ls">FastAPI · Flask · Express · REST APIs · SOAP / XML</span></div>
+          <div class="skill"><span class="no">03</span><span class="nm">AI &amp; generative</span>
+            <span class="ls">OpenAI · Anthropic Claude · Gemini · LLM integration · TensorFlow · diffusion models</span></div>
+          <div class="skill"><span class="no">04</span><span class="nm">Data &amp; infra</span>
+            <span class="ls">PostgreSQL · MongoDB · MySQL · Prisma · Docker · containerisation · GitLab CI</span></div>
+          <div class="skill"><span class="no">05</span><span class="nm">Systems &amp; audio</span>
+            <span class="ls">C++ · JUCE · real-time DSP · Unix · assembly · systems and network programming</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pg-foot">
+      <span class="mono">Profile</span>
+      <span class="mono"><b>02</b> / 08</span>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     03 — SYNTHEZA
+     ===================================================================== -->
+<section class="page" style="--accent:#9b7cff">
+  <div class="grid-bg"></div><svg class="stars" viewBox="0 0 794 1123" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#9aa2b1"><circle cx="257" cy="169" r="0.5" opacity="0.15"/><circle cx="425" cy="411" r="0.5" opacity="0.51"/><circle cx="170" cy="97" r="1.0" opacity="0.15"/><circle cx="72" cy="477" r="1.4" opacity="0.17"/><circle cx="177" cy="705" r="0.5" opacity="0.37"/><circle cx="315" cy="1096" r="0.5" opacity="0.36"/><circle cx="106" cy="471" r="1.4" opacity="0.17"/><circle cx="245" cy="917" r="0.6" opacity="0.16"/><circle cx="454" cy="211" r="0.5" opacity="0.36"/><circle cx="50" cy="67" r="0.6" opacity="0.33"/><circle cx="422" cy="873" r="1.0" opacity="0.37"/><circle cx="360" cy="337" r="0.6" opacity="0.42"/><circle cx="194" cy="645" r="1.4" opacity="0.33"/><circle cx="273" cy="504" r="1.4" opacity="0.54"/><circle cx="94" cy="470" r="0.8" opacity="0.19"/><circle cx="388" cy="44" r="0.5" opacity="0.45"/><circle cx="455" cy="983" r="0.8" opacity="0.27"/><circle cx="278" cy="558" r="1.0" opacity="0.15"/><circle cx="74" cy="303" r="0.5" opacity="0.15"/><circle cx="557" cy="727" r="1.0" opacity="0.24"/><circle cx="306" cy="751" r="0.5" opacity="0.52"/><circle cx="282" cy="686" r="1.0" opacity="0.15"/><circle cx="610" cy="145" r="0.6" opacity="0.29"/><circle cx="728" cy="558" r="0.6" opacity="0.31"/><circle cx="436" cy="992" r="1.0" opacity="0.49"/><circle cx="221" cy="466" r="0.8" opacity="0.41"/><circle cx="302" cy="259" r="0.5" opacity="0.2"/><circle cx="184" cy="262" r="1.0" opacity="0.48"/><circle cx="145" cy="317" r="0.6" opacity="0.3"/><circle cx="293" cy="636" r="0.6" opacity="0.42"/><circle cx="409" cy="694" r="0.5" opacity="0.32"/><circle cx="692" cy="1069" r="1.4" opacity="0.29"/><circle cx="317" cy="116" r="1.0" opacity="0.15"/><circle cx="53" cy="234" r="0.6" opacity="0.17"/><circle cx="477" cy="115" r="1.4" opacity="0.19"/><circle cx="81" cy="408" r="0.5" opacity="0.15"/><circle cx="165" cy="423" r="0.8" opacity="0.53"/><circle cx="478" cy="532" r="0.5" opacity="0.49"/><circle cx="789" cy="523" r="1.0" opacity="0.25"/><circle cx="114" cy="842" r="0.8" opacity="0.33"/><circle cx="549" cy="580" r="0.6" opacity="0.53"/><circle cx="419" cy="165" r="1.4" opacity="0.51"/><circle cx="602" cy="335" r="0.5" opacity="0.42"/><circle cx="207" cy="412" r="0.6" opacity="0.27"/><circle cx="177" cy="608" r="1.4" opacity="0.26"/><circle cx="177" cy="911" r="0.6" opacity="0.47"/><circle cx="650" cy="831" r="0.6" opacity="0.21"/><circle cx="391" cy="821" r="0.5" opacity="0.46"/><circle cx="375" cy="217" r="1.4" opacity="0.53"/><circle cx="355" cy="1052" r="0.8" opacity="0.53"/><circle cx="290" cy="248" r="0.6" opacity="0.32"/><circle cx="268" cy="542" r="1.4" opacity="0.48"/><circle cx="381" cy="733" r="0.5" opacity="0.48"/><circle cx="95" cy="436" r="0.6" opacity="0.33"/><circle cx="142" cy="886" r="0.8" opacity="0.16"/><circle cx="751" cy="811" r="1.0" opacity="0.29"/><circle cx="752" cy="814" r="0.6" opacity="0.55"/><circle cx="22" cy="663" r="1.0" opacity="0.47"/><circle cx="116" cy="928" r="1.0" opacity="0.4"/><circle cx="278" cy="616" r="0.6" opacity="0.13"/><circle cx="635" cy="816" r="0.5" opacity="0.35"/><circle cx="741" cy="487" r="0.6" opacity="0.48"/><circle cx="168" cy="283" r="0.8" opacity="0.34"/><circle cx="606" cy="366" r="1.4" opacity="0.3"/><circle cx="104" cy="1022" r="0.8" opacity="0.51"/><circle cx="526" cy="915" r="1.4" opacity="0.3"/><circle cx="729" cy="563" r="1.4" opacity="0.19"/><circle cx="405" cy="980" r="0.6" opacity="0.38"/><circle cx="616" cy="168" r="0.6" opacity="0.32"/><circle cx="576" cy="625" r="0.8" opacity="0.41"/><circle cx="421" cy="542" r="0.5" opacity="0.5"/><circle cx="45" cy="215" r="0.5" opacity="0.45"/><circle cx="403" cy="631" r="0.5" opacity="0.31"/><circle cx="486" cy="568" r="1.4" opacity="0.21"/><circle cx="220" cy="571" r="1.0" opacity="0.34"/><circle cx="197" cy="588" r="0.8" opacity="0.52"/><circle cx="709" cy="228" r="1.0" opacity="0.18"/><circle cx="97" cy="496" r="0.5" opacity="0.41"/><circle cx="340" cy="239" r="0.8" opacity="0.46"/><circle cx="712" cy="173" r="0.8" opacity="0.18"/><circle cx="701" cy="1087" r="0.6" opacity="0.44"/><circle cx="75" cy="994" r="0.6" opacity="0.55"/><circle cx="661" cy="181" r="1.0" opacity="0.55"/><circle cx="321" cy="473" r="0.8" opacity="0.26"/><circle cx="573" cy="22" r="1.4" opacity="0.32"/><circle cx="558" cy="432" r="1.4" opacity="0.39"/><circle cx="407" cy="72" r="0.6" opacity="0.54"/><circle cx="83" cy="298" r="0.5" opacity="0.51"/><circle cx="144" cy="849" r="1.0" opacity="0.49"/><circle cx="537" cy="1062" r="1.0" opacity="0.18"/><circle cx="730" cy="641" r="0.8" opacity="0.16"/><circle cx="46" cy="773" r="1.0" opacity="0.5"/><circle cx="214" cy="19" r="0.5" opacity="0.46"/><circle cx="66" cy="962" r="0.5" opacity="0.23"/><circle cx="97" cy="13" r="1.4" opacity="0.3"/><circle cx="727" cy="698" r="0.5" opacity="0.35"/><circle cx="189" cy="123" r="0.6" opacity="0.23"/><circle cx="144" cy="1047" r="0.8" opacity="0.35"/><circle cx="163" cy="501" r="0.6" opacity="0.24"/><circle cx="638" cy="1117" r="0.5" opacity="0.13"/><circle cx="582" cy="619" r="0.6" opacity="0.34"/><circle cx="195" cy="502" r="1.0" opacity="0.4"/><circle cx="433" cy="998" r="1.4" opacity="0.25"/><circle cx="171" cy="258" r="0.6" opacity="0.48"/><circle cx="561" cy="714" r="1.0" opacity="0.55"/><circle cx="780" cy="940" r="0.5" opacity="0.15"/><circle cx="588" cy="287" r="0.6" opacity="0.14"/><circle cx="528" cy="428" r="1.4" opacity="0.41"/><circle cx="224" cy="272" r="0.8" opacity="0.14"/><circle cx="147" cy="302" r="0.5" opacity="0.23"/><circle cx="764" cy="1092" r="1.4" opacity="0.26"/><circle cx="27" cy="991" r="0.6" opacity="0.27"/><circle cx="1" cy="429" r="1.0" opacity="0.24"/><circle cx="521" cy="279" r="0.5" opacity="0.16"/><circle cx="649" cy="162" r="1.4" opacity="0.14"/><circle cx="18" cy="342" r="0.6" opacity="0.16"/><circle cx="760" cy="958" r="0.6" opacity="0.4"/><circle cx="568" cy="987" r="1.0" opacity="0.45"/><circle cx="572" cy="555" r="0.8" opacity="0.43"/><circle cx="511" cy="49" r="1.4" opacity="0.39"/><circle cx="583" cy="912" r="0.6" opacity="0.51"/><circle cx="598" cy="638" r="0.5" opacity="0.48"/><circle cx="464" cy="1003" r="0.6" opacity="0.16"/><circle cx="33" cy="715" r="0.5" opacity="0.28"/><circle cx="358" cy="57" r="0.5" opacity="0.39"/><circle cx="540" cy="549" r="0.5" opacity="0.32"/><circle cx="56" cy="1047" r="1.4" opacity="0.16"/><circle cx="418" cy="837" r="1.0" opacity="0.23"/><circle cx="59" cy="298" r="0.6" opacity="0.22"/><circle cx="516" cy="517" r="1.0" opacity="0.15"/><circle cx="723" cy="323" r="0.5" opacity="0.39"/><circle cx="510" cy="87" r="0.6" opacity="0.26"/><circle cx="517" cy="778" r="1.4" opacity="0.36"/><circle cx="10" cy="68" r="0.8" opacity="0.54"/><circle cx="79" cy="244" r="1.0" opacity="0.25"/><circle cx="410" cy="522" r="1.0" opacity="0.45"/><circle cx="789" cy="617" r="0.8" opacity="0.54"/><circle cx="743" cy="20" r="1.0" opacity="0.15"/><circle cx="402" cy="1117" r="0.8" opacity="0.29"/><circle cx="728" cy="1045" r="0.5" opacity="0.37"/><circle cx="113" cy="589" r="0.8" opacity="0.18"/><circle cx="651" cy="571" r="0.5" opacity="0.42"/><circle cx="184" cy="1008" r="1.0" opacity="0.29"/><circle cx="126" cy="1067" r="1.0" opacity="0.29"/><circle cx="577" cy="467" r="1.0" opacity="0.26"/><circle cx="667" cy="2" r="0.8" opacity="0.48"/><circle cx="95" cy="1040" r="0.5" opacity="0.51"/><circle cx="230" cy="418" r="1.0" opacity="0.29"/><circle cx="691" cy="86" r="1.0" opacity="0.44"/><circle cx="678" cy="315" r="0.5" opacity="0.48"/><circle cx="227" cy="1051" r="0.6" opacity="0.54"/><circle cx="346" cy="354" r="0.8" opacity="0.46"/><circle cx="340" cy="33" r="1.0" opacity="0.51"/><circle cx="747" cy="617" r="0.5" opacity="0.14"/><circle cx="581" cy="506" r="0.6" opacity="0.4"/><circle cx="227" cy="55" r="1.4" opacity="0.17"/><circle cx="375" cy="386" r="0.8" opacity="0.23"/><circle cx="587" cy="733" r="1.0" opacity="0.4"/><circle cx="239" cy="626" r="1.0" opacity="0.17"/><circle cx="511" cy="84" r="1.4" opacity="0.51"/><circle cx="395" cy="247" r="0.8" opacity="0.55"/><circle cx="357" cy="157" r="0.6" opacity="0.22"/><circle cx="139" cy="624" r="0.8" opacity="0.22"/><circle cx="205" cy="640" r="0.5" opacity="0.44"/><circle cx="328" cy="465" r="1.4" opacity="0.21"/><circle cx="215" cy="845" r="1.0" opacity="0.24"/><circle cx="768" cy="141" r="1.4" opacity="0.35"/><circle cx="628" cy="953" r="0.5" opacity="0.24"/><circle cx="197" cy="449" r="1.0" opacity="0.31"/><circle cx="248" cy="915" r="0.5" opacity="0.17"/><circle cx="338" cy="858" r="1.0" opacity="0.54"/><circle cx="389" cy="82" r="1.4" opacity="0.49"/><circle cx="772" cy="279" r="0.5" opacity="0.22"/><circle cx="121" cy="1091" r="0.5" opacity="0.52"/><circle cx="573" cy="727" r="1.0" opacity="0.16"/><circle cx="617" cy="2" r="0.6" opacity="0.22"/><circle cx="730" cy="725" r="0.8" opacity="0.53"/><circle cx="497" cy="593" r="1.0" opacity="0.42"/><circle cx="89" cy="79" r="1.4" opacity="0.53"/><circle cx="152" cy="293" r="1.4" opacity="0.12"/><circle cx="427" cy="1119" r="0.8" opacity="0.53"/><circle cx="512" cy="992" r="1.0" opacity="0.35"/><circle cx="434" cy="33" r="1.0" opacity="0.42"/><circle cx="244" cy="24" r="1.0" opacity="0.5"/><circle cx="514" cy="91" r="0.6" opacity="0.41"/><circle cx="735" cy="255" r="0.5" opacity="0.42"/><circle cx="570" cy="407" r="1.0" opacity="0.21"/><circle cx="633" cy="830" r="1.4" opacity="0.15"/><circle cx="394" cy="225" r="0.6" opacity="0.22"/><circle cx="176" cy="854" r="0.8" opacity="0.17"/></g></svg><div class="vig"></div>
+  <div class="inner">
+
+    <div class="pg-top">
+      <span class="mono">Selected work</span>
+      <span class="mono">Syntheza</span>
+    </div>
+
+    <div class="flow">
+      <div>
+        <div class="eyebrow">
+          <span class="n">01</span><span class="rule"></span>
+          <span class="t">Lead Frontend Web · Epitech G-EIP-700 · 2025 — 2026</span>
+        </div>
+        <div class="titlerow">
+          <img class="logo" src="assets/syntheza-logo.png" alt="" />
+          <h2>Syntheza</h2>
+        </div>
+        <p class="tagline">Strategic watch, against information overload</p>
+        <p class="linkline"><span>Live</span>syntheza.ovh</p>
+      </div>
+
+      <div>
+        <img class="shot" src="assets/syntheza-web.jpg" alt="Syntheza web client" />
+        <p class="cap">Web client <span class="ac">·</span> Discover feed, publishers, trending and Trust Factor scores</p>
+      </div>
+
+      <div class="cols" style="grid-template-columns:1fr 37mm;gap:8mm">
+        <div class="body">
+          <p>
+            A one-year entrepreneurial project run by <strong>three Epitech students working from
+            three different countries</strong>. Syntheza ingests RSS at scale, deduplicates what
+            it finds, and returns a daily synthesis instead of another feed. I lead the
+            <strong>web client</strong> — the interface, the design system and the React
+            component layer.
+          </p>
+          <p>
+            The green shield on every source is the <strong>Trust Factor</strong>: a corroboration
+            score, so a claim made once does not read like one confirmed by five.
+          </p>
+          <p>
+            The team ran a field study of <strong>20 professionals before writing code</strong> —
+            85% reported daily overload, 70% lose one to two hours a day sorting noise. That
+            study, not a hunch, set the scope.
+          </p>
+        </div>
+        <div>
+          <img class="shot" src="assets/syntheza-mobile.jpg" alt="Syntheza mobile app" />
+          <p class="cap">Mobile <span class="ac">·</span> Expo</p>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b>3</b><span>Developers,<br>three countries</span></div>
+        <div class="stat"><b>~330 kB</b><span>Gzipped<br>web bundle</span></div>
+        <div class="stat"><b>7</b><span>Languages<br>on mobile</span></div>
+        <div class="stat"><b>Live</b><span>In production</span></div>
+      </div>
+
+      <div class="chips">
+        <span class="chip chip--ac">React 19</span><span class="chip chip--ac">TypeScript</span>
+        <span class="chip chip--ac">Tailwind v4</span><span class="chip chip--ac">Radix UI</span>
+        <span class="chip chip--ac">Framer Motion</span><span class="chip">Vite</span>
+        <span class="chip">Node 20</span><span class="chip">Express</span>
+        <span class="chip">Prisma 7</span><span class="chip">PostgreSQL 15</span>
+        <span class="chip">Gemini 2.5 Flash</span><span class="chip">React Native · Expo</span>
+      </div>
+    </div>
+
+    <div class="pg-foot">
+      <span class="mono">01 <span class="ac">·</span> Syntheza</span>
+      <span class="mono"><b>03</b> / 08</span>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     04 — FORGE
+     ===================================================================== -->
+<section class="page" style="--accent:#c6f24e">
+  <div class="grid-bg"></div><svg class="stars" viewBox="0 0 794 1123" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#9aa2b1"><circle cx="131" cy="775" r="0.8" opacity="0.33"/><circle cx="172" cy="890" r="1.4" opacity="0.2"/><circle cx="419" cy="885" r="0.5" opacity="0.28"/><circle cx="465" cy="78" r="0.6" opacity="0.52"/><circle cx="551" cy="491" r="1.0" opacity="0.38"/><circle cx="27" cy="369" r="1.0" opacity="0.42"/><circle cx="515" cy="1053" r="0.5" opacity="0.19"/><circle cx="649" cy="140" r="0.5" opacity="0.31"/><circle cx="438" cy="385" r="1.0" opacity="0.18"/><circle cx="528" cy="528" r="0.6" opacity="0.15"/><circle cx="157" cy="757" r="1.4" opacity="0.55"/><circle cx="56" cy="629" r="1.4" opacity="0.48"/><circle cx="160" cy="1037" r="1.4" opacity="0.3"/><circle cx="290" cy="507" r="1.0" opacity="0.26"/><circle cx="385" cy="298" r="0.5" opacity="0.19"/><circle cx="569" cy="1103" r="0.5" opacity="0.33"/><circle cx="437" cy="840" r="0.6" opacity="0.37"/><circle cx="253" cy="1101" r="0.5" opacity="0.2"/><circle cx="135" cy="391" r="0.8" opacity="0.27"/><circle cx="474" cy="344" r="0.5" opacity="0.19"/><circle cx="733" cy="195" r="1.0" opacity="0.28"/><circle cx="543" cy="759" r="0.6" opacity="0.3"/><circle cx="785" cy="1080" r="1.4" opacity="0.13"/><circle cx="275" cy="568" r="0.6" opacity="0.52"/><circle cx="195" cy="631" r="1.0" opacity="0.47"/><circle cx="614" cy="543" r="0.8" opacity="0.14"/><circle cx="205" cy="326" r="1.0" opacity="0.23"/><circle cx="313" cy="977" r="0.6" opacity="0.54"/><circle cx="592" cy="538" r="0.8" opacity="0.18"/><circle cx="516" cy="1024" r="1.0" opacity="0.13"/><circle cx="168" cy="941" r="0.6" opacity="0.5"/><circle cx="477" cy="478" r="1.4" opacity="0.51"/><circle cx="379" cy="156" r="1.4" opacity="0.24"/><circle cx="610" cy="11" r="0.6" opacity="0.53"/><circle cx="19" cy="667" r="0.6" opacity="0.49"/><circle cx="464" cy="289" r="1.0" opacity="0.44"/><circle cx="645" cy="156" r="0.6" opacity="0.16"/><circle cx="75" cy="28" r="1.0" opacity="0.46"/><circle cx="57" cy="134" r="0.8" opacity="0.17"/><circle cx="428" cy="364" r="1.0" opacity="0.5"/><circle cx="493" cy="204" r="1.0" opacity="0.21"/><circle cx="591" cy="850" r="1.4" opacity="0.43"/><circle cx="694" cy="869" r="0.5" opacity="0.29"/><circle cx="686" cy="447" r="1.4" opacity="0.2"/><circle cx="565" cy="284" r="1.4" opacity="0.25"/><circle cx="33" cy="437" r="0.8" opacity="0.43"/><circle cx="786" cy="918" r="1.4" opacity="0.33"/><circle cx="455" cy="613" r="0.5" opacity="0.34"/><circle cx="583" cy="1086" r="0.8" opacity="0.25"/><circle cx="496" cy="851" r="0.6" opacity="0.15"/><circle cx="647" cy="1097" r="0.8" opacity="0.15"/><circle cx="522" cy="472" r="0.5" opacity="0.4"/><circle cx="497" cy="907" r="1.0" opacity="0.34"/><circle cx="752" cy="764" r="1.0" opacity="0.32"/><circle cx="407" cy="983" r="0.5" opacity="0.22"/><circle cx="39" cy="487" r="0.6" opacity="0.24"/><circle cx="468" cy="454" r="1.0" opacity="0.32"/><circle cx="188" cy="433" r="1.0" opacity="0.22"/><circle cx="726" cy="735" r="0.5" opacity="0.33"/><circle cx="391" cy="805" r="0.6" opacity="0.46"/><circle cx="498" cy="852" r="1.4" opacity="0.42"/><circle cx="542" cy="275" r="1.0" opacity="0.29"/><circle cx="488" cy="926" r="0.5" opacity="0.19"/><circle cx="160" cy="983" r="0.6" opacity="0.16"/><circle cx="139" cy="587" r="1.4" opacity="0.53"/><circle cx="589" cy="519" r="0.5" opacity="0.55"/><circle cx="132" cy="487" r="0.8" opacity="0.28"/><circle cx="462" cy="212" r="0.5" opacity="0.53"/><circle cx="256" cy="286" r="0.6" opacity="0.51"/><circle cx="403" cy="268" r="0.8" opacity="0.43"/><circle cx="125" cy="441" r="1.0" opacity="0.31"/><circle cx="490" cy="315" r="0.6" opacity="0.41"/><circle cx="494" cy="111" r="0.6" opacity="0.13"/><circle cx="643" cy="1050" r="0.8" opacity="0.13"/><circle cx="398" cy="44" r="1.4" opacity="0.31"/><circle cx="357" cy="1113" r="1.4" opacity="0.18"/><circle cx="772" cy="214" r="0.8" opacity="0.5"/><circle cx="294" cy="152" r="1.0" opacity="0.35"/><circle cx="39" cy="211" r="1.0" opacity="0.5"/><circle cx="194" cy="646" r="1.4" opacity="0.52"/><circle cx="702" cy="20" r="1.4" opacity="0.15"/><circle cx="346" cy="935" r="0.6" opacity="0.19"/><circle cx="395" cy="591" r="1.4" opacity="0.39"/><circle cx="374" cy="899" r="0.8" opacity="0.19"/><circle cx="122" cy="323" r="0.5" opacity="0.5"/><circle cx="56" cy="76" r="1.4" opacity="0.16"/><circle cx="658" cy="404" r="0.8" opacity="0.15"/><circle cx="29" cy="556" r="1.0" opacity="0.19"/><circle cx="83" cy="1045" r="1.4" opacity="0.23"/><circle cx="158" cy="217" r="1.4" opacity="0.3"/><circle cx="258" cy="246" r="1.4" opacity="0.14"/><circle cx="280" cy="598" r="0.6" opacity="0.13"/><circle cx="293" cy="537" r="1.0" opacity="0.47"/><circle cx="720" cy="763" r="0.6" opacity="0.41"/><circle cx="514" cy="692" r="1.4" opacity="0.51"/><circle cx="770" cy="438" r="1.0" opacity="0.52"/><circle cx="630" cy="13" r="0.8" opacity="0.19"/><circle cx="211" cy="28" r="1.0" opacity="0.4"/><circle cx="128" cy="1045" r="1.4" opacity="0.34"/><circle cx="328" cy="254" r="1.4" opacity="0.36"/><circle cx="616" cy="831" r="0.8" opacity="0.51"/><circle cx="190" cy="673" r="0.8" opacity="0.35"/><circle cx="647" cy="407" r="0.6" opacity="0.55"/><circle cx="724" cy="1072" r="0.5" opacity="0.54"/><circle cx="588" cy="833" r="0.6" opacity="0.52"/><circle cx="415" cy="1005" r="1.4" opacity="0.25"/><circle cx="128" cy="744" r="1.4" opacity="0.4"/><circle cx="612" cy="844" r="0.6" opacity="0.23"/><circle cx="342" cy="425" r="1.0" opacity="0.33"/><circle cx="32" cy="964" r="0.6" opacity="0.14"/><circle cx="653" cy="659" r="0.8" opacity="0.44"/><circle cx="580" cy="1116" r="1.0" opacity="0.18"/><circle cx="26" cy="873" r="1.4" opacity="0.25"/><circle cx="661" cy="514" r="1.0" opacity="0.22"/><circle cx="583" cy="912" r="1.0" opacity="0.41"/><circle cx="22" cy="1029" r="0.6" opacity="0.33"/><circle cx="366" cy="437" r="1.0" opacity="0.38"/><circle cx="550" cy="972" r="0.5" opacity="0.28"/><circle cx="199" cy="878" r="0.5" opacity="0.52"/><circle cx="158" cy="952" r="0.5" opacity="0.44"/><circle cx="197" cy="146" r="0.8" opacity="0.16"/><circle cx="490" cy="725" r="1.4" opacity="0.21"/><circle cx="395" cy="801" r="0.6" opacity="0.13"/><circle cx="715" cy="1035" r="1.4" opacity="0.28"/><circle cx="153" cy="158" r="0.5" opacity="0.23"/><circle cx="655" cy="68" r="1.4" opacity="0.4"/><circle cx="17" cy="814" r="1.4" opacity="0.42"/><circle cx="387" cy="604" r="1.4" opacity="0.28"/><circle cx="505" cy="714" r="0.8" opacity="0.18"/><circle cx="319" cy="498" r="1.0" opacity="0.43"/><circle cx="465" cy="493" r="0.6" opacity="0.13"/><circle cx="511" cy="511" r="0.6" opacity="0.45"/><circle cx="716" cy="841" r="0.8" opacity="0.33"/><circle cx="131" cy="897" r="0.8" opacity="0.42"/><circle cx="238" cy="1083" r="1.0" opacity="0.2"/><circle cx="120" cy="701" r="0.6" opacity="0.22"/><circle cx="89" cy="600" r="0.5" opacity="0.39"/><circle cx="97" cy="139" r="0.6" opacity="0.35"/><circle cx="67" cy="272" r="1.4" opacity="0.36"/><circle cx="194" cy="485" r="1.4" opacity="0.42"/><circle cx="645" cy="449" r="0.8" opacity="0.47"/><circle cx="546" cy="993" r="1.0" opacity="0.13"/><circle cx="396" cy="1001" r="1.4" opacity="0.33"/><circle cx="30" cy="719" r="0.8" opacity="0.45"/><circle cx="571" cy="596" r="0.6" opacity="0.24"/><circle cx="295" cy="551" r="0.8" opacity="0.29"/><circle cx="636" cy="60" r="0.8" opacity="0.37"/><circle cx="386" cy="922" r="0.6" opacity="0.44"/><circle cx="119" cy="346" r="0.5" opacity="0.24"/><circle cx="538" cy="1018" r="0.5" opacity="0.28"/></g></svg><div class="vig"></div>
+  <div class="inner">
+
+    <div class="pg-top">
+      <span class="mono">Selected work</span>
+      <span class="mono">Forge</span>
+    </div>
+
+    <div class="flow">
+      <div>
+        <div class="eyebrow">
+          <span class="n">02</span><span class="rule"></span>
+          <span class="t">Solo project</span>
+        </div>
+        <h2>Forge</h2>
+        <p class="tagline">Game-asset generation that never leaves the machine</p>
+        
+      </div>
+
+      <div class="cols">
+        <div class="body">
+          <p>
+            Generating <em>one</em> good image with an AI tool is easy. Generating <strong>forty
+            that look like they came from the same game</strong> is the actual problem — and it is
+            a software engineering problem, not a prompting one.
+          </p>
+          <p>
+            Forge solves it with <strong>recipes</strong>: presets that own the style, resolution,
+            sampler and post-processing for a category of asset. The user supplies only the
+            subject, so two characters generated six months apart go through an identical pipeline
+            and match.
+          </p>
+          <p>
+            It runs entirely on a local GPU. No API, no subscription, no account, and
+            <strong>no image ever leaves the machine</strong>. Nine-slice UI panels are not trusted
+            to come out symmetrical — the tool keeps one corner, mirrors it, and <em>measures</em>
+            the border thickness by scanning inward until the colour goes flat.
+          </p>
+        </div>
+
+        <div class="art art--pg" style="height:86mm"><svg class="solid" viewBox="-200 -200 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<defs><radialGradient id="glow-ico2"><stop offset="0" stop-color="currentColor" stop-opacity="0.3"/><stop offset=".55" stop-color="currentColor" stop-opacity="0.084"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></radialGradient></defs>
+<circle cx="0" cy="0" r="192" fill="url(#glow-ico2)"/>
+<g stroke="currentColor" fill="none" stroke-width="1.1" stroke-linecap="round"><line x1="-92.1" y1="118.4" x2="-2.3" y2="127.7" stroke-opacity="0.438"/><line x1="-92.1" y1="118.4" x2="-131.0" y2="24.4" stroke-opacity="0.431"/><line x1="-92.1" y1="118.4" x2="-9.7" y2="24.4" stroke-opacity="0.231"/><line x1="-92.1" y1="118.4" x2="-135.6" y2="-39.4" stroke-opacity="0.303"/><line x1="-92.1" y1="118.4" x2="72.7" y2="127.7" stroke-opacity="0.314"/><line x1="-2.3" y1="127.7" x2="-131.0" y2="24.4" stroke-opacity="0.547"/><line x1="-2.3" y1="127.7" x2="135.6" y2="39.4" stroke-opacity="0.535"/><line x1="-2.3" y1="127.7" x2="72.7" y2="127.7" stroke-opacity="0.43"/><line x1="-2.3" y1="127.7" x2="9.7" y2="-24.4" stroke-opacity="0.607"/><line x1="-131.0" y1="24.4" x2="-72.7" y2="-127.7" stroke-opacity="0.517"/><line x1="-131.0" y1="24.4" x2="-135.6" y2="-39.4" stroke-opacity="0.412"/><line x1="-131.0" y1="24.4" x2="9.7" y2="-24.4" stroke-opacity="0.6"/><line x1="135.6" y1="39.4" x2="72.7" y2="127.7" stroke-opacity="0.411"/><line x1="135.6" y1="39.4" x2="9.7" y2="-24.4" stroke-opacity="0.588"/><line x1="135.6" y1="39.4" x2="92.1" y2="-118.4" stroke-opacity="0.497"/><line x1="135.6" y1="39.4" x2="131.0" y2="-24.4" stroke-opacity="0.388"/><line x1="-72.7" y1="-127.7" x2="-135.6" y2="-39.4" stroke-opacity="0.389"/><line x1="-72.7" y1="-127.7" x2="9.7" y2="-24.4" stroke-opacity="0.577"/><line x1="-72.7" y1="-127.7" x2="92.1" y2="-118.4" stroke-opacity="0.486"/><line x1="-72.7" y1="-127.7" x2="2.3" y2="-127.7" stroke-opacity="0.37"/><line x1="-9.7" y1="24.4" x2="-135.6" y2="-39.4" stroke-opacity="0.212"/><line x1="-9.7" y1="24.4" x2="72.7" y2="127.7" stroke-opacity="0.223"/><line x1="-9.7" y1="24.4" x2="2.3" y2="-127.7" stroke-opacity="0.193"/><line x1="-9.7" y1="24.4" x2="131.0" y2="-24.4" stroke-opacity="0.2"/><line x1="-135.6" y1="-39.4" x2="2.3" y2="-127.7" stroke-opacity="0.265"/><line x1="72.7" y1="127.7" x2="131.0" y2="-24.4" stroke-opacity="0.283"/><line x1="9.7" y1="-24.4" x2="92.1" y2="-118.4" stroke-opacity="0.569"/><line x1="92.1" y1="-118.4" x2="2.3" y2="-127.7" stroke-opacity="0.362"/><line x1="92.1" y1="-118.4" x2="131.0" y2="-24.4" stroke-opacity="0.369"/><line x1="2.3" y1="-127.7" x2="131.0" y2="-24.4" stroke-opacity="0.253"/></g>
+<g fill="currentColor" stroke="none"><circle cx="-92.1" cy="118.4" r="1.9" fill-opacity="0.39"/><circle cx="-2.3" cy="127.7" r="1.9" fill-opacity="0.64"/><circle cx="-131.0" cy="24.4" r="1.9" fill-opacity="0.62"/><circle cx="135.6" cy="39.4" r="1.9" fill-opacity="0.60"/><circle cx="-72.7" cy="-127.7" r="1.9" fill-opacity="0.57"/><circle cx="-9.7" cy="24.4" r="1.9" fill-opacity="0.20"/><circle cx="-135.6" cy="-39.4" r="1.9" fill-opacity="0.35"/><circle cx="72.7" cy="127.7" r="1.9" fill-opacity="0.38"/><circle cx="9.7" cy="-24.4" r="1.9" fill-opacity="0.75"/><circle cx="92.1" cy="-118.4" r="1.9" fill-opacity="0.56"/><circle cx="2.3" cy="-127.7" r="1.9" fill-opacity="0.31"/><circle cx="131.0" cy="-24.4" r="1.9" fill-opacity="0.33"/></g>
+</svg><svg class="orbits" viewBox="-200 -200 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<g stroke="currentColor" fill="none" stroke-width="1"><ellipse cx="0" cy="0" rx="176" ry="53" transform="rotate(-26)" stroke-opacity="0.42"/><ellipse cx="0" cy="0" rx="176" ry="81" transform="rotate(26)" stroke-opacity="0.30"/></g>
+</svg></div>
+      </div>
+
+      <div>
+        <p class="mono" style="margin-bottom:7px">Four things it took generating images to find</p>
+        <div class="finds">
+          <div class="find"><i>01</i><p>The text encoder only reads English. French subjects failed <b>6 out of 6</b>; English succeeded 6 out of 6. Fixed with a local translation model.</p></div>
+          <div class="find"><i>02</i><p>The <b>75-token prompt budget overflows silently</b> — the end is dropped with no error. A test now stops any recipe exceeding it.</p></div>
+          <div class="find"><i>03</i><p>Style strength has to vary <b>by asset type</b>: pushed hard, icons collapse into unreadable clusters at their real 48&nbsp;px display size.</p></div>
+          <div class="find"><i>04</i><p>On 8&nbsp;GB of VRAM an extra refiner pass took generation from <b>21 seconds to over 9 minutes</b>. Disabled by default, with the measured figure.</p></div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b>~4,100</b><span>Lines of<br>Python + JS</span></div>
+        <div class="stat"><b>59</b><span>Tests, ~5 s,<br>no GPU needed</span></div>
+        <div class="stat"><b>~22 s</b><span>Per generated<br>image</span></div>
+        <div class="stat"><b>0</b><span>External API calls<br>at runtime</span></div>
+      </div>
+
+      <div class="chips">
+        <span class="chip chip--ac">PyTorch 2.13</span><span class="chip chip--ac">CUDA 12.6</span>
+        <span class="chip chip--ac">diffusers · SDXL</span><span class="chip chip--ac">ControlNet</span>
+        <span class="chip chip--ac">LoRA</span><span class="chip">FastAPI</span>
+        <span class="chip">Pydantic v2</span><span class="chip">pytest</span>
+        <span class="chip">React 18</span><span class="chip">Ant Design 5</span><span class="chip">Vite 6</span>
+      </div>
+    </div>
+
+    <div class="pg-foot">
+      <span class="mono">02 <span class="ac">·</span> Forge</span>
+      <span class="mono"><b>04</b> / 08</span>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     05 — KEYS (the plugin)
+     ===================================================================== -->
+<section class="page" style="--accent:#4ee1f2">
+  <div class="grid-bg"></div><svg class="stars" viewBox="0 0 794 1123" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#9aa2b1"><circle cx="257" cy="169" r="0.5" opacity="0.15"/><circle cx="425" cy="411" r="0.5" opacity="0.51"/><circle cx="170" cy="97" r="1.0" opacity="0.15"/><circle cx="72" cy="477" r="1.4" opacity="0.17"/><circle cx="177" cy="705" r="0.5" opacity="0.37"/><circle cx="315" cy="1096" r="0.5" opacity="0.36"/><circle cx="106" cy="471" r="1.4" opacity="0.17"/><circle cx="245" cy="917" r="0.6" opacity="0.16"/><circle cx="454" cy="211" r="0.5" opacity="0.36"/><circle cx="50" cy="67" r="0.6" opacity="0.33"/><circle cx="422" cy="873" r="1.0" opacity="0.37"/><circle cx="360" cy="337" r="0.6" opacity="0.42"/><circle cx="194" cy="645" r="1.4" opacity="0.33"/><circle cx="273" cy="504" r="1.4" opacity="0.54"/><circle cx="94" cy="470" r="0.8" opacity="0.19"/><circle cx="388" cy="44" r="0.5" opacity="0.45"/><circle cx="455" cy="983" r="0.8" opacity="0.27"/><circle cx="278" cy="558" r="1.0" opacity="0.15"/><circle cx="74" cy="303" r="0.5" opacity="0.15"/><circle cx="557" cy="727" r="1.0" opacity="0.24"/><circle cx="306" cy="751" r="0.5" opacity="0.52"/><circle cx="282" cy="686" r="1.0" opacity="0.15"/><circle cx="610" cy="145" r="0.6" opacity="0.29"/><circle cx="728" cy="558" r="0.6" opacity="0.31"/><circle cx="436" cy="992" r="1.0" opacity="0.49"/><circle cx="221" cy="466" r="0.8" opacity="0.41"/><circle cx="302" cy="259" r="0.5" opacity="0.2"/><circle cx="184" cy="262" r="1.0" opacity="0.48"/><circle cx="145" cy="317" r="0.6" opacity="0.3"/><circle cx="293" cy="636" r="0.6" opacity="0.42"/><circle cx="409" cy="694" r="0.5" opacity="0.32"/><circle cx="692" cy="1069" r="1.4" opacity="0.29"/><circle cx="317" cy="116" r="1.0" opacity="0.15"/><circle cx="53" cy="234" r="0.6" opacity="0.17"/><circle cx="477" cy="115" r="1.4" opacity="0.19"/><circle cx="81" cy="408" r="0.5" opacity="0.15"/><circle cx="165" cy="423" r="0.8" opacity="0.53"/><circle cx="478" cy="532" r="0.5" opacity="0.49"/><circle cx="789" cy="523" r="1.0" opacity="0.25"/><circle cx="114" cy="842" r="0.8" opacity="0.33"/><circle cx="549" cy="580" r="0.6" opacity="0.53"/><circle cx="419" cy="165" r="1.4" opacity="0.51"/><circle cx="602" cy="335" r="0.5" opacity="0.42"/><circle cx="207" cy="412" r="0.6" opacity="0.27"/><circle cx="177" cy="608" r="1.4" opacity="0.26"/><circle cx="177" cy="911" r="0.6" opacity="0.47"/><circle cx="650" cy="831" r="0.6" opacity="0.21"/><circle cx="391" cy="821" r="0.5" opacity="0.46"/><circle cx="375" cy="217" r="1.4" opacity="0.53"/><circle cx="355" cy="1052" r="0.8" opacity="0.53"/><circle cx="290" cy="248" r="0.6" opacity="0.32"/><circle cx="268" cy="542" r="1.4" opacity="0.48"/><circle cx="381" cy="733" r="0.5" opacity="0.48"/><circle cx="95" cy="436" r="0.6" opacity="0.33"/><circle cx="142" cy="886" r="0.8" opacity="0.16"/><circle cx="751" cy="811" r="1.0" opacity="0.29"/><circle cx="752" cy="814" r="0.6" opacity="0.55"/><circle cx="22" cy="663" r="1.0" opacity="0.47"/><circle cx="116" cy="928" r="1.0" opacity="0.4"/><circle cx="278" cy="616" r="0.6" opacity="0.13"/><circle cx="635" cy="816" r="0.5" opacity="0.35"/><circle cx="741" cy="487" r="0.6" opacity="0.48"/><circle cx="168" cy="283" r="0.8" opacity="0.34"/><circle cx="606" cy="366" r="1.4" opacity="0.3"/><circle cx="104" cy="1022" r="0.8" opacity="0.51"/><circle cx="526" cy="915" r="1.4" opacity="0.3"/><circle cx="729" cy="563" r="1.4" opacity="0.19"/><circle cx="405" cy="980" r="0.6" opacity="0.38"/><circle cx="616" cy="168" r="0.6" opacity="0.32"/><circle cx="576" cy="625" r="0.8" opacity="0.41"/><circle cx="421" cy="542" r="0.5" opacity="0.5"/><circle cx="45" cy="215" r="0.5" opacity="0.45"/><circle cx="403" cy="631" r="0.5" opacity="0.31"/><circle cx="486" cy="568" r="1.4" opacity="0.21"/><circle cx="220" cy="571" r="1.0" opacity="0.34"/><circle cx="197" cy="588" r="0.8" opacity="0.52"/><circle cx="709" cy="228" r="1.0" opacity="0.18"/><circle cx="97" cy="496" r="0.5" opacity="0.41"/><circle cx="340" cy="239" r="0.8" opacity="0.46"/><circle cx="712" cy="173" r="0.8" opacity="0.18"/><circle cx="701" cy="1087" r="0.6" opacity="0.44"/><circle cx="75" cy="994" r="0.6" opacity="0.55"/><circle cx="661" cy="181" r="1.0" opacity="0.55"/><circle cx="321" cy="473" r="0.8" opacity="0.26"/><circle cx="573" cy="22" r="1.4" opacity="0.32"/><circle cx="558" cy="432" r="1.4" opacity="0.39"/><circle cx="407" cy="72" r="0.6" opacity="0.54"/><circle cx="83" cy="298" r="0.5" opacity="0.51"/><circle cx="144" cy="849" r="1.0" opacity="0.49"/><circle cx="537" cy="1062" r="1.0" opacity="0.18"/><circle cx="730" cy="641" r="0.8" opacity="0.16"/><circle cx="46" cy="773" r="1.0" opacity="0.5"/><circle cx="214" cy="19" r="0.5" opacity="0.46"/><circle cx="66" cy="962" r="0.5" opacity="0.23"/><circle cx="97" cy="13" r="1.4" opacity="0.3"/><circle cx="727" cy="698" r="0.5" opacity="0.35"/><circle cx="189" cy="123" r="0.6" opacity="0.23"/><circle cx="144" cy="1047" r="0.8" opacity="0.35"/><circle cx="163" cy="501" r="0.6" opacity="0.24"/><circle cx="638" cy="1117" r="0.5" opacity="0.13"/><circle cx="582" cy="619" r="0.6" opacity="0.34"/><circle cx="195" cy="502" r="1.0" opacity="0.4"/><circle cx="433" cy="998" r="1.4" opacity="0.25"/><circle cx="171" cy="258" r="0.6" opacity="0.48"/><circle cx="561" cy="714" r="1.0" opacity="0.55"/><circle cx="780" cy="940" r="0.5" opacity="0.15"/><circle cx="588" cy="287" r="0.6" opacity="0.14"/><circle cx="528" cy="428" r="1.4" opacity="0.41"/><circle cx="224" cy="272" r="0.8" opacity="0.14"/><circle cx="147" cy="302" r="0.5" opacity="0.23"/><circle cx="764" cy="1092" r="1.4" opacity="0.26"/><circle cx="27" cy="991" r="0.6" opacity="0.27"/><circle cx="1" cy="429" r="1.0" opacity="0.24"/><circle cx="521" cy="279" r="0.5" opacity="0.16"/><circle cx="649" cy="162" r="1.4" opacity="0.14"/><circle cx="18" cy="342" r="0.6" opacity="0.16"/><circle cx="760" cy="958" r="0.6" opacity="0.4"/><circle cx="568" cy="987" r="1.0" opacity="0.45"/><circle cx="572" cy="555" r="0.8" opacity="0.43"/><circle cx="511" cy="49" r="1.4" opacity="0.39"/><circle cx="583" cy="912" r="0.6" opacity="0.51"/><circle cx="598" cy="638" r="0.5" opacity="0.48"/><circle cx="464" cy="1003" r="0.6" opacity="0.16"/><circle cx="33" cy="715" r="0.5" opacity="0.28"/><circle cx="358" cy="57" r="0.5" opacity="0.39"/><circle cx="540" cy="549" r="0.5" opacity="0.32"/><circle cx="56" cy="1047" r="1.4" opacity="0.16"/><circle cx="418" cy="837" r="1.0" opacity="0.23"/><circle cx="59" cy="298" r="0.6" opacity="0.22"/><circle cx="516" cy="517" r="1.0" opacity="0.15"/><circle cx="723" cy="323" r="0.5" opacity="0.39"/><circle cx="510" cy="87" r="0.6" opacity="0.26"/><circle cx="517" cy="778" r="1.4" opacity="0.36"/><circle cx="10" cy="68" r="0.8" opacity="0.54"/><circle cx="79" cy="244" r="1.0" opacity="0.25"/><circle cx="410" cy="522" r="1.0" opacity="0.45"/><circle cx="789" cy="617" r="0.8" opacity="0.54"/><circle cx="743" cy="20" r="1.0" opacity="0.15"/><circle cx="402" cy="1117" r="0.8" opacity="0.29"/><circle cx="728" cy="1045" r="0.5" opacity="0.37"/><circle cx="113" cy="589" r="0.8" opacity="0.18"/><circle cx="651" cy="571" r="0.5" opacity="0.42"/><circle cx="184" cy="1008" r="1.0" opacity="0.29"/><circle cx="126" cy="1067" r="1.0" opacity="0.29"/><circle cx="577" cy="467" r="1.0" opacity="0.26"/><circle cx="667" cy="2" r="0.8" opacity="0.48"/><circle cx="95" cy="1040" r="0.5" opacity="0.51"/><circle cx="230" cy="418" r="1.0" opacity="0.29"/><circle cx="691" cy="86" r="1.0" opacity="0.44"/><circle cx="678" cy="315" r="0.5" opacity="0.48"/><circle cx="227" cy="1051" r="0.6" opacity="0.54"/><circle cx="346" cy="354" r="0.8" opacity="0.46"/><circle cx="340" cy="33" r="1.0" opacity="0.51"/><circle cx="747" cy="617" r="0.5" opacity="0.14"/><circle cx="581" cy="506" r="0.6" opacity="0.4"/><circle cx="227" cy="55" r="1.4" opacity="0.17"/><circle cx="375" cy="386" r="0.8" opacity="0.23"/><circle cx="587" cy="733" r="1.0" opacity="0.4"/><circle cx="239" cy="626" r="1.0" opacity="0.17"/><circle cx="511" cy="84" r="1.4" opacity="0.51"/><circle cx="395" cy="247" r="0.8" opacity="0.55"/><circle cx="357" cy="157" r="0.6" opacity="0.22"/><circle cx="139" cy="624" r="0.8" opacity="0.22"/><circle cx="205" cy="640" r="0.5" opacity="0.44"/><circle cx="328" cy="465" r="1.4" opacity="0.21"/><circle cx="215" cy="845" r="1.0" opacity="0.24"/><circle cx="768" cy="141" r="1.4" opacity="0.35"/><circle cx="628" cy="953" r="0.5" opacity="0.24"/><circle cx="197" cy="449" r="1.0" opacity="0.31"/><circle cx="248" cy="915" r="0.5" opacity="0.17"/><circle cx="338" cy="858" r="1.0" opacity="0.54"/><circle cx="389" cy="82" r="1.4" opacity="0.49"/><circle cx="772" cy="279" r="0.5" opacity="0.22"/><circle cx="121" cy="1091" r="0.5" opacity="0.52"/><circle cx="573" cy="727" r="1.0" opacity="0.16"/><circle cx="617" cy="2" r="0.6" opacity="0.22"/><circle cx="730" cy="725" r="0.8" opacity="0.53"/><circle cx="497" cy="593" r="1.0" opacity="0.42"/><circle cx="89" cy="79" r="1.4" opacity="0.53"/><circle cx="152" cy="293" r="1.4" opacity="0.12"/><circle cx="427" cy="1119" r="0.8" opacity="0.53"/><circle cx="512" cy="992" r="1.0" opacity="0.35"/><circle cx="434" cy="33" r="1.0" opacity="0.42"/><circle cx="244" cy="24" r="1.0" opacity="0.5"/><circle cx="514" cy="91" r="0.6" opacity="0.41"/><circle cx="735" cy="255" r="0.5" opacity="0.42"/><circle cx="570" cy="407" r="1.0" opacity="0.21"/><circle cx="633" cy="830" r="1.4" opacity="0.15"/><circle cx="394" cy="225" r="0.6" opacity="0.22"/><circle cx="176" cy="854" r="0.8" opacity="0.17"/></g></svg><div class="vig"></div>
+  <div class="inner">
+
+    <div class="pg-top">
+      <span class="mono">Selected work</span>
+      <span class="mono">Keys · VST3</span>
+    </div>
+
+    <div class="flow">
+      <div>
+        <div class="eyebrow">
+          <span class="n">03</span><span class="rule"></span>
+          <span class="t">Solo project · 2025</span>
+        </div>
+        <h2>Keys</h2>
+        <p class="tagline">A VST3 sampler, drawn by hand</p>
+        
+      </div>
+
+      <div>
+        <img class="shot" src="assets/keys-vst.jpg" alt="Keys VST3 plugin interface" />
+        <p class="cap">Keys <span class="ac">·</span> sample loaded, live ADSR curve and filter response</p>
+      </div>
+
+      <div class="body">
+        <p>
+          A single-sample VST3 instrument built on JUCE. It pitch-shifts one sample across the
+          keyboard through an ADSR envelope, a three-mode filter whose cutoff can follow that
+          envelope, and forward or ping-pong looping across <strong>1 to 16 voices</strong>.
+        </p>
+        <p>
+          The interface uses <strong>no GUI library at all</strong> — every knob, curve and meter
+          above is drawn with the JUCE Graphics API. The envelope view shows the ADSR shape with a
+          live line tracking the playing voice; the filter graph draws the real frequency response
+          with separate markers for the static and the envelope-modulated cutoff. The waveform is
+          held as a <strong>min/max envelope rather than raw samples</strong>, so it stays sharp at
+          any zoom, and the trim and loop markers are dragged directly on it.
+        </p>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b>16</b><span>Simultaneous<br>voices</span></div>
+        <div class="stat"><b>3</b><span>Filter modes,<br>envelope-modulated</span></div>
+        <div class="stat"><b>0</b><span>External GUI<br>libraries</span></div>
+        <div class="stat"><b>VST3</b><span>Windows x64,<br>fully automatable</span></div>
+      </div>
+
+      <div class="chips">
+        <span class="chip chip--ac">C++</span><span class="chip chip--ac">JUCE 8</span>
+        <span class="chip chip--ac">Real-time DSP</span><span class="chip">IIR filters</span>
+        <span class="chip">Projucer</span><span class="chip">Visual Studio 2022</span>
+      </div>
+    </div>
+
+    <div class="pg-foot">
+      <span class="mono">03 <span class="ac">·</span> Keys</span>
+      <span class="mono"><b>05</b> / 08</span>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     06 — KEYS GPT (the generator)
+     ===================================================================== -->
+<section class="page" style="--accent:#4ee1f2">
+  <div class="grid-bg"></div><svg class="stars" viewBox="0 0 794 1123" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#9aa2b1"><circle cx="131" cy="775" r="0.8" opacity="0.33"/><circle cx="172" cy="890" r="1.4" opacity="0.2"/><circle cx="419" cy="885" r="0.5" opacity="0.28"/><circle cx="465" cy="78" r="0.6" opacity="0.52"/><circle cx="551" cy="491" r="1.0" opacity="0.38"/><circle cx="27" cy="369" r="1.0" opacity="0.42"/><circle cx="515" cy="1053" r="0.5" opacity="0.19"/><circle cx="649" cy="140" r="0.5" opacity="0.31"/><circle cx="438" cy="385" r="1.0" opacity="0.18"/><circle cx="528" cy="528" r="0.6" opacity="0.15"/><circle cx="157" cy="757" r="1.4" opacity="0.55"/><circle cx="56" cy="629" r="1.4" opacity="0.48"/><circle cx="160" cy="1037" r="1.4" opacity="0.3"/><circle cx="290" cy="507" r="1.0" opacity="0.26"/><circle cx="385" cy="298" r="0.5" opacity="0.19"/><circle cx="569" cy="1103" r="0.5" opacity="0.33"/><circle cx="437" cy="840" r="0.6" opacity="0.37"/><circle cx="253" cy="1101" r="0.5" opacity="0.2"/><circle cx="135" cy="391" r="0.8" opacity="0.27"/><circle cx="474" cy="344" r="0.5" opacity="0.19"/><circle cx="733" cy="195" r="1.0" opacity="0.28"/><circle cx="543" cy="759" r="0.6" opacity="0.3"/><circle cx="785" cy="1080" r="1.4" opacity="0.13"/><circle cx="275" cy="568" r="0.6" opacity="0.52"/><circle cx="195" cy="631" r="1.0" opacity="0.47"/><circle cx="614" cy="543" r="0.8" opacity="0.14"/><circle cx="205" cy="326" r="1.0" opacity="0.23"/><circle cx="313" cy="977" r="0.6" opacity="0.54"/><circle cx="592" cy="538" r="0.8" opacity="0.18"/><circle cx="516" cy="1024" r="1.0" opacity="0.13"/><circle cx="168" cy="941" r="0.6" opacity="0.5"/><circle cx="477" cy="478" r="1.4" opacity="0.51"/><circle cx="379" cy="156" r="1.4" opacity="0.24"/><circle cx="610" cy="11" r="0.6" opacity="0.53"/><circle cx="19" cy="667" r="0.6" opacity="0.49"/><circle cx="464" cy="289" r="1.0" opacity="0.44"/><circle cx="645" cy="156" r="0.6" opacity="0.16"/><circle cx="75" cy="28" r="1.0" opacity="0.46"/><circle cx="57" cy="134" r="0.8" opacity="0.17"/><circle cx="428" cy="364" r="1.0" opacity="0.5"/><circle cx="493" cy="204" r="1.0" opacity="0.21"/><circle cx="591" cy="850" r="1.4" opacity="0.43"/><circle cx="694" cy="869" r="0.5" opacity="0.29"/><circle cx="686" cy="447" r="1.4" opacity="0.2"/><circle cx="565" cy="284" r="1.4" opacity="0.25"/><circle cx="33" cy="437" r="0.8" opacity="0.43"/><circle cx="786" cy="918" r="1.4" opacity="0.33"/><circle cx="455" cy="613" r="0.5" opacity="0.34"/><circle cx="583" cy="1086" r="0.8" opacity="0.25"/><circle cx="496" cy="851" r="0.6" opacity="0.15"/><circle cx="647" cy="1097" r="0.8" opacity="0.15"/><circle cx="522" cy="472" r="0.5" opacity="0.4"/><circle cx="497" cy="907" r="1.0" opacity="0.34"/><circle cx="752" cy="764" r="1.0" opacity="0.32"/><circle cx="407" cy="983" r="0.5" opacity="0.22"/><circle cx="39" cy="487" r="0.6" opacity="0.24"/><circle cx="468" cy="454" r="1.0" opacity="0.32"/><circle cx="188" cy="433" r="1.0" opacity="0.22"/><circle cx="726" cy="735" r="0.5" opacity="0.33"/><circle cx="391" cy="805" r="0.6" opacity="0.46"/><circle cx="498" cy="852" r="1.4" opacity="0.42"/><circle cx="542" cy="275" r="1.0" opacity="0.29"/><circle cx="488" cy="926" r="0.5" opacity="0.19"/><circle cx="160" cy="983" r="0.6" opacity="0.16"/><circle cx="139" cy="587" r="1.4" opacity="0.53"/><circle cx="589" cy="519" r="0.5" opacity="0.55"/><circle cx="132" cy="487" r="0.8" opacity="0.28"/><circle cx="462" cy="212" r="0.5" opacity="0.53"/><circle cx="256" cy="286" r="0.6" opacity="0.51"/><circle cx="403" cy="268" r="0.8" opacity="0.43"/><circle cx="125" cy="441" r="1.0" opacity="0.31"/><circle cx="490" cy="315" r="0.6" opacity="0.41"/><circle cx="494" cy="111" r="0.6" opacity="0.13"/><circle cx="643" cy="1050" r="0.8" opacity="0.13"/><circle cx="398" cy="44" r="1.4" opacity="0.31"/><circle cx="357" cy="1113" r="1.4" opacity="0.18"/><circle cx="772" cy="214" r="0.8" opacity="0.5"/><circle cx="294" cy="152" r="1.0" opacity="0.35"/><circle cx="39" cy="211" r="1.0" opacity="0.5"/><circle cx="194" cy="646" r="1.4" opacity="0.52"/><circle cx="702" cy="20" r="1.4" opacity="0.15"/><circle cx="346" cy="935" r="0.6" opacity="0.19"/><circle cx="395" cy="591" r="1.4" opacity="0.39"/><circle cx="374" cy="899" r="0.8" opacity="0.19"/><circle cx="122" cy="323" r="0.5" opacity="0.5"/><circle cx="56" cy="76" r="1.4" opacity="0.16"/><circle cx="658" cy="404" r="0.8" opacity="0.15"/><circle cx="29" cy="556" r="1.0" opacity="0.19"/><circle cx="83" cy="1045" r="1.4" opacity="0.23"/><circle cx="158" cy="217" r="1.4" opacity="0.3"/><circle cx="258" cy="246" r="1.4" opacity="0.14"/><circle cx="280" cy="598" r="0.6" opacity="0.13"/><circle cx="293" cy="537" r="1.0" opacity="0.47"/><circle cx="720" cy="763" r="0.6" opacity="0.41"/><circle cx="514" cy="692" r="1.4" opacity="0.51"/><circle cx="770" cy="438" r="1.0" opacity="0.52"/><circle cx="630" cy="13" r="0.8" opacity="0.19"/><circle cx="211" cy="28" r="1.0" opacity="0.4"/><circle cx="128" cy="1045" r="1.4" opacity="0.34"/><circle cx="328" cy="254" r="1.4" opacity="0.36"/><circle cx="616" cy="831" r="0.8" opacity="0.51"/><circle cx="190" cy="673" r="0.8" opacity="0.35"/><circle cx="647" cy="407" r="0.6" opacity="0.55"/><circle cx="724" cy="1072" r="0.5" opacity="0.54"/><circle cx="588" cy="833" r="0.6" opacity="0.52"/><circle cx="415" cy="1005" r="1.4" opacity="0.25"/><circle cx="128" cy="744" r="1.4" opacity="0.4"/><circle cx="612" cy="844" r="0.6" opacity="0.23"/><circle cx="342" cy="425" r="1.0" opacity="0.33"/><circle cx="32" cy="964" r="0.6" opacity="0.14"/><circle cx="653" cy="659" r="0.8" opacity="0.44"/><circle cx="580" cy="1116" r="1.0" opacity="0.18"/><circle cx="26" cy="873" r="1.4" opacity="0.25"/><circle cx="661" cy="514" r="1.0" opacity="0.22"/><circle cx="583" cy="912" r="1.0" opacity="0.41"/><circle cx="22" cy="1029" r="0.6" opacity="0.33"/><circle cx="366" cy="437" r="1.0" opacity="0.38"/><circle cx="550" cy="972" r="0.5" opacity="0.28"/><circle cx="199" cy="878" r="0.5" opacity="0.52"/><circle cx="158" cy="952" r="0.5" opacity="0.44"/><circle cx="197" cy="146" r="0.8" opacity="0.16"/><circle cx="490" cy="725" r="1.4" opacity="0.21"/><circle cx="395" cy="801" r="0.6" opacity="0.13"/><circle cx="715" cy="1035" r="1.4" opacity="0.28"/><circle cx="153" cy="158" r="0.5" opacity="0.23"/><circle cx="655" cy="68" r="1.4" opacity="0.4"/><circle cx="17" cy="814" r="1.4" opacity="0.42"/><circle cx="387" cy="604" r="1.4" opacity="0.28"/><circle cx="505" cy="714" r="0.8" opacity="0.18"/><circle cx="319" cy="498" r="1.0" opacity="0.43"/><circle cx="465" cy="493" r="0.6" opacity="0.13"/><circle cx="511" cy="511" r="0.6" opacity="0.45"/><circle cx="716" cy="841" r="0.8" opacity="0.33"/><circle cx="131" cy="897" r="0.8" opacity="0.42"/><circle cx="238" cy="1083" r="1.0" opacity="0.2"/><circle cx="120" cy="701" r="0.6" opacity="0.22"/><circle cx="89" cy="600" r="0.5" opacity="0.39"/><circle cx="97" cy="139" r="0.6" opacity="0.35"/><circle cx="67" cy="272" r="1.4" opacity="0.36"/><circle cx="194" cy="485" r="1.4" opacity="0.42"/><circle cx="645" cy="449" r="0.8" opacity="0.47"/><circle cx="546" cy="993" r="1.0" opacity="0.13"/><circle cx="396" cy="1001" r="1.4" opacity="0.33"/><circle cx="30" cy="719" r="0.8" opacity="0.45"/><circle cx="571" cy="596" r="0.6" opacity="0.24"/><circle cx="295" cy="551" r="0.8" opacity="0.29"/><circle cx="636" cy="60" r="0.8" opacity="0.37"/><circle cx="386" cy="922" r="0.6" opacity="0.44"/><circle cx="119" cy="346" r="0.5" opacity="0.24"/><circle cx="538" cy="1018" r="0.5" opacity="0.28"/></g></svg><div class="vig"></div>
+  <div class="inner">
+
+    <div class="pg-top">
+      <span class="mono">Selected work</span>
+      <span class="mono">Keys GPT</span>
+    </div>
+
+    <div class="flow">
+      <div>
+        <div class="eyebrow">
+          <span class="n">04</span><span class="rule"></span>
+          <span class="t">Solo project · 2025 — 2026</span>
+        </div>
+        <h2>Keys GPT</h2>
+        <p class="tagline">Describe a part, get a MIDI file</p>
+      </div>
+
+      <div>
+        <img class="shot" src="assets/keys-gpt.jpg" alt="Keys GPT generating a drum groove" />
+        <p class="cap">Generated 4-bar boombap groove <span class="ac">·</span> 54 hits, four lanes, playable in the browser</p>
+      </div>
+
+      <div class="cols cols--wide">
+        <div class="body">
+          <p>
+            You describe a part — a mood, a key, a tempo, a length — and get a piano roll you can
+            hear and a MIDI file you can keep. It writes melodies, chord progressions,
+            counter-melodies and drum grooves, and the part type is inferred from the prompt
+            rather than picked from a menu.
+          </p>
+          <p>
+            It runs against the <strong>OpenAI API</strong> — gpt-4o-mini above — and the part is
+            playable in the browser before anything is downloaded, so you hear it before deciding
+            whether to keep it.
+          </p>
+        </div>
+        <div>
+          <img class="shot" src="assets/keys-roll.jpg" alt="Generated lo-fi melody in the piano roll" />
+          <p class="cap">8-bar melody <span class="ac">·</span> D dorian, 35 notes</p>
+        </div>
+      </div>
+
+      <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat"><b>5</b><span>Part types,<br>inferred from prompt</span></div>
+        <div class="stat"><b>MIDI</b><span>Downloadable,<br>opens in any DAW</span></div>
+        <div class="stat"><b>OpenAI</b><span>API<br>compatible</span></div>
+      </div>
+
+      <div class="chips">
+        <span class="chip chip--ac">React</span><span class="chip chip--ac">TypeScript</span>
+        <span class="chip chip--ac">OpenAI API</span><span class="chip">Web Audio</span>
+        <span class="chip">MIDI</span>
+      </div>
+    </div>
+
+    <div class="pg-foot">
+      <span class="mono">04 <span class="ac">·</span> Keys GPT</span>
+      <span class="mono"><b>06</b> / 08</span>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     07 — APPOLONIA
+     ===================================================================== -->
+<section class="page" style="--accent:#ff7a3d">
+  <div class="grid-bg"></div><svg class="stars" viewBox="0 0 794 1123" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#9aa2b1"><circle cx="257" cy="169" r="0.5" opacity="0.15"/><circle cx="425" cy="411" r="0.5" opacity="0.51"/><circle cx="170" cy="97" r="1.0" opacity="0.15"/><circle cx="72" cy="477" r="1.4" opacity="0.17"/><circle cx="177" cy="705" r="0.5" opacity="0.37"/><circle cx="315" cy="1096" r="0.5" opacity="0.36"/><circle cx="106" cy="471" r="1.4" opacity="0.17"/><circle cx="245" cy="917" r="0.6" opacity="0.16"/><circle cx="454" cy="211" r="0.5" opacity="0.36"/><circle cx="50" cy="67" r="0.6" opacity="0.33"/><circle cx="422" cy="873" r="1.0" opacity="0.37"/><circle cx="360" cy="337" r="0.6" opacity="0.42"/><circle cx="194" cy="645" r="1.4" opacity="0.33"/><circle cx="273" cy="504" r="1.4" opacity="0.54"/><circle cx="94" cy="470" r="0.8" opacity="0.19"/><circle cx="388" cy="44" r="0.5" opacity="0.45"/><circle cx="455" cy="983" r="0.8" opacity="0.27"/><circle cx="278" cy="558" r="1.0" opacity="0.15"/><circle cx="74" cy="303" r="0.5" opacity="0.15"/><circle cx="557" cy="727" r="1.0" opacity="0.24"/><circle cx="306" cy="751" r="0.5" opacity="0.52"/><circle cx="282" cy="686" r="1.0" opacity="0.15"/><circle cx="610" cy="145" r="0.6" opacity="0.29"/><circle cx="728" cy="558" r="0.6" opacity="0.31"/><circle cx="436" cy="992" r="1.0" opacity="0.49"/><circle cx="221" cy="466" r="0.8" opacity="0.41"/><circle cx="302" cy="259" r="0.5" opacity="0.2"/><circle cx="184" cy="262" r="1.0" opacity="0.48"/><circle cx="145" cy="317" r="0.6" opacity="0.3"/><circle cx="293" cy="636" r="0.6" opacity="0.42"/><circle cx="409" cy="694" r="0.5" opacity="0.32"/><circle cx="692" cy="1069" r="1.4" opacity="0.29"/><circle cx="317" cy="116" r="1.0" opacity="0.15"/><circle cx="53" cy="234" r="0.6" opacity="0.17"/><circle cx="477" cy="115" r="1.4" opacity="0.19"/><circle cx="81" cy="408" r="0.5" opacity="0.15"/><circle cx="165" cy="423" r="0.8" opacity="0.53"/><circle cx="478" cy="532" r="0.5" opacity="0.49"/><circle cx="789" cy="523" r="1.0" opacity="0.25"/><circle cx="114" cy="842" r="0.8" opacity="0.33"/><circle cx="549" cy="580" r="0.6" opacity="0.53"/><circle cx="419" cy="165" r="1.4" opacity="0.51"/><circle cx="602" cy="335" r="0.5" opacity="0.42"/><circle cx="207" cy="412" r="0.6" opacity="0.27"/><circle cx="177" cy="608" r="1.4" opacity="0.26"/><circle cx="177" cy="911" r="0.6" opacity="0.47"/><circle cx="650" cy="831" r="0.6" opacity="0.21"/><circle cx="391" cy="821" r="0.5" opacity="0.46"/><circle cx="375" cy="217" r="1.4" opacity="0.53"/><circle cx="355" cy="1052" r="0.8" opacity="0.53"/><circle cx="290" cy="248" r="0.6" opacity="0.32"/><circle cx="268" cy="542" r="1.4" opacity="0.48"/><circle cx="381" cy="733" r="0.5" opacity="0.48"/><circle cx="95" cy="436" r="0.6" opacity="0.33"/><circle cx="142" cy="886" r="0.8" opacity="0.16"/><circle cx="751" cy="811" r="1.0" opacity="0.29"/><circle cx="752" cy="814" r="0.6" opacity="0.55"/><circle cx="22" cy="663" r="1.0" opacity="0.47"/><circle cx="116" cy="928" r="1.0" opacity="0.4"/><circle cx="278" cy="616" r="0.6" opacity="0.13"/><circle cx="635" cy="816" r="0.5" opacity="0.35"/><circle cx="741" cy="487" r="0.6" opacity="0.48"/><circle cx="168" cy="283" r="0.8" opacity="0.34"/><circle cx="606" cy="366" r="1.4" opacity="0.3"/><circle cx="104" cy="1022" r="0.8" opacity="0.51"/><circle cx="526" cy="915" r="1.4" opacity="0.3"/><circle cx="729" cy="563" r="1.4" opacity="0.19"/><circle cx="405" cy="980" r="0.6" opacity="0.38"/><circle cx="616" cy="168" r="0.6" opacity="0.32"/><circle cx="576" cy="625" r="0.8" opacity="0.41"/><circle cx="421" cy="542" r="0.5" opacity="0.5"/><circle cx="45" cy="215" r="0.5" opacity="0.45"/><circle cx="403" cy="631" r="0.5" opacity="0.31"/><circle cx="486" cy="568" r="1.4" opacity="0.21"/><circle cx="220" cy="571" r="1.0" opacity="0.34"/><circle cx="197" cy="588" r="0.8" opacity="0.52"/><circle cx="709" cy="228" r="1.0" opacity="0.18"/><circle cx="97" cy="496" r="0.5" opacity="0.41"/><circle cx="340" cy="239" r="0.8" opacity="0.46"/><circle cx="712" cy="173" r="0.8" opacity="0.18"/><circle cx="701" cy="1087" r="0.6" opacity="0.44"/><circle cx="75" cy="994" r="0.6" opacity="0.55"/><circle cx="661" cy="181" r="1.0" opacity="0.55"/><circle cx="321" cy="473" r="0.8" opacity="0.26"/><circle cx="573" cy="22" r="1.4" opacity="0.32"/><circle cx="558" cy="432" r="1.4" opacity="0.39"/><circle cx="407" cy="72" r="0.6" opacity="0.54"/><circle cx="83" cy="298" r="0.5" opacity="0.51"/><circle cx="144" cy="849" r="1.0" opacity="0.49"/><circle cx="537" cy="1062" r="1.0" opacity="0.18"/><circle cx="730" cy="641" r="0.8" opacity="0.16"/><circle cx="46" cy="773" r="1.0" opacity="0.5"/><circle cx="214" cy="19" r="0.5" opacity="0.46"/><circle cx="66" cy="962" r="0.5" opacity="0.23"/><circle cx="97" cy="13" r="1.4" opacity="0.3"/><circle cx="727" cy="698" r="0.5" opacity="0.35"/><circle cx="189" cy="123" r="0.6" opacity="0.23"/><circle cx="144" cy="1047" r="0.8" opacity="0.35"/><circle cx="163" cy="501" r="0.6" opacity="0.24"/><circle cx="638" cy="1117" r="0.5" opacity="0.13"/><circle cx="582" cy="619" r="0.6" opacity="0.34"/><circle cx="195" cy="502" r="1.0" opacity="0.4"/><circle cx="433" cy="998" r="1.4" opacity="0.25"/><circle cx="171" cy="258" r="0.6" opacity="0.48"/><circle cx="561" cy="714" r="1.0" opacity="0.55"/><circle cx="780" cy="940" r="0.5" opacity="0.15"/><circle cx="588" cy="287" r="0.6" opacity="0.14"/><circle cx="528" cy="428" r="1.4" opacity="0.41"/><circle cx="224" cy="272" r="0.8" opacity="0.14"/><circle cx="147" cy="302" r="0.5" opacity="0.23"/><circle cx="764" cy="1092" r="1.4" opacity="0.26"/><circle cx="27" cy="991" r="0.6" opacity="0.27"/><circle cx="1" cy="429" r="1.0" opacity="0.24"/><circle cx="521" cy="279" r="0.5" opacity="0.16"/><circle cx="649" cy="162" r="1.4" opacity="0.14"/><circle cx="18" cy="342" r="0.6" opacity="0.16"/><circle cx="760" cy="958" r="0.6" opacity="0.4"/><circle cx="568" cy="987" r="1.0" opacity="0.45"/><circle cx="572" cy="555" r="0.8" opacity="0.43"/><circle cx="511" cy="49" r="1.4" opacity="0.39"/><circle cx="583" cy="912" r="0.6" opacity="0.51"/><circle cx="598" cy="638" r="0.5" opacity="0.48"/><circle cx="464" cy="1003" r="0.6" opacity="0.16"/><circle cx="33" cy="715" r="0.5" opacity="0.28"/><circle cx="358" cy="57" r="0.5" opacity="0.39"/><circle cx="540" cy="549" r="0.5" opacity="0.32"/><circle cx="56" cy="1047" r="1.4" opacity="0.16"/><circle cx="418" cy="837" r="1.0" opacity="0.23"/><circle cx="59" cy="298" r="0.6" opacity="0.22"/><circle cx="516" cy="517" r="1.0" opacity="0.15"/><circle cx="723" cy="323" r="0.5" opacity="0.39"/><circle cx="510" cy="87" r="0.6" opacity="0.26"/><circle cx="517" cy="778" r="1.4" opacity="0.36"/><circle cx="10" cy="68" r="0.8" opacity="0.54"/><circle cx="79" cy="244" r="1.0" opacity="0.25"/><circle cx="410" cy="522" r="1.0" opacity="0.45"/><circle cx="789" cy="617" r="0.8" opacity="0.54"/><circle cx="743" cy="20" r="1.0" opacity="0.15"/><circle cx="402" cy="1117" r="0.8" opacity="0.29"/><circle cx="728" cy="1045" r="0.5" opacity="0.37"/><circle cx="113" cy="589" r="0.8" opacity="0.18"/><circle cx="651" cy="571" r="0.5" opacity="0.42"/><circle cx="184" cy="1008" r="1.0" opacity="0.29"/><circle cx="126" cy="1067" r="1.0" opacity="0.29"/><circle cx="577" cy="467" r="1.0" opacity="0.26"/><circle cx="667" cy="2" r="0.8" opacity="0.48"/><circle cx="95" cy="1040" r="0.5" opacity="0.51"/><circle cx="230" cy="418" r="1.0" opacity="0.29"/><circle cx="691" cy="86" r="1.0" opacity="0.44"/><circle cx="678" cy="315" r="0.5" opacity="0.48"/><circle cx="227" cy="1051" r="0.6" opacity="0.54"/><circle cx="346" cy="354" r="0.8" opacity="0.46"/><circle cx="340" cy="33" r="1.0" opacity="0.51"/><circle cx="747" cy="617" r="0.5" opacity="0.14"/><circle cx="581" cy="506" r="0.6" opacity="0.4"/><circle cx="227" cy="55" r="1.4" opacity="0.17"/><circle cx="375" cy="386" r="0.8" opacity="0.23"/><circle cx="587" cy="733" r="1.0" opacity="0.4"/><circle cx="239" cy="626" r="1.0" opacity="0.17"/><circle cx="511" cy="84" r="1.4" opacity="0.51"/><circle cx="395" cy="247" r="0.8" opacity="0.55"/><circle cx="357" cy="157" r="0.6" opacity="0.22"/><circle cx="139" cy="624" r="0.8" opacity="0.22"/><circle cx="205" cy="640" r="0.5" opacity="0.44"/><circle cx="328" cy="465" r="1.4" opacity="0.21"/><circle cx="215" cy="845" r="1.0" opacity="0.24"/><circle cx="768" cy="141" r="1.4" opacity="0.35"/><circle cx="628" cy="953" r="0.5" opacity="0.24"/><circle cx="197" cy="449" r="1.0" opacity="0.31"/><circle cx="248" cy="915" r="0.5" opacity="0.17"/><circle cx="338" cy="858" r="1.0" opacity="0.54"/><circle cx="389" cy="82" r="1.4" opacity="0.49"/><circle cx="772" cy="279" r="0.5" opacity="0.22"/><circle cx="121" cy="1091" r="0.5" opacity="0.52"/><circle cx="573" cy="727" r="1.0" opacity="0.16"/><circle cx="617" cy="2" r="0.6" opacity="0.22"/><circle cx="730" cy="725" r="0.8" opacity="0.53"/><circle cx="497" cy="593" r="1.0" opacity="0.42"/><circle cx="89" cy="79" r="1.4" opacity="0.53"/><circle cx="152" cy="293" r="1.4" opacity="0.12"/><circle cx="427" cy="1119" r="0.8" opacity="0.53"/><circle cx="512" cy="992" r="1.0" opacity="0.35"/><circle cx="434" cy="33" r="1.0" opacity="0.42"/><circle cx="244" cy="24" r="1.0" opacity="0.5"/><circle cx="514" cy="91" r="0.6" opacity="0.41"/><circle cx="735" cy="255" r="0.5" opacity="0.42"/><circle cx="570" cy="407" r="1.0" opacity="0.21"/><circle cx="633" cy="830" r="1.4" opacity="0.15"/><circle cx="394" cy="225" r="0.6" opacity="0.22"/><circle cx="176" cy="854" r="0.8" opacity="0.17"/></g></svg><div class="vig"></div>
+  <div class="inner">
+
+    <div class="pg-top">
+      <span class="mono">Professional experience</span>
+      <span class="mono">Appolonia</span>
+    </div>
+
+    <div class="flow">
+      <div>
+        <div class="eyebrow">
+          <span class="n">05</span><span class="rule"></span>
+          <span class="t">Front-end development intern · Antibes · April — August 2025</span>
+        </div>
+        <h2>Appolonia</h2>
+        <p class="tagline">Casino floor management, where a mistake takes a machine offline</p>
+      </div>
+
+      <div class="cols cols--wide">
+        <div class="body">
+          <p>
+            Appolonia builds the systems casinos use to run their gaming floors. I worked on
+            <strong>KAMA</strong>, the manager operators use to configure and deploy to
+            <strong>Kalypse Touch</strong> terminals — the screens embedded in slot machines.
+          </p>
+          <p>
+            My responsibilities went from a dashboard widget, to redesigning whole modules, to
+            building features from nothing.
+          </p>
+        </div>
+        <div class="art art--pg" style="height:64mm"><svg class="solid" viewBox="-200 -200 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<defs><radialGradient id="glow-dodeca"><stop offset="0" stop-color="currentColor" stop-opacity="0.28"/><stop offset=".55" stop-color="currentColor" stop-opacity="0.078"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></radialGradient></defs>
+<circle cx="0" cy="0" r="192" fill="url(#glow-dodeca)"/>
+<g stroke="currentColor" fill="none" stroke-width="1.1" stroke-linecap="round"><line x1="-131.9" y1="51.7" x2="-78.4" y2="2.2" stroke-opacity="0.235"/><line x1="-131.9" y1="51.7" x2="-70.7" y2="131.6" stroke-opacity="0.342"/><line x1="-131.9" y1="51.7" x2="-145.7" y2="-18.4" stroke-opacity="0.382"/><line x1="-46.8" y1="111.1" x2="-70.7" y2="131.6" stroke-opacity="0.471"/><line x1="-46.8" y1="111.1" x2="59.2" y2="98.3" stroke-opacity="0.573"/><line x1="-46.8" y1="111.1" x2="-93.2" y2="18.4" stroke-opacity="0.591"/><line x1="-100.8" y1="-111.1" x2="-145.7" y2="-18.4" stroke-opacity="0.429"/><line x1="-100.8" y1="-111.1" x2="-20.5" y2="-131.6" stroke-opacity="0.465"/><line x1="-100.8" y1="-111.1" x2="-59.2" y2="-98.3" stroke-opacity="0.311"/><line x1="-15.8" y1="-51.7" x2="-20.5" y2="-131.6" stroke-opacity="0.594"/><line x1="-15.8" y1="-51.7" x2="-93.2" y2="18.4" stroke-opacity="0.638"/><line x1="-15.8" y1="-51.7" x2="78.4" y2="-2.2" stroke-opacity="0.649"/><line x1="15.8" y1="51.7" x2="-78.4" y2="2.2" stroke-opacity="0.151"/><line x1="15.8" y1="51.7" x2="93.2" y2="-18.4" stroke-opacity="0.162"/><line x1="15.8" y1="51.7" x2="20.5" y2="131.6" stroke-opacity="0.206"/><line x1="100.8" y1="111.1" x2="59.2" y2="98.3" stroke-opacity="0.489"/><line x1="100.8" y1="111.1" x2="20.5" y2="131.6" stroke-opacity="0.335"/><line x1="100.8" y1="111.1" x2="145.7" y2="18.4" stroke-opacity="0.371"/><line x1="46.8" y1="-111.1" x2="93.2" y2="-18.4" stroke-opacity="0.209"/><line x1="46.8" y1="-111.1" x2="-59.2" y2="-98.3" stroke-opacity="0.227"/><line x1="46.8" y1="-111.1" x2="70.7" y2="-131.6" stroke-opacity="0.329"/><line x1="131.9" y1="-51.7" x2="78.4" y2="-2.2" stroke-opacity="0.565"/><line x1="131.9" y1="-51.7" x2="70.7" y2="-131.6" stroke-opacity="0.458"/><line x1="131.9" y1="-51.7" x2="145.7" y2="18.4" stroke-opacity="0.418"/><line x1="-78.4" y1="2.2" x2="-59.2" y2="-98.3" stroke-opacity="0.192"/><line x1="-70.7" y1="131.6" x2="20.5" y2="131.6" stroke-opacity="0.324"/><line x1="-145.7" y1="-18.4" x2="-93.2" y2="18.4" stroke-opacity="0.536"/><line x1="59.2" y1="98.3" x2="78.4" y2="-2.2" stroke-opacity="0.608"/><line x1="-20.5" y1="-131.6" x2="70.7" y2="-131.6" stroke-opacity="0.476"/><line x1="93.2" y1="-18.4" x2="145.7" y2="18.4" stroke-opacity="0.264"/></g>
+<g fill="currentColor" stroke="none"><circle cx="-131.9" cy="51.7" r="1.9" fill-opacity="0.38"/><circle cx="-46.8" cy="111.1" r="1.9" fill-opacity="0.65"/><circle cx="-100.8" cy="-111.1" r="1.9" fill-opacity="0.48"/><circle cx="-15.8" cy="-51.7" r="1.9" fill-opacity="0.75"/><circle cx="15.8" cy="51.7" r="1.9" fill-opacity="0.20"/><circle cx="100.8" cy="111.1" r="1.9" fill-opacity="0.47"/><circle cx="46.8" cy="-111.1" r="1.9" fill-opacity="0.30"/><circle cx="131.9" cy="-51.7" r="1.9" fill-opacity="0.57"/><circle cx="-78.4" cy="2.2" r="1.9" fill-opacity="0.22"/><circle cx="-70.7" cy="131.6" r="1.9" fill-opacity="0.45"/><circle cx="-145.7" cy="-18.4" r="1.9" fill-opacity="0.53"/><circle cx="59.2" cy="98.3" r="1.9" fill-opacity="0.66"/><circle cx="-20.5" cy="-131.6" r="1.9" fill-opacity="0.61"/><circle cx="93.2" cy="-18.4" r="1.9" fill-opacity="0.25"/><circle cx="-59.2" cy="-98.3" r="1.9" fill-opacity="0.29"/><circle cx="20.5" cy="131.6" r="1.9" fill-opacity="0.34"/><circle cx="-93.2" cy="18.4" r="1.9" fill-opacity="0.70"/><circle cx="78.4" cy="-2.2" r="1.9" fill-opacity="0.73"/><circle cx="70.7" cy="-131.6" r="1.9" fill-opacity="0.50"/><circle cx="145.7" cy="18.4" r="1.9" fill-opacity="0.42"/></g>
+</svg><svg class="orbits" viewBox="-200 -200 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<g stroke="currentColor" fill="none" stroke-width="1"><ellipse cx="0" cy="0" rx="176" ry="53" transform="rotate(-26)" stroke-opacity="0.42"/><ellipse cx="0" cy="0" rx="176" ry="81" transform="rotate(26)" stroke-opacity="0.30"/></g>
+</svg></div>
+      </div>
+
+      <div class="rows">
+        <div class="row">
+          <span class="k">Redesign</span>
+          <span class="v">
+            <b>KT Updater</b>
+            The module worked but was hard to use, and deployments failed often. I rebuilt it as
+            three explicit steps — upload the file, choose whether it triggers a full reboot or an
+            interface restart, then pick the devices and the schedule. Drag-and-drop uploads, live
+            progress, and options that only appear when they apply.
+            <em style="margin-top:4px;margin-bottom:0">In real deployments; used regularly by casino staff.</em>
+          </span>
+        </div>
+        <div class="row">
+          <span class="k">Built from scratch</span>
+          <span class="v">
+            <b>Administrator panel</b>
+            Power policies for groups of terminals — "shut down every Friday at midnight", "lock
+            from 2 AM to 6 AM daily" — with manual override for when the floor disagrees with the
+            schedule.
+          </span>
+        </div>
+        <div class="row">
+          <span class="k">Built from scratch</span>
+          <span class="v">
+            <b>Email update tool</b>
+            Client update mails were written from scratch every time. A structured form now
+            generates them in one consistent format, with a preview before sending.
+          </span>
+        </div>
+        <div class="row">
+          <span class="k">Also</span>
+          <span class="v">
+            The "Today's Campaigns" dashboard widget, plus ongoing bug fixing, responsive layout
+            work and component refactoring — with notes left in the code explaining why.
+          </span>
+        </div>
+      </div>
+
+      <div class="chips">
+        <span class="chip chip--ac">Angular 13</span><span class="chip chip--ac">Ionic 6</span>
+        <span class="chip chip--ac">TypeScript</span><span class="chip">SOAP / XML APIs</span>
+        <span class="chip">GitLab</span>
+      </div>
+    </div>
+
+    <div class="pg-foot">
+      <span class="mono">05 <span class="ac">·</span> Appolonia</span>
+      <span class="mono"><b>07</b> / 08</span>
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     08 — EARLIER + CONTACT
+     ===================================================================== -->
+<section class="page" style="--accent:#ff4e77">
+  <div class="grid-bg"></div><svg class="stars" viewBox="0 0 794 1123" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#9aa2b1"><circle cx="257" cy="169" r="0.5" opacity="0.15"/><circle cx="425" cy="411" r="0.5" opacity="0.51"/><circle cx="170" cy="97" r="1.0" opacity="0.15"/><circle cx="72" cy="477" r="1.4" opacity="0.17"/><circle cx="177" cy="705" r="0.5" opacity="0.37"/><circle cx="315" cy="1096" r="0.5" opacity="0.36"/><circle cx="106" cy="471" r="1.4" opacity="0.17"/><circle cx="245" cy="917" r="0.6" opacity="0.16"/><circle cx="454" cy="211" r="0.5" opacity="0.36"/><circle cx="50" cy="67" r="0.6" opacity="0.33"/><circle cx="422" cy="873" r="1.0" opacity="0.37"/><circle cx="360" cy="337" r="0.6" opacity="0.42"/><circle cx="194" cy="645" r="1.4" opacity="0.33"/><circle cx="273" cy="504" r="1.4" opacity="0.54"/><circle cx="94" cy="470" r="0.8" opacity="0.19"/><circle cx="388" cy="44" r="0.5" opacity="0.45"/><circle cx="455" cy="983" r="0.8" opacity="0.27"/><circle cx="278" cy="558" r="1.0" opacity="0.15"/><circle cx="74" cy="303" r="0.5" opacity="0.15"/><circle cx="557" cy="727" r="1.0" opacity="0.24"/><circle cx="306" cy="751" r="0.5" opacity="0.52"/><circle cx="282" cy="686" r="1.0" opacity="0.15"/><circle cx="610" cy="145" r="0.6" opacity="0.29"/><circle cx="728" cy="558" r="0.6" opacity="0.31"/><circle cx="436" cy="992" r="1.0" opacity="0.49"/><circle cx="221" cy="466" r="0.8" opacity="0.41"/><circle cx="302" cy="259" r="0.5" opacity="0.2"/><circle cx="184" cy="262" r="1.0" opacity="0.48"/><circle cx="145" cy="317" r="0.6" opacity="0.3"/><circle cx="293" cy="636" r="0.6" opacity="0.42"/><circle cx="409" cy="694" r="0.5" opacity="0.32"/><circle cx="692" cy="1069" r="1.4" opacity="0.29"/><circle cx="317" cy="116" r="1.0" opacity="0.15"/><circle cx="53" cy="234" r="0.6" opacity="0.17"/><circle cx="477" cy="115" r="1.4" opacity="0.19"/><circle cx="81" cy="408" r="0.5" opacity="0.15"/><circle cx="165" cy="423" r="0.8" opacity="0.53"/><circle cx="478" cy="532" r="0.5" opacity="0.49"/><circle cx="789" cy="523" r="1.0" opacity="0.25"/><circle cx="114" cy="842" r="0.8" opacity="0.33"/><circle cx="549" cy="580" r="0.6" opacity="0.53"/><circle cx="419" cy="165" r="1.4" opacity="0.51"/><circle cx="602" cy="335" r="0.5" opacity="0.42"/><circle cx="207" cy="412" r="0.6" opacity="0.27"/><circle cx="177" cy="608" r="1.4" opacity="0.26"/><circle cx="177" cy="911" r="0.6" opacity="0.47"/><circle cx="650" cy="831" r="0.6" opacity="0.21"/><circle cx="391" cy="821" r="0.5" opacity="0.46"/><circle cx="375" cy="217" r="1.4" opacity="0.53"/><circle cx="355" cy="1052" r="0.8" opacity="0.53"/><circle cx="290" cy="248" r="0.6" opacity="0.32"/><circle cx="268" cy="542" r="1.4" opacity="0.48"/><circle cx="381" cy="733" r="0.5" opacity="0.48"/><circle cx="95" cy="436" r="0.6" opacity="0.33"/><circle cx="142" cy="886" r="0.8" opacity="0.16"/><circle cx="751" cy="811" r="1.0" opacity="0.29"/><circle cx="752" cy="814" r="0.6" opacity="0.55"/><circle cx="22" cy="663" r="1.0" opacity="0.47"/><circle cx="116" cy="928" r="1.0" opacity="0.4"/><circle cx="278" cy="616" r="0.6" opacity="0.13"/><circle cx="635" cy="816" r="0.5" opacity="0.35"/><circle cx="741" cy="487" r="0.6" opacity="0.48"/><circle cx="168" cy="283" r="0.8" opacity="0.34"/><circle cx="606" cy="366" r="1.4" opacity="0.3"/><circle cx="104" cy="1022" r="0.8" opacity="0.51"/><circle cx="526" cy="915" r="1.4" opacity="0.3"/><circle cx="729" cy="563" r="1.4" opacity="0.19"/><circle cx="405" cy="980" r="0.6" opacity="0.38"/><circle cx="616" cy="168" r="0.6" opacity="0.32"/><circle cx="576" cy="625" r="0.8" opacity="0.41"/><circle cx="421" cy="542" r="0.5" opacity="0.5"/><circle cx="45" cy="215" r="0.5" opacity="0.45"/><circle cx="403" cy="631" r="0.5" opacity="0.31"/><circle cx="486" cy="568" r="1.4" opacity="0.21"/><circle cx="220" cy="571" r="1.0" opacity="0.34"/><circle cx="197" cy="588" r="0.8" opacity="0.52"/><circle cx="709" cy="228" r="1.0" opacity="0.18"/><circle cx="97" cy="496" r="0.5" opacity="0.41"/><circle cx="340" cy="239" r="0.8" opacity="0.46"/><circle cx="712" cy="173" r="0.8" opacity="0.18"/><circle cx="701" cy="1087" r="0.6" opacity="0.44"/><circle cx="75" cy="994" r="0.6" opacity="0.55"/><circle cx="661" cy="181" r="1.0" opacity="0.55"/><circle cx="321" cy="473" r="0.8" opacity="0.26"/><circle cx="573" cy="22" r="1.4" opacity="0.32"/><circle cx="558" cy="432" r="1.4" opacity="0.39"/><circle cx="407" cy="72" r="0.6" opacity="0.54"/><circle cx="83" cy="298" r="0.5" opacity="0.51"/><circle cx="144" cy="849" r="1.0" opacity="0.49"/><circle cx="537" cy="1062" r="1.0" opacity="0.18"/><circle cx="730" cy="641" r="0.8" opacity="0.16"/><circle cx="46" cy="773" r="1.0" opacity="0.5"/><circle cx="214" cy="19" r="0.5" opacity="0.46"/><circle cx="66" cy="962" r="0.5" opacity="0.23"/><circle cx="97" cy="13" r="1.4" opacity="0.3"/><circle cx="727" cy="698" r="0.5" opacity="0.35"/><circle cx="189" cy="123" r="0.6" opacity="0.23"/><circle cx="144" cy="1047" r="0.8" opacity="0.35"/><circle cx="163" cy="501" r="0.6" opacity="0.24"/><circle cx="638" cy="1117" r="0.5" opacity="0.13"/><circle cx="582" cy="619" r="0.6" opacity="0.34"/><circle cx="195" cy="502" r="1.0" opacity="0.4"/><circle cx="433" cy="998" r="1.4" opacity="0.25"/><circle cx="171" cy="258" r="0.6" opacity="0.48"/><circle cx="561" cy="714" r="1.0" opacity="0.55"/><circle cx="780" cy="940" r="0.5" opacity="0.15"/><circle cx="588" cy="287" r="0.6" opacity="0.14"/><circle cx="528" cy="428" r="1.4" opacity="0.41"/><circle cx="224" cy="272" r="0.8" opacity="0.14"/><circle cx="147" cy="302" r="0.5" opacity="0.23"/><circle cx="764" cy="1092" r="1.4" opacity="0.26"/><circle cx="27" cy="991" r="0.6" opacity="0.27"/><circle cx="1" cy="429" r="1.0" opacity="0.24"/><circle cx="521" cy="279" r="0.5" opacity="0.16"/><circle cx="649" cy="162" r="1.4" opacity="0.14"/><circle cx="18" cy="342" r="0.6" opacity="0.16"/><circle cx="760" cy="958" r="0.6" opacity="0.4"/><circle cx="568" cy="987" r="1.0" opacity="0.45"/><circle cx="572" cy="555" r="0.8" opacity="0.43"/><circle cx="511" cy="49" r="1.4" opacity="0.39"/><circle cx="583" cy="912" r="0.6" opacity="0.51"/><circle cx="598" cy="638" r="0.5" opacity="0.48"/><circle cx="464" cy="1003" r="0.6" opacity="0.16"/><circle cx="33" cy="715" r="0.5" opacity="0.28"/><circle cx="358" cy="57" r="0.5" opacity="0.39"/><circle cx="540" cy="549" r="0.5" opacity="0.32"/><circle cx="56" cy="1047" r="1.4" opacity="0.16"/><circle cx="418" cy="837" r="1.0" opacity="0.23"/><circle cx="59" cy="298" r="0.6" opacity="0.22"/><circle cx="516" cy="517" r="1.0" opacity="0.15"/><circle cx="723" cy="323" r="0.5" opacity="0.39"/><circle cx="510" cy="87" r="0.6" opacity="0.26"/><circle cx="517" cy="778" r="1.4" opacity="0.36"/><circle cx="10" cy="68" r="0.8" opacity="0.54"/><circle cx="79" cy="244" r="1.0" opacity="0.25"/><circle cx="410" cy="522" r="1.0" opacity="0.45"/><circle cx="789" cy="617" r="0.8" opacity="0.54"/><circle cx="743" cy="20" r="1.0" opacity="0.15"/><circle cx="402" cy="1117" r="0.8" opacity="0.29"/><circle cx="728" cy="1045" r="0.5" opacity="0.37"/><circle cx="113" cy="589" r="0.8" opacity="0.18"/><circle cx="651" cy="571" r="0.5" opacity="0.42"/><circle cx="184" cy="1008" r="1.0" opacity="0.29"/><circle cx="126" cy="1067" r="1.0" opacity="0.29"/><circle cx="577" cy="467" r="1.0" opacity="0.26"/><circle cx="667" cy="2" r="0.8" opacity="0.48"/><circle cx="95" cy="1040" r="0.5" opacity="0.51"/><circle cx="230" cy="418" r="1.0" opacity="0.29"/><circle cx="691" cy="86" r="1.0" opacity="0.44"/><circle cx="678" cy="315" r="0.5" opacity="0.48"/><circle cx="227" cy="1051" r="0.6" opacity="0.54"/><circle cx="346" cy="354" r="0.8" opacity="0.46"/><circle cx="340" cy="33" r="1.0" opacity="0.51"/><circle cx="747" cy="617" r="0.5" opacity="0.14"/><circle cx="581" cy="506" r="0.6" opacity="0.4"/><circle cx="227" cy="55" r="1.4" opacity="0.17"/><circle cx="375" cy="386" r="0.8" opacity="0.23"/><circle cx="587" cy="733" r="1.0" opacity="0.4"/><circle cx="239" cy="626" r="1.0" opacity="0.17"/><circle cx="511" cy="84" r="1.4" opacity="0.51"/><circle cx="395" cy="247" r="0.8" opacity="0.55"/><circle cx="357" cy="157" r="0.6" opacity="0.22"/><circle cx="139" cy="624" r="0.8" opacity="0.22"/><circle cx="205" cy="640" r="0.5" opacity="0.44"/><circle cx="328" cy="465" r="1.4" opacity="0.21"/><circle cx="215" cy="845" r="1.0" opacity="0.24"/><circle cx="768" cy="141" r="1.4" opacity="0.35"/><circle cx="628" cy="953" r="0.5" opacity="0.24"/><circle cx="197" cy="449" r="1.0" opacity="0.31"/><circle cx="248" cy="915" r="0.5" opacity="0.17"/><circle cx="338" cy="858" r="1.0" opacity="0.54"/><circle cx="389" cy="82" r="1.4" opacity="0.49"/><circle cx="772" cy="279" r="0.5" opacity="0.22"/><circle cx="121" cy="1091" r="0.5" opacity="0.52"/><circle cx="573" cy="727" r="1.0" opacity="0.16"/><circle cx="617" cy="2" r="0.6" opacity="0.22"/><circle cx="730" cy="725" r="0.8" opacity="0.53"/><circle cx="497" cy="593" r="1.0" opacity="0.42"/><circle cx="89" cy="79" r="1.4" opacity="0.53"/><circle cx="152" cy="293" r="1.4" opacity="0.12"/><circle cx="427" cy="1119" r="0.8" opacity="0.53"/><circle cx="512" cy="992" r="1.0" opacity="0.35"/><circle cx="434" cy="33" r="1.0" opacity="0.42"/><circle cx="244" cy="24" r="1.0" opacity="0.5"/><circle cx="514" cy="91" r="0.6" opacity="0.41"/><circle cx="735" cy="255" r="0.5" opacity="0.42"/><circle cx="570" cy="407" r="1.0" opacity="0.21"/><circle cx="633" cy="830" r="1.4" opacity="0.15"/><circle cx="394" cy="225" r="0.6" opacity="0.22"/><circle cx="176" cy="854" r="0.8" opacity="0.17"/></g></svg><div class="vig"></div>
+  <div class="inner">
+
+    <div class="pg-top">
+      <span class="mono">Interests <span class="ac">·</span> Availability <span class="ac">·</span> Contact</span>
+      <span class="mono">06</span>
+    </div>
+
+    <div class="art" style="position:absolute;bottom:20mm;right:-24mm;width:104mm;height:104mm;opacity:.9">
+      <svg class="orbits" viewBox="-200 -200 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<g stroke="currentColor" fill="none" stroke-width="1"><ellipse cx="0" cy="0" rx="176" ry="53" transform="rotate(-26)" stroke-opacity="0.42"/><ellipse cx="0" cy="0" rx="176" ry="81" transform="rotate(26)" stroke-opacity="0.30"/><ellipse cx="0" cy="0" rx="176" ry="109" transform="rotate(78)" stroke-opacity="0.18"/></g>
+</svg>
+    </div>
+
+    <div class="flow">
+      <div class="cols">
+        <div>
+          <div class="eyebrow"><span class="n">F</span><span class="rule"></span><span class="t">Away from the screen</span></div>
+          <p class="body">
+            Skiing and taekwondo. Motorsport. Music production in a DAW — which is where the
+            sampler came from. Travel, most recently a year of it in Beijing.
+          </p>
+          <p class="body" style="margin-top:8px">Full driving licence.</p>
+        </div>
+        <div>
+          <div class="eyebrow"><span class="n">G</span><span class="rule"></span><span class="t">Availability</span></div>
+          <div class="panel">
+            <p class="mono" style="color:var(--ink)"><span class="dot"></span>Open to offers</p>
+            <p class="body" style="margin-top:8px;font-size:10.8px">
+              <strong>End-of-studies internship, 4–6 months</strong><br>
+              Starting March 2027
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:relative">
+        <p class="mono" style="margin-bottom:10px">Get in touch</p>
+        <p style="font-size:46px;font-weight:700;letter-spacing:-.05em;line-height:.94;text-transform:uppercase">
+          Let&rsquo;s build<br>something solid
+        </p>
+        <div class="cover-foot" style="margin-top:9mm">
+          <div class="cf"><span class="mono">Email</span><b>raphael_pelerin@yahoo.com.au</b></div>
+          <div class="cf"><span class="mono">Phone</span><b>+33 6 11 72 45 88</b></div>
+          <div class="cf"><span class="mono">Based in</span><b>Biot, France · 06</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pg-foot">
+      <span class="mono">Raphael Pelerin <span class="ac">·</span> Portfolio 2026</span>
+      <span class="mono"><b>08</b> / 08</span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

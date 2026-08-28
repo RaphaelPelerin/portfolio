@@ -1,0 +1,51 @@
+/* ---------------------------------------------------------------
+   Design tokens. Reskin the entire site from this file.
+   --------------------------------------------------------------- */
+:root {
+  /* --- surface ------------------------------------------------- */
+  --bg:            #08090b;
+  --bg-raise:      #0e1014;
+  --bg-sunk:       #050608;
+
+  /* --- ink ----------------------------------------------------- */
+  --ink:           #e9ecf1;
+  --ink-dim:       #9aa2b1;
+  --ink-faint:     #5c6472;
+
+  /* --- lines --------------------------------------------------- */
+  --line:          rgba(255, 255, 255, 0.09);
+  --line-soft:     rgba(255, 255, 255, 0.045);
+  --line-strong:   rgba(255, 255, 255, 0.18);
+
+  /* --- accent (live: swapped per project by the 3D scene) ------- */
+  --accent:        #c6f24e;
+  --accent-ink:    #08090b;
+
+  /* --- type ---------------------------------------------------- */
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --step--1: clamp(0.72rem, 0.69rem + 0.15vw, 0.8rem);
+  --step-0:  clamp(0.94rem, 0.9rem + 0.2vw, 1.05rem);
+  --step-1:  clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
+  --step-2:  clamp(1.6rem, 1.35rem + 1.2vw, 2.4rem);
+  --step-3:  clamp(2.2rem, 1.6rem + 3vw, 4.4rem);
+  --step-4:  clamp(3rem, 1.6rem + 6.4vw, 8.5rem);
+  --step-5:  clamp(3.6rem, 1.2rem + 10vw, 13rem);
+
+  /* --- space --------------------------------------------------- */
+  --gutter:  clamp(1.25rem, 0.7rem + 2.6vw, 4.5rem);
+  --section: clamp(6rem, 3rem + 12vw, 15rem);
+
+  /* --- motion -------------------------------------------------- */
+  --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io:   cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* --- chrome -------------------------------------------------- */
+  --nav-h: 4.5rem;
+  --max:   88rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --ease-out: linear; --ease-io: linear; }
+}

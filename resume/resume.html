@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Raphael Pelerin — Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* A resume is printed and parsed, so it is light and text-first. It borrows the
+   portfolio's typefaces so the two read as one person's work, but none of its
+   darkness. */
+:root{
+  --ink:#14171a;
+  --dim:#4a5158;
+  --faint:#828b93;
+  --rule:#dfe3e7;
+  --accent:#4a6b00;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+@page{ size:A4; margin:0; }
+html,body{background:#fff}
+body{
+  font-family:var(--display); color:var(--ink);
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  -webkit-font-smoothing:antialiased;
+}
+.page{
+  width:210mm; height:297mm; padding:13mm 14mm 10mm;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+@media screen{ .page{margin:0 auto;box-shadow:0 0 0 1px #e3e6ea} }
+
+/* ---------- header ---------- */
+.head{ border-bottom:2px solid var(--ink); padding-bottom:7px; }
+h1{
+  font-size:33px; font-weight:700; letter-spacing:-.035em; line-height:1;
+  text-transform:uppercase;
+}
+.role{
+  font-family:var(--mono); font-size:9.4px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--accent); margin-top:6px; font-weight:500;
+}
+.links{
+  display:flex; flex-wrap:wrap; gap:3px 13px; margin-top:8px;
+  font-family:var(--mono); font-size:8.4px; color:var(--dim);
+}
+.links a{color:var(--dim);text-decoration:none}
+.links b{color:var(--ink);font-weight:500}
+.links .sep{color:var(--rule)}
+
+/* ---------- two columns ---------- */
+.body{ display:grid; grid-template-columns:1fr 58mm; gap:8mm; padding-top:8px; flex:1; }
+
+h2{
+  font-family:var(--mono); font-size:8.4px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--accent); font-weight:500;
+  padding-bottom:4px; border-bottom:1px solid var(--rule); margin-bottom:8px;
+}
+section + section{ margin-top:15px; }
+
+/* ---------- entries ---------- */
+.entry{ margin-bottom:12px; }
+.entry:last-child{margin-bottom:0}
+.entry__top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+.entry__name{ font-size:11.8px; font-weight:600; letter-spacing:-.01em; }
+.entry__name em{ font-style:normal; color:var(--dim); font-weight:400; }
+.entry__when{
+  font-family:var(--mono); font-size:7.8px; color:var(--faint);
+  letter-spacing:.06em; white-space:nowrap;
+}
+.entry__where{
+  font-family:var(--mono); font-size:8px; color:var(--accent);
+  letter-spacing:.08em; margin-top:1px;
+}
+ul{ list-style:none; margin-top:3px; }
+li{
+  font-size:9.9px; line-height:1.52; color:var(--dim);
+  padding-left:10px; position:relative; margin-top:2px;
+}
+li::before{
+  content:""; position:absolute; left:0; top:6px;
+  width:3px; height:1px; background:var(--faint);
+}
+li b{ color:var(--ink); font-weight:500; }
+.stack{
+  font-family:var(--mono); font-size:8.1px; color:var(--faint);
+  margin-top:3px; letter-spacing:.03em;
+}
+
+/* ---------- profile ---------- */
+.profile{ font-size:10.3px; line-height:1.6; color:var(--dim); }
+.profile b{ color:var(--ink); font-weight:600; }
+
+/* ---------- side column ---------- */
+.side{ font-size:9.4px; }
+.skill{ margin-bottom:9px; }
+.skill__k{
+  font-family:var(--mono); font-size:7.6px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink); font-weight:500;
+}
+.skill__v{ color:var(--dim); line-height:1.5; margin-top:2px; font-size:9.3px; }
+
+.lang{ display:flex; justify-content:space-between; gap:8px; padding:3.5px 0; font-size:9.5px; }
+.lang + .lang{ border-top:1px solid var(--rule); }
+.lang b{ font-weight:500; }
+.lang span{ font-family:var(--mono); font-size:8px; color:var(--faint); letter-spacing:.06em; }
+
+.edu{ margin-bottom:10px; }
+.edu__what{ font-size:10px; font-weight:600; letter-spacing:-.01em; }
+.edu__when{ font-family:var(--mono); font-size:7.6px; color:var(--accent); letter-spacing:.07em; margin-top:1px; }
+.edu__note{ font-size:9.1px; color:var(--dim); line-height:1.45; margin-top:2px; }
+
+.foot{
+  margin-top:auto; padding-top:6px; border-top:1px solid var(--rule);
+  font-family:var(--mono); font-size:7.4px; color:var(--faint);
+  letter-spacing:.1em; text-transform:uppercase;
+  display:flex; justify-content:space-between;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="head">
+    <h1>Raphael Pelerin</h1>
+    <p class="role">Software engineering &middot; Seeking an AI internship &mdash; from March 2027</p>
+    <div class="links">
+      <span><b>raphael_pelerin@yahoo.com.au</b></span><span class="sep">/</span>
+      <span><b>+33 6 11 72 45 88</b></span><span class="sep">/</span>
+      <span>Biot, France</span><span class="sep">/</span>
+      <a href="https://portfolio-raphael-pelerin.vercel.app"><b>portfolio-raphael-pelerin.vercel.app</b></a><span class="sep">/</span>
+      <a href="https://github.com/RaphaelPelerin"><b>github.com/RaphaelPelerin</b></a><span class="sep">/</span>
+      <a href="https://www.linkedin.com/in/raphael-pelerin-a2b389272/"><b>linkedin.com/in/raphael-pelerin</b></a>
+    </div>
+  </header>
+
+  <div class="body">
+    <main>
+
+      <section>
+        <h2>Profile</h2>
+        <p class="profile">
+          Fifth-year software engineering student at Epitech, looking for a four-to-six month
+          end-of-studies internship in <b>AI, from March 2027</b> &mdash; the kind where I add
+          something to the technology rather than only consume it. I have built a diffusion
+          pipeline that runs offline on a single 8&nbsp;GB GPU, and I lead the web client of a
+          product with real users. <b>The front end is where most of my experience already is,
+          which is exactly why I want to work deeper in the stack now.</b>
+        </p>
+      </section>
+
+      <section>
+        <h2>Projects</h2>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Syntheza <em>&mdash; Lead Frontend Web</em></span>
+            <span class="entry__when">2025 &mdash; 2026</span>
+          </div>
+          <div class="entry__where">syntheza.ovh &middot; team of 3, three countries</div>
+          <ul>
+            <li>Strategic-watch platform that ingests RSS at scale, <b>deduplicates</b> what it finds and returns a daily synthesis instead of another feed.</li>
+            <li>I own the web client: interface, design system and the React component layer. Scope was set by a <b>field study of 20 professionals</b> before any code was written.</li>
+          </ul>
+          <div class="stack">React 19 &middot; TypeScript &middot; Tailwind &middot; Radix UI &middot; Node &middot; Express &middot; Prisma &middot; PostgreSQL &middot; React Native/Expo</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Forge <em>&mdash; solo</em></span>
+            <span class="entry__when">2026</span>
+          </div>
+          <div class="entry__where">github.com/RaphaelPelerin/forge-asset-generator</div>
+          <ul>
+            <li>Game-asset generator running <b>SDXL and ControlNet on one local 8&nbsp;GB GPU</b>, exposed over a FastAPI service so a pipeline can call it like any endpoint. Fully offline &mdash; no account, no image leaving the machine.</li>
+            <li>Solved consistency with <b>recipes</b>: presets owning style, sampler and post-processing, so assets generated months apart still match.</li>
+            <li>Measured where the model fails rather than prompting harder &mdash; the text encoder reads English only, so French subjects failed 6/6 until I added a local translation step. <b>~4,100 lines, 59 tests.</b></li>
+          </ul>
+          <div class="stack">PyTorch &middot; CUDA &middot; diffusers/SDXL &middot; ControlNet &middot; LoRA &middot; FastAPI &middot; Pydantic &middot; pytest &middot; React</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Keys <em>&mdash; VST3 sampler, solo</em></span>
+            <span class="entry__when">2025</span>
+          </div>
+          <div class="entry__where">github.com/RaphaelPelerin/keys-gpt-vst</div>
+          <ul>
+            <li>Single-sample VST3 instrument on JUCE: ADSR envelope, three-mode filter tracking that envelope, ping-pong looping across <b>16 voices</b>.</li>
+            <li>Every knob, curve and meter drawn with the JUCE Graphics API &mdash; <b>no GUI library at all</b>.</li>
+          </ul>
+          <div class="stack">C++ &middot; JUCE 8 &middot; real-time DSP &middot; IIR filters &middot; Projucer</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Keys GPT <em>&mdash; solo</em></span>
+            <span class="entry__when">2025 &mdash; 2026</span>
+          </div>
+          <div class="entry__where">github.com/RaphaelPelerin/keys-gpt</div>
+          <ul>
+            <li>Describe a part &mdash; mood, key, tempo, length &mdash; and get a playable piano roll and a downloadable MIDI file. Part type is <b>inferred from the prompt</b>, not picked from a menu.</li>
+          </ul>
+          <div class="stack">React &middot; TypeScript &middot; OpenAI API &middot; Web Audio &middot; MIDI</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Experience</h2>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Appolonia <em>&mdash; Front-end developer, intern</em></span>
+            <span class="entry__when">Apr &mdash; Aug 2025</span>
+          </div>
+          <div class="entry__where">Casino floor management systems</div>
+          <ul>
+            <li>Rebuilt the <b>KT Updater</b> module and built a group-management admin panel automating terminal shutdown and locking &mdash; software where a mistake takes a slot machine offline.</li>
+            <li>Built an internal email-generation tool from scratch.</li>
+          </ul>
+          <div class="stack">Angular 13 &middot; Ionic 6 &middot; TypeScript &middot; SOAP/XML APIs &middot; GitLab</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">ARD <em>&mdash; Mobile development intern</em></span>
+            <span class="entry__when">2023</span>
+          </div>
+          <ul>
+            <li>Angular application managing <b>NFC cards</b> and user profiles for alarm systems, including card scanning to display cardholder information.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Intel &middot; AI for Youth <em>&mdash; competition</em></span>
+            <span class="entry__when">2022</span>
+          </div>
+          <ul>
+            <li>Computer vision and object recognition in Python with TensorFlow. <b>2nd place</b>, team category.</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+
+    <aside class="side">
+      <section>
+        <h2>Education</h2>
+        <div class="edu">
+          <div class="edu__what">Epitech Technology</div>
+          <div class="edu__when">2022 &mdash; 2027 &middot; Nice</div>
+          <div class="edu__note">Master&rsquo;s, Computer Engineering. Functional and object-oriented programming, Unix, assembly, systems and network programming. Specialisations in DevOps, AI, web/mobile and cybersecurity.</div>
+        </div>
+        <div class="edu">
+          <div class="edu__what">Beijing Jiaotong University</div>
+          <div class="edu__when">2025 &mdash; 2026 &middot; Beijing</div>
+          <div class="edu__note">Fourth year abroad, software engineering, alongside Mandarin to HSK 3.</div>
+        </div>
+        <div class="edu">
+          <div class="edu__what">Lyc&eacute;e Simone Veil</div>
+          <div class="edu__when">2022 &middot; Baccalaureate</div>
+          <div class="edu__note">Computer Science (NSI) and Mathematics.</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Technical skills</h2>
+        <div class="skill">
+          <div class="skill__k">AI &amp; generative</div>
+          <div class="skill__v">PyTorch, diffusers/SDXL, ControlNet, LoRA, CUDA, OpenAI API, Anthropic Claude API, Gemini, TensorFlow</div>
+        </div>
+        <div class="skill">
+          <div class="skill__k">Web &amp; mobile</div>
+          <div class="skill__v">React, React Native, Angular, Ionic, Expo, TypeScript, Tailwind, Vite</div>
+        </div>
+        <div class="skill">
+          <div class="skill__k">Backend</div>
+          <div class="skill__v">Node.js, Express, FastAPI, Flask, Prisma, REST, SOAP/XML</div>
+        </div>
+        <div class="skill">
+          <div class="skill__k">Data &amp; infrastructure</div>
+          <div class="skill__v">PostgreSQL, MongoDB, MySQL, Docker, Git, GitLab&nbsp;CI</div>
+        </div>
+        <div class="skill">
+          <div class="skill__k">Systems &amp; audio</div>
+          <div class="skill__v">C++, JUCE, real-time DSP, Unix, assembly, network programming</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Languages</h2>
+        <div class="lang"><b>French</b><span>Native</span></div>
+        <div class="lang"><b>English</b><span>Bilingual</span></div>
+        <div class="lang"><b>Mandarin</b><span>HSK 3</span></div>
+        <div class="lang"><b>Italian</b><span>Basic</span></div>
+      </section>
+
+      <section>
+        <h2>Interests</h2>
+        <div class="skill__v">
+          Skiing and taekwondo &middot; motorsport &middot; music production in a DAW, which is
+          where the sampler came from &middot; travel, most recently a year in Beijing.
+          <br><br>Full driving licence.
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <div class="foot">
+    <span>Raphael Pelerin &middot; Resume 2026</span>
+    <span>portfolio-raphael-pelerin.vercel.app</span>
+  </div>
+</div>
+</body>
+</html>

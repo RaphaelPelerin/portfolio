@@ -25,3 +25,6 @@ dist-ssr
 
 # working screenshots used while iterating - not part of the site
 docs/
+
+# resume previews are working screenshots
+resume/preview/

@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Raphael Pelerin — CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* Un CV est imprime et parse, donc clair et centre sur le texte. Reprend les
+   polices du portfolio pour que les deux se lisent comme le travail d'une
+   seule personne, sans en garder la noirceur. */
+:root{
+  --ink:#14171a;
+  --dim:#4a5158;
+  --faint:#828b93;
+  --rule:#dfe3e7;
+  --accent:#4a6b00;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+@page{ size:A4; margin:0; }
+html,body{background:#fff}
+body{
+  font-family:var(--display); color:var(--ink);
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  -webkit-font-smoothing:antialiased;
+}
+.page{
+  width:210mm; height:297mm; padding:13mm 14mm 10mm;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+@media screen{ .page{margin:0 auto;box-shadow:0 0 0 1px #e3e6ea} }
+
+/* ---------- header ---------- */
+.head{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:7mm;
+  border-bottom:2px solid var(--ink); padding-bottom:7px;
+}
+.head__text{ flex:1; min-width:0; }
+/* 22mm de large laisse la source a ~185 dpi de detail reel, ce qui est
+   honnete pour un original de 160px. Cadre legerement haut pour que le
+   recadrage favorise les yeux plutot que le menton. */
+.photo{
+  width:22mm; height:26mm; flex:0 0 auto;
+  object-fit:cover; object-position:center 20%;
+  border-radius:2px; border:1px solid var(--rule);
+}
+h1{
+  font-size:33px; font-weight:700; letter-spacing:-.035em; line-height:1;
+  text-transform:uppercase;
+}
+.role{
+  font-family:var(--mono); font-size:9.4px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--accent); margin-top:6px; font-weight:500;
+}
+.links{
+  display:flex; flex-wrap:wrap; gap:3px 13px; margin-top:8px;
+  font-family:var(--mono); font-size:8.4px; color:var(--dim);
+}
+.links a{color:var(--dim);text-decoration:none}
+.links b{color:var(--ink);font-weight:500}
+.links .sep{color:var(--rule)}
+
+/* ---------- two columns ---------- */
+.body{ display:grid; grid-template-columns:1fr 58mm; gap:8mm; padding-top:8px; flex:1; }
+
+h2{
+  font-family:var(--mono); font-size:8.4px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--accent); font-weight:500;
+  padding-bottom:4px; border-bottom:1px solid var(--rule); margin-bottom:8px;
+}
+section + section{ margin-top:15px; }
+
+/* ---------- entries ---------- */
+.entry{ margin-bottom:12px; }
+.entry:last-child{margin-bottom:0}
+.entry__top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+.entry__name{ font-size:11.8px; font-weight:600; letter-spacing:-.01em; }
+.entry__name em{ font-style:normal; color:var(--dim); font-weight:400; }
+.entry__when{
+  font-family:var(--mono); font-size:7.8px; color:var(--faint);
+  letter-spacing:.06em; white-space:nowrap;
+}
+.entry__where{
+  font-family:var(--mono); font-size:8px; color:var(--accent);
+  letter-spacing:.08em; margin-top:1px;
+}
+ul{ list-style:none; margin-top:3px; }
+li{
+  font-size:9.9px; line-height:1.52; color:var(--dim);
+  padding-left:10px; position:relative; margin-top:2px;
+}
+li::before{
+  content:""; position:absolute; left:0; top:6px;
+  width:3px; height:1px; background:var(--faint);
+}
+li b{ color:var(--ink); font-weight:500; }
+.stack{
+  font-family:var(--mono); font-size:8.1px; color:var(--faint);
+  margin-top:3px; letter-spacing:.03em;
+}
+
+/* ---------- profile ---------- */
+.profile{ font-size:10.3px; line-height:1.6; color:var(--dim); }
+.profile b{ color:var(--ink); font-weight:600; }
+
+/* ---------- side column ---------- */
+.side{ font-size:9.4px; }
+.skill{ margin-bottom:9px; }
+.skill__k{
+  font-family:var(--mono); font-size:7.6px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink); font-weight:500;
+}
+.skill__v{ color:var(--dim); line-height:1.5; margin-top:2px; font-size:9.3px; }
+
+.lang{ display:flex; justify-content:space-between; gap:8px; padding:3.5px 0; font-size:9.5px; }
+.lang + .lang{ border-top:1px solid var(--rule); }
+.lang b{ font-weight:500; }
+.lang span{ font-family:var(--mono); font-size:8px; color:var(--faint); letter-spacing:.06em; }
+
+.edu{ margin-bottom:10px; }
+.edu__what{ font-size:10px; font-weight:600; letter-spacing:-.01em; }
+.edu__when{ font-family:var(--mono); font-size:7.6px; color:var(--accent); letter-spacing:.07em; margin-top:1px; }
+.edu__note{ font-size:9.1px; color:var(--dim); line-height:1.45; margin-top:2px; }
+
+/* ---------- brand marks ---------- */
+/* Dessines en ligne plutot que charges depuis un service externe : le PDF doit
+   se generer sans reseau, et un trace a la main n'est utilise que la ou la
+   forme reste simple et fidele. Les couleurs de marque sont les vraies. */
+.links svg{ width:9px; height:9px; vertical-align:-1px; margin-right:4px; opacity:.55; }
+.links span, .links a{ display:inline-flex; align-items:center; }
+
+.logos{
+  display:grid; grid-template-columns:1fr 1fr; gap:7px 6px; margin-top:2px;
+}
+.logo{ display:flex; align-items:center; gap:5px; }
+.logo svg{ width:15px; height:15px; flex:0 0 auto; }
+.logo span{
+  font-family:var(--mono); font-size:7.4px; letter-spacing:.04em;
+  color:var(--dim); line-height:1.1;
+}
+
+.foot{
+  margin-top:auto; padding-top:6px; border-top:1px solid var(--rule);
+  font-family:var(--mono); font-size:7.4px; color:var(--faint);
+  letter-spacing:.1em; text-transform:uppercase;
+  display:flex; justify-content:space-between;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="head">
+    <div class="head__text">
+    <h1>Raphael Pelerin</h1>
+    <p class="role">G&eacute;nie logiciel &middot; Recherche un stage IA &mdash; &agrave; partir de mars 2027</p>
+    <div class="links">
+      <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5"/><path d="M2 4.5l6 4.5 6-4.5"/></svg><b>raphael_pelerin@yahoo.com.au</b></span><span class="sep">/</span>
+      <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4" y="1.5" width="8" height="13" rx="1.6"/><path d="M7 12.4h2"/></svg><b>+33 6 11 72 45 88</b></span><span class="sep">/</span>
+      <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 14.5s5-4.6 5-8a5 5 0 1 0-10 0c0 3.4 5 8 5 8Z"/><circle cx="8" cy="6.4" r="1.9"/></svg>Biot, France</span><span class="sep">/</span>
+      <a href="https://portfolio-raphael-pelerin.vercel.app"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6.4"/><path d="M1.7 8h12.6M8 1.6c1.7 1.8 2.6 4 2.6 6.4S9.7 12.6 8 14.4C6.3 12.6 5.4 10.4 5.4 8S6.3 3.4 8 1.6Z"/></svg><b>portfolio-raphael-pelerin.vercel.app</b></a><span class="sep">/</span>
+      <a href="https://github.com/RaphaelPelerin"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.6 0 0 3.6 0 8c0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V13.8c-2 .4-2.5-.5-2.7-.9-.1-.2-.5-.9-.8-1.1-.3-.2-.7-.5 0-.5.6 0 1.1.6 1.2.8.7 1.2 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8a7.4 7.4 0 0 1 4 0c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.8-3.6 4 .3.2.5.7.5 1.5v2.2c0 .2.1.5.5.4A8 8 0 0 0 16 8c0-4.4-3.6-8-8-8Z"/></svg><b>github.com/RaphaelPelerin</b></a><span class="sep">/</span>
+      <a href="https://www.linkedin.com/in/raphael-pelerin-a2b389272/"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.6 13.6h-2.4V9.9c0-.9 0-2-1.2-2s-1.4 1-1.4 2v3.7H6.2V6h2.3v1h.1c.3-.6 1.1-1.2 2.2-1.2 2.4 0 2.8 1.6 2.8 3.6v4.2ZM3.6 5a1.4 1.4 0 1 1 0-2.8 1.4 1.4 0 0 1 0 2.8Zm1.2 8.6H2.4V6h2.4v7.6ZM14.8 0H1.2C.5 0 0 .5 0 1.2v13.7c0 .6.5 1.1 1.2 1.1h13.6c.7 0 1.2-.5 1.2-1.1V1.2c0-.7-.5-1.2-1.2-1.2Z"/></svg><b>linkedin.com/in/raphael-pelerin</b></a>
+    </div>
+    </div>
+    <img class="photo" src="photo.jpg" alt="Raphael Pelerin" />
+  </header>
+
+  <div class="body">
+    <main>
+
+      <section>
+        <h2>Profil</h2>
+        <p class="profile">
+          Étudiant en 5&egrave;me ann&eacute;e de g&eacute;nie logiciel &agrave; Epitech, &agrave; la recherche
+          d&rsquo;un stage de fin d&rsquo;&eacute;tudes de quatre &agrave; six mois en <b>IA, &agrave; partir de mars 2027</b>
+          &mdash; du genre o&ugrave; j&rsquo;ajoute quelque chose &agrave; la technologie plut&ocirc;t que de seulement
+          la consommer. J&rsquo;ai construit un pipeline de diffusion qui tourne hors ligne sur un seul
+          GPU de 8&nbsp;Go, et je dirige le client web d&rsquo;un produit avec de vrais utilisateurs.
+          <b>Le front-end est l&agrave; o&ugrave; se trouve d&eacute;j&agrave; l&rsquo;essentiel de mon exp&eacute;rience,
+          et c&rsquo;est exactement pourquoi je veux aujourd&rsquo;hui aller plus loin dans la pile.</b>
+        </p>
+      </section>
+
+      <section>
+        <h2>Projets</h2>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Syntheza <em>&mdash; Lead Frontend Web</em></span>
+            <span class="entry__when">2025 &mdash; 2026</span>
+          </div>
+          <div class="entry__where">syntheza.ovh &middot; &eacute;quipe de 3, trois pays</div>
+          <ul>
+            <li>Plateforme de veille strat&eacute;gique qui ingurgite du RSS &agrave; grande &eacute;chelle, <b>d&eacute;doublonne</b> ce qu&rsquo;elle trouve et renvoie une synth&egrave;se quotidienne plut&ocirc;t qu&rsquo;un flux de plus.</li>
+            <li>Je poss&egrave;de le client web : interface, design system et la couche de composants React. Le p&eacute;rim&egrave;tre a &eacute;t&eacute; fix&eacute; par une <b>&eacute;tude de terrain aupr&egrave;s de 20 professionnels</b> avant la moindre ligne de code.</li>
+          </ul>
+          <div class="stack">React 19 &middot; TypeScript &middot; Tailwind &middot; Radix UI &middot; Node &middot; Express &middot; Prisma &middot; PostgreSQL &middot; React Native/Expo</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Forge <em>&mdash; solo</em></span>
+            <span class="entry__when">2026</span>
+          </div>
+          <div class="entry__where">github.com/RaphaelPelerin/forge-asset-generator</div>
+          <ul>
+            <li>G&eacute;n&eacute;rateur d&rsquo;assets de jeu qui fait tourner <b>SDXL et ControlNet sur un seul GPU local de 8&nbsp;Go</b>, expos&eacute; via un service FastAPI pour qu&rsquo;un pipeline puisse l&rsquo;appeler comme n&rsquo;importe quel endpoint. Enti&egrave;rement hors ligne &mdash; aucun compte, aucune image ne quitte la machine.</li>
+            <li>R&eacute;solu le probl&egrave;me de coh&eacute;rence avec des <b>recettes</b> : des pr&eacute;r&eacute;glages qui fixent le style, l&rsquo;&eacute;chantillonneur et le post-traitement, pour que des assets g&eacute;n&eacute;r&eacute;s &agrave; des mois d&rsquo;&eacute;cart se ressemblent toujours.</li>
+            <li>Mesur&eacute; les limites r&eacute;elles du mod&egrave;le plut&ocirc;t que de forcer le prompt &mdash; l&rsquo;encodeur de texte ne lit que l&rsquo;anglais, les sujets en fran&ccedil;ais &eacute;chouaient 6 fois sur 6 jusqu&rsquo;&agrave; l&rsquo;ajout d&rsquo;une &eacute;tape de traduction locale. <b>~4 100 lignes, 59 tests.</b></li>
+          </ul>
+          <div class="stack">PyTorch &middot; CUDA &middot; diffusers/SDXL &middot; ControlNet &middot; LoRA &middot; FastAPI &middot; Pydantic &middot; pytest &middot; React</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Keys <em>&mdash; sampler VST3, solo</em></span>
+            <span class="entry__when">2025</span>
+          </div>
+          <div class="entry__where">github.com/RaphaelPelerin/keys-gpt-vst</div>
+          <ul>
+            <li>Instrument VST3 mono-&eacute;chantillon sur JUCE : enveloppe ADSR, filtre &agrave; trois modes qui suit cette enveloppe, bouclage ping-pong sur <b>16 voix</b>.</li>
+            <li>Chaque bouton, courbe et vu-m&egrave;tre est dessin&eacute; avec l&rsquo;API graphique de JUCE &mdash; <b>aucune biblioth&egrave;que d&rsquo;interface</b>.</li>
+          </ul>
+          <div class="stack">C++ &middot; JUCE 8 &middot; DSP temps r&eacute;el &middot; filtres IIR &middot; Projucer</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Keys GPT <em>&mdash; solo</em></span>
+            <span class="entry__when">2025 &mdash; 2026</span>
+          </div>
+          <div class="entry__where">github.com/RaphaelPelerin/keys-gpt</div>
+          <ul>
+            <li>D&eacute;crivez une partie &mdash; ambiance, tonalit&eacute;, tempo, dur&eacute;e &mdash; et obtenez un piano roll jouable et un fichier MIDI t&eacute;l&eacute;chargeable. Le type de partie est <b>d&eacute;duit du prompt</b>, pas choisi dans un menu.</li>
+          </ul>
+          <div class="stack">React &middot; TypeScript &middot; API OpenAI &middot; Web Audio &middot; MIDI</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Exp&eacute;rience</h2>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Appolonia <em>&mdash; D&eacute;veloppeur front-end, stagiaire</em></span>
+            <span class="entry__when">Avr &mdash; Ao&ucirc;t 2025</span>
+          </div>
+          <div class="entry__where">Syst&egrave;mes de gestion de salles de jeux</div>
+          <ul>
+            <li>Refonte du module <b>KT Updater</b> et cr&eacute;ation d&rsquo;un panneau d&rsquo;administration par gestion de groupes automatisant l&rsquo;extinction et le verrouillage des terminaux &mdash; un logiciel o&ugrave; une erreur met une machine &agrave; sous hors service.</li>
+            <li>Cr&eacute;ation d&rsquo;un outil interne de g&eacute;n&eacute;ration d&rsquo;e-mails, de z&eacute;ro.</li>
+          </ul>
+          <div class="stack">Angular 13 &middot; Ionic 6 &middot; TypeScript &middot; API SOAP/XML &middot; GitLab</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">ARD <em>&mdash; Stagiaire d&eacute;veloppement mobile</em></span>
+            <span class="entry__when">2023</span>
+          </div>
+          <ul>
+            <li>Application Angular g&eacute;rant des <b>cartes NFC</b> et des profils utilisateurs pour des syst&egrave;mes d&rsquo;alarme, avec scan de carte pour afficher les informations du porteur.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Intel &middot; AI for Youth <em>&mdash; concours</em></span>
+            <span class="entry__when">2022</span>
+          </div>
+          <ul>
+            <li>Vision par ordinateur et reconnaissance d&rsquo;objets en Python avec TensorFlow. <b>2&egrave;me place</b>, cat&eacute;gorie &eacute;quipe.</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+
+    <aside class="side">
+      <section>
+        <h2>Formation</h2>
+        <div class="edu">
+          <div class="edu__what">Epitech Technology</div>
+          <div class="edu__when">2022 &mdash; 2027 &middot; Nice</div>
+          <div class="edu__note">Master, G&eacute;nie Informatique. Programmation fonctionnelle et orient&eacute;e objet, Unix, assembleur, programmation syst&egrave;me et r&eacute;seau. Sp&eacute;cialisations en DevOps, IA, web/mobile et cybers&eacute;curit&eacute;.</div>
+        </div>
+        <div class="edu">
+          <div class="edu__what">Beijing Jiaotong University</div>
+          <div class="edu__when">2025 &mdash; 2026 &middot; P&eacute;kin</div>
+          <div class="edu__note">Quatri&egrave;me ann&eacute;e &agrave; l&rsquo;international, g&eacute;nie logiciel, avec perfectionnement du mandarin jusqu&rsquo;au HSK 3.</div>
+        </div>
+        <div class="edu">
+          <div class="edu__what">Lyc&eacute;e Simone Veil</div>
+          <div class="edu__when">2022 &middot; Baccalaur&eacute;at</div>
+          <div class="edu__note">Sp&eacute;cialit&eacute;s Num&eacute;rique et Sciences Informatiques (NSI) et Math&eacute;matiques.</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Stack principale</h2>
+        <div class="logos">
+          <div class="logo"><svg viewBox="0 0 24 24"><path d="M12.3 2.4 8.0 6.9a5.7 5.7 0 1 0 8.0 0" fill="none" stroke="#EE4C2C" stroke-width="2.1" stroke-linecap="round"/><circle cx="15.0" cy="4.8" r="1.3" fill="#EE4C2C"/></svg><span>PyTorch</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><path d="M11.8 2c-2.4 0-4.2.5-4.2 2.4v2.3h4.4v.7H5.6C3.6 7.4 2 8.7 2 11.9s1.4 4.5 3.4 4.5h1.7v-2.6c0-2.2 1.9-4 4.1-4h4c1.8 0 3.2-1.4 3.2-3.2V4.4C18.4 2.6 16.6 2 14.6 2h-2.8Zm-2.4 1.4a.85.85 0 1 1 0 1.7.85.85 0 0 1 0-1.7Z" fill="#3776AB"/><path d="M12.2 22c2.4 0 4.2-.5 4.2-2.4v-2.3H12v-.7h6.4c2 0 3.6-1.3 3.6-4.5s-1.4-4.5-3.4-4.5h-1.7v2.6c0 2.2-1.9 4-4.1 4h-4c-1.8 0-3.2 1.4-3.2 3.2v3.2C5.6 21.4 7.4 22 9.4 22h2.8Zm2.4-1.4a.85.85 0 1 1 0-1.7.85.85 0 0 1 0 1.7Z" fill="#FFD43B"/></svg><span>Python</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="3.5" fill="#00599C"/><text x="12" y="16.2" text-anchor="middle" font-family="Archivo,Arial" font-size="9.5" font-weight="700" fill="#fff">C++</text></svg><span>C++</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><g fill="none" stroke="#61DAFB" stroke-width="1.5"><ellipse cx="12" cy="12" rx="10.2" ry="4.1"/><ellipse cx="12" cy="12" rx="10.2" ry="4.1" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10.2" ry="4.1" transform="rotate(120 12 12)"/></g><circle cx="12" cy="12" r="2.1" fill="#61DAFB"/></svg><span>React</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="3.5" fill="#3178C6"/><text x="12" y="16.4" text-anchor="middle" font-family="Archivo,Arial" font-size="10.5" font-weight="700" fill="#fff">TS</text></svg><span>TypeScript</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 1.6l9 5.2v10.4l-9 5.2-9-5.2V6.8l9-5.2Z" fill="#5FA04E"/><text x="12" y="15.6" text-anchor="middle" font-family="Archivo,Arial" font-size="7.6" font-weight="700" fill="#fff">JS</text></svg><span>Node.js</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 1.6 2.5 5l1.4 12.5L12 22.4l8.1-4.9L21.5 5 12 1.6Z" fill="#DD0031"/><path d="M12 5.4 6.5 17.4h2.1l1.1-2.8h4.6l1.1 2.8h2.1L12 5.4Zm1.6 7.5h-3.2L12 9l1.6 3.9Z" fill="#fff"/></svg><span>Angular</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><path d="M4.5 6.2v11c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-11" fill="#31648C"/><ellipse cx="12" cy="6.2" rx="7.5" ry="2.9" fill="#4169E1"/><ellipse cx="12" cy="6.2" rx="4.6" ry="1.5" fill="#31648C" opacity=".5"/></svg><span>PostgreSQL</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><g fill="#2496ED"><rect x="4" y="10.5" width="3.2" height="3" rx=".4"/><rect x="7.7" y="10.5" width="3.2" height="3" rx=".4"/><rect x="11.4" y="10.5" width="3.2" height="3" rx=".4"/><rect x="7.7" y="7.2" width="3.2" height="3" rx=".4"/><rect x="11.4" y="7.2" width="3.2" height="3" rx=".4"/><rect x="11.4" y="3.9" width="3.2" height="3" rx=".4"/></g><path d="M2 15c2.6 3.6 7.4 4.6 11.2 3.4 3-1 5.2-3 6.2-5.6 1 .5 2.2.4 2.6-.5-1-.7-2-.6-2.7-.3-.3-1-1-1.9-1.9-2.4-.7.8-.9 2-.5 3H2Z" fill="#2496ED"/></svg><span>Docker</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><g fill="none" stroke="#F05032" stroke-width="1.8"><circle cx="6" cy="18" r="2.6"/><circle cx="6" cy="6" r="2.6"/><circle cx="18" cy="10.5" r="2.6"/><path d="M6 8.6v6.8M15.5 11.8 8.2 16.6"/></g></svg><span>Git</span></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Aussi utilis&eacute;</h2>
+        <div class="skill">
+          <div class="skill__k">IA &amp; g&eacute;n&eacute;ratif</div>
+          <div class="skill__v">diffusers/SDXL, ControlNet, LoRA, CUDA, API OpenAI, API Anthropic Claude, Gemini, TensorFlow</div>
+        </div>
+        <div class="skill">
+          <div class="skill__k">Web &amp; mobile</div>
+          <div class="skill__v">React Native, Ionic, Expo, Tailwind, Vite</div>
+        </div>
+        <div class="skill">
+          <div class="skill__k">Backend</div>
+          <div class="skill__v">Express, FastAPI, Flask, Prisma, REST, SOAP/XML</div>
+        </div>
+        <div class="skill">
+          <div class="skill__k">Donn&eacute;es &amp; infrastructure</div>
+          <div class="skill__v">MongoDB, MySQL, GitLab&nbsp;CI</div>
+        </div>
+        <div class="skill">
+          <div class="skill__k">Syst&egrave;mes &amp; audio</div>
+          <div class="skill__v">JUCE, DSP temps r&eacute;el, Unix, assembleur, programmation r&eacute;seau</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Langues</h2>
+        <div class="lang"><b>Fran&ccedil;ais</b><span>Natif</span></div>
+        <div class="lang"><b>Anglais</b><span>Bilingue</span></div>
+        <div class="lang"><b>Mandarin</b><span>HSK 3</span></div>
+        <div class="lang"><b>Italien</b><span>Scolaire</span></div>
+      </section>
+
+      <section>
+        <h2>Centres d&rsquo;int&eacute;r&ecirc;t</h2>
+        <div class="skill__v">
+          Ski et taekwondo &middot; sport m&eacute;canique &middot; production musicale assist&eacute;e par ordinateur,
+          d&rsquo;o&ugrave; vient le sampler &middot; voyages, plus r&eacute;cemment une ann&eacute;e &agrave; P&eacute;kin.
+          <br><br>Permis B.
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <div class="foot">
+    <span>Raphael Pelerin &middot; CV 2026</span>
+    <span>portfolio-raphael-pelerin.vercel.app</span>
+  </div>
+</div>
+</body>
+</html>

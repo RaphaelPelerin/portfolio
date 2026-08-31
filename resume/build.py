@@ -1,4 +1,4 @@
-"""Render resume.html to a one-page A4 PDF through headless Chrome.
+"""Render resume.html and resume-fr.html to one-page A4 PDFs through headless Chrome.
 
 Same approach as the portfolio build: Chrome is the only renderer here that
 handles the web fonts and the print CSS identically to what you see on screen.
@@ -11,14 +11,19 @@ import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).parent
-SRC = HERE / "resume.html"
-OUT = HERE / "Raphael-Pelerin-Resume.pdf"
-OUT_NO_PHOTO = HERE / "Raphael-Pelerin-Resume-no-photo.pdf"
 
-# A photo is expected on a CV in France, Germany and Switzerland, and is a
-# liability in the US, UK and Canada, where employers routinely discard CVs
-# carrying one to stay clear of discrimination claims. Both versions are built
-# from the same source so neither can drift out of date.
+# Each source produces a photo and a no-photo PDF. A photo is expected on a CV
+# in France, Germany and Switzerland, and is a liability in the US, UK and
+# Canada, where employers routinely discard CVs carrying one to stay clear of
+# discrimination claims. Both variants are built from the same source so they
+# cannot drift apart.
+TARGETS = [
+    (HERE / "resume.html", HERE / "Raphael-Pelerin-Resume.pdf",
+     HERE / "Raphael-Pelerin-Resume-no-photo.pdf"),
+    (HERE / "resume-fr.html", HERE / "Raphael-Pelerin-CV.pdf",
+     HERE / "Raphael-Pelerin-CV-sans-photo.pdf"),
+]
+
 HIDE_PHOTO = "<style>.photo{display:none}.head{gap:0}</style>"
 
 CHROME_CANDIDATES = [
@@ -39,11 +44,7 @@ def find_chrome():
 
 
 def main():
-    if not SRC.exists():
-        sys.exit(f"missing {SRC}")
-
     chrome = find_chrome()
-    html = SRC.read_text(encoding="utf-8")
 
     def render(source_uri, dest):
         with tempfile.TemporaryDirectory() as profile:
@@ -64,15 +65,20 @@ def main():
             )
         print(f"wrote {dest.name} ({dest.stat().st_size // 1024} kB)")
 
-    render(SRC.as_uri(), OUT)
+    for src, out, out_no_photo in TARGETS:
+        if not src.exists():
+            sys.exit(f"missing {src}")
 
-    # the variant is written beside the original so relative asset paths hold
-    variant = HERE / "_no-photo.html"
-    variant.write_text(html.replace("</head>", HIDE_PHOTO + "</head>"), encoding="utf-8")
-    try:
-        render(variant.as_uri(), OUT_NO_PHOTO)
-    finally:
-        variant.unlink(missing_ok=True)
+        html = src.read_text(encoding="utf-8")
+        render(src.as_uri(), out)
+
+        # written beside the source so relative asset paths (photo.jpg) hold
+        variant = src.with_name(f"_{src.stem}-no-photo.html")
+        variant.write_text(html.replace("</head>", HIDE_PHOTO + "</head>"), encoding="utf-8")
+        try:
+            render(variant.as_uri(), out_no_photo)
+        finally:
+            variant.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

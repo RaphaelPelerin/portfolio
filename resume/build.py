@@ -22,6 +22,10 @@ TARGETS = [
      HERE / "Raphael-Pelerin-Resume-no-photo.pdf"),
     (HERE / "resume-fr.html", HERE / "Raphael-Pelerin-CV.pdf",
      HERE / "Raphael-Pelerin-CV-sans-photo.pdf"),
+    # Frontend-tailored: leads with Appolonia/ARD (Angular/Ionic production work)
+    # instead of the AI framing, for web/mobile front-end postings.
+    (HERE / "resume-frontend.html", HERE / "Raphael-Pelerin-Resume-Frontend.pdf",
+     HERE / "Raphael-Pelerin-Resume-Frontend-no-photo.pdf"),
 ]
 
 HIDE_PHOTO = "<style>.photo{display:none}.head{gap:0}</style>"

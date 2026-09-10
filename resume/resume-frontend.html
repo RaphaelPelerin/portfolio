@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Raphael Pelerin — Resume (Frontend)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* A resume is printed and parsed, so it is light and text-first. It borrows the
+   portfolio's typefaces so the two read as one person's work, but none of its
+   darkness.
+
+   This variant leads with Appolonia and ARD - production Angular/Ionic front-end
+   work - rather than the AI framing of resume.html, for applications where the
+   role is specifically front-end/web/mobile (e.g. the TikTok Frontend Software
+   Engineer Intern posting). Projects trim Forge/Keys/Keys GPT to one bullet each
+   so Experience can carry two full entries instead of one. */
+:root{
+  --ink:#14171a;
+  --dim:#4a5158;
+  --faint:#828b93;
+  --rule:#dfe3e7;
+  --accent:#4a6b00;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+@page{ size:A4; margin:0; }
+html,body{background:#fff}
+body{
+  font-family:var(--display); color:var(--ink);
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  -webkit-font-smoothing:antialiased;
+}
+.page{
+  width:210mm; height:297mm; padding:13mm 14mm 10mm;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+@media screen{ .page{margin:0 auto;box-shadow:0 0 0 1px #e3e6ea} }
+
+/* ---------- header ---------- */
+.head{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:7mm;
+  border-bottom:2px solid var(--ink); padding-bottom:7px;
+}
+.head__text{ flex:1; min-width:0; }
+/* 22mm wide leaves the source at ~185 dpi of real detail, which is as far as a
+   160px original honestly goes. Framed slightly high so the crop favours the
+   eyes rather than the chin. */
+.photo{
+  width:22mm; height:26mm; flex:0 0 auto;
+  object-fit:cover; object-position:center 20%;
+  border-radius:2px; border:1px solid var(--rule);
+}
+h1{
+  font-size:33px; font-weight:700; letter-spacing:-.035em; line-height:1;
+  text-transform:uppercase;
+}
+.role{
+  font-family:var(--mono); font-size:9.4px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--accent); margin-top:6px; font-weight:500;
+}
+.links{
+  display:flex; flex-wrap:wrap; gap:3px 13px; margin-top:8px;
+  font-family:var(--mono); font-size:8.4px; color:var(--dim);
+}
+.links a{color:var(--dim);text-decoration:none}
+.links b{color:var(--ink);font-weight:500}
+.links .sep{color:var(--rule)}
+
+/* ---------- two columns ---------- */
+.body{ display:grid; grid-template-columns:1fr 58mm; gap:8mm; padding-top:8px; flex:1; }
+
+h2{
+  font-family:var(--mono); font-size:8.4px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--accent); font-weight:500;
+  padding-bottom:4px; border-bottom:1px solid var(--rule); margin-bottom:8px;
+}
+section + section{ margin-top:15px; }
+
+/* ---------- entries ---------- */
+.entry{ margin-bottom:12px; }
+.entry:last-child{margin-bottom:0}
+.entry__top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+.entry__name{ font-size:11.8px; font-weight:600; letter-spacing:-.01em; }
+.entry__name em{ font-style:normal; color:var(--dim); font-weight:400; }
+.entry__when{
+  font-family:var(--mono); font-size:7.8px; color:var(--faint);
+  letter-spacing:.06em; white-space:nowrap;
+}
+.entry__where{
+  font-family:var(--mono); font-size:8px; color:var(--accent);
+  letter-spacing:.08em; margin-top:1px;
+}
+ul{ list-style:none; margin-top:3px; }
+li{
+  font-size:9.9px; line-height:1.52; color:var(--dim);
+  padding-left:10px; position:relative; margin-top:2px;
+}
+li::before{
+  content:""; position:absolute; left:0; top:6px;
+  width:3px; height:1px; background:var(--faint);
+}
+li b{ color:var(--ink); font-weight:500; }
+.stack{
+  font-family:var(--mono); font-size:8.1px; color:var(--faint);
+  margin-top:3px; letter-spacing:.03em;
+}
+
+/* ---------- profile ---------- */
+.profile{ font-size:10.3px; line-height:1.6; color:var(--dim); }
+.profile b{ color:var(--ink); font-weight:600; }
+
+/* ---------- side column ---------- */
+.side{ font-size:9.4px; }
+.skill{ margin-bottom:9px; }
+.skill__k{
+  font-family:var(--mono); font-size:7.6px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink); font-weight:500;
+}
+.skill__v{ color:var(--dim); line-height:1.5; margin-top:2px; font-size:9.3px; }
+
+.lang{ display:flex; justify-content:space-between; gap:8px; padding:3.5px 0; font-size:9.5px; }
+.lang + .lang{ border-top:1px solid var(--rule); }
+.lang b{ font-weight:500; }
+.lang span{ font-family:var(--mono); font-size:8px; color:var(--faint); letter-spacing:.06em; }
+
+.edu{ margin-bottom:10px; }
+.edu__what{ font-size:10px; font-weight:600; letter-spacing:-.01em; }
+.edu__when{ font-family:var(--mono); font-size:7.6px; color:var(--accent); letter-spacing:.07em; margin-top:1px; }
+.edu__note{ font-size:9.1px; color:var(--dim); line-height:1.45; margin-top:2px; }
+
+/* ---------- brand marks ---------- */
+/* Drawn inline rather than fetched: the PDF has to render with no network, and
+   a hand-drawn mark is only used where the shape is simple enough to stay
+   faithful. Brand colours are the real ones. */
+.links svg{ width:9px; height:9px; vertical-align:-1px; margin-right:4px; opacity:.55; }
+.links span, .links a{ display:inline-flex; align-items:center; }
+
+.logos{
+  display:grid; grid-template-columns:1fr 1fr; gap:7px 6px; margin-top:2px;
+}
+.logo{ display:flex; align-items:center; gap:5px; }
+.logo svg{ width:15px; height:15px; flex:0 0 auto; }
+.logo span{
+  font-family:var(--mono); font-size:7.4px; letter-spacing:.04em;
+  color:var(--dim); line-height:1.1;
+}
+
+.foot{
+  margin-top:auto; padding-top:6px; border-top:1px solid var(--rule);
+  font-family:var(--mono); font-size:7.4px; color:var(--faint);
+  letter-spacing:.1em; text-transform:uppercase;
+  display:flex; justify-content:space-between;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="head">
+    <div class="head__text">
+    <h1>Raphael Pelerin</h1>
+    <p class="role">Software engineering &middot; Frontend internship &mdash; from March 2027</p>
+    <div class="links">
+      <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5"/><path d="M2 4.5l6 4.5 6-4.5"/></svg><b>raphael_pelerin@yahoo.com.au</b></span><span class="sep">/</span>
+      <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4" y="1.5" width="8" height="13" rx="1.6"/><path d="M7 12.4h2"/></svg><b>+33 6 11 72 45 88</b></span><span class="sep">/</span>
+      <span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 14.5s5-4.6 5-8a5 5 0 1 0-10 0c0 3.4 5 8 5 8Z"/><circle cx="8" cy="6.4" r="1.9"/></svg>Biot, France</span><span class="sep">/</span>
+      <a href="https://portfolio-raphael-pelerin.vercel.app"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6.4"/><path d="M1.7 8h12.6M8 1.6c1.7 1.8 2.6 4 2.6 6.4S9.7 12.6 8 14.4C6.3 12.6 5.4 10.4 5.4 8S6.3 3.4 8 1.6Z"/></svg><b>portfolio-raphael-pelerin.vercel.app</b></a><span class="sep">/</span>
+      <a href="https://github.com/RaphaelPelerin"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.6 0 0 3.6 0 8c0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V13.8c-2 .4-2.5-.5-2.7-.9-.1-.2-.5-.9-.8-1.1-.3-.2-.7-.5 0-.5.6 0 1.1.6 1.2.8.7 1.2 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8a7.4 7.4 0 0 1 4 0c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.8-3.6 4 .3.2.5.7.5 1.5v2.2c0 .2.1.5.5.4A8 8 0 0 0 16 8c0-4.4-3.6-8-8-8Z"/></svg><b>github.com/RaphaelPelerin</b></a><span class="sep">/</span>
+      <a href="https://www.linkedin.com/in/raphael-pelerin-a2b389272/"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.6 13.6h-2.4V9.9c0-.9 0-2-1.2-2s-1.4 1-1.4 2v3.7H6.2V6h2.3v1h.1c.3-.6 1.1-1.2 2.2-1.2 2.4 0 2.8 1.6 2.8 3.6v4.2ZM3.6 5a1.4 1.4 0 1 1 0-2.8 1.4 1.4 0 0 1 0 2.8Zm1.2 8.6H2.4V6h2.4v7.6ZM14.8 0H1.2C.5 0 0 .5 0 1.2v13.7c0 .6.5 1.1 1.2 1.1h13.6c.7 0 1.2-.5 1.2-1.1V1.2c0-.7-.5-1.2-1.2-1.2Z"/></svg><b>linkedin.com/in/raphael-pelerin</b></a>
+    </div>
+    </div>
+    <img class="photo" src="photo.jpg" alt="Raphael Pelerin" />
+  </header>
+
+  <div class="body">
+    <main>
+
+      <section>
+        <h2>Profile</h2>
+        <p class="profile">
+          Fifth-year software engineering student at Epitech, looking for a front-end
+          engineering internship <b>starting March 2027</b>. I have shipped production UI in
+          both <b>React and Angular</b>: I lead the web client &mdash; interface, design system
+          and component layer &mdash; of Syntheza, a platform with real users, and built the
+          front end for Appolonia's casino-floor management tools, where a broken screen
+          takes a machine offline. <b>I care about the parts of front-end work that only show
+          up at scale</b> &mdash; component reuse, cross-platform consistency, and interfaces
+          that hold up under real production constraints.
+        </p>
+      </section>
+
+      <section>
+        <h2>Experience</h2>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Appolonia <em>&mdash; Front-end developer, intern</em></span>
+            <span class="entry__when">Apr &mdash; Aug 2025</span>
+          </div>
+          <div class="entry__where">Casino floor management systems</div>
+          <ul>
+            <li>Rebuilt the <b>KT Updater</b> module as a component-driven admin panel automating terminal shutdown and locking &mdash; production software where a UI mistake takes a slot machine offline.</li>
+            <li>Shipped the same feature set across <b>Angular (web) and Ionic (hybrid mobile)</b> from one codebase &mdash; the closest I have come to true multi-platform front-end work.</li>
+            <li>Built an internal email-generation tool from scratch: templating, live preview and send flow.</li>
+          </ul>
+          <div class="stack">Angular 13 &middot; Ionic 6 &middot; TypeScript &middot; SOAP/XML APIs &middot; GitLab</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">ARD <em>&mdash; Mobile development intern</em></span>
+            <span class="entry__when">2023</span>
+          </div>
+          <div class="entry__where">NFC access-control software</div>
+          <ul>
+            <li>Built an Angular application managing <b>NFC cards</b> and user profiles for alarm-system installers, from component structure to state.</li>
+            <li>Implemented the <b>card-scanning flow</b>: a tag read renders the cardholder's information in the UI in real time.</li>
+            <li>Owned the interface end to end, from the scan trigger to the profile view, working directly with the installers who used it daily.</li>
+          </ul>
+          <div class="stack">Angular &middot; TypeScript &middot; NFC</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Intel &middot; AI for Youth <em>&mdash; competition</em></span>
+            <span class="entry__when">2022</span>
+          </div>
+          <ul>
+            <li>Computer vision and object recognition in Python with TensorFlow. <b>2nd place</b>, team category.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Projects</h2>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Syntheza <em>&mdash; Lead Frontend Web</em></span>
+            <span class="entry__when">2025 &mdash; 2026</span>
+          </div>
+          <div class="entry__where">syntheza.ovh &middot; team of 3, three countries</div>
+          <ul>
+            <li>Strategic-watch platform that ingests RSS at scale, <b>deduplicates</b> what it finds and returns a daily synthesis instead of another feed.</li>
+            <li>I own the web client: interface, <b>design system</b> and the React <b>component layer</b>. Scope was set by a field study of 20 professionals before any code was written.</li>
+          </ul>
+          <div class="stack">React 19 &middot; TypeScript &middot; Tailwind &middot; Radix UI &middot; Node &middot; Express &middot; Prisma &middot; PostgreSQL &middot; React Native/Expo</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Forge <em>&mdash; solo</em></span>
+            <span class="entry__when">2026</span>
+          </div>
+          <div class="entry__where">github.com/RaphaelPelerin/forge-asset-generator</div>
+          <ul>
+            <li>Game-asset generator: a React/Ant Design front end over a <b>FastAPI</b> service running SDXL locally, fully offline. <b>~4,100 lines, 59 tests.</b></li>
+          </ul>
+          <div class="stack">React 18 &middot; Ant Design &middot; FastAPI &middot; PyTorch &middot; diffusers/SDXL</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Keys GPT <em>&mdash; solo</em></span>
+            <span class="entry__when">2025 &mdash; 2026</span>
+          </div>
+          <div class="entry__where">github.com/RaphaelPelerin/keys-gpt</div>
+          <ul>
+            <li>Describe a part in text and get a playable piano roll and a downloadable MIDI file, part type <b>inferred from the prompt</b>.</li>
+          </ul>
+          <div class="stack">React &middot; TypeScript &middot; OpenAI API &middot; Web Audio</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry__top">
+            <span class="entry__name">Keys <em>&mdash; VST3 sampler, solo</em></span>
+            <span class="entry__when">2025</span>
+          </div>
+          <div class="entry__where">github.com/RaphaelPelerin/keys-gpt-vst</div>
+          <ul>
+            <li>Every knob, curve and meter of this C++ plugin's interface is <b>drawn by hand</b> with the JUCE Graphics API &mdash; no GUI library at all.</li>
+          </ul>
+          <div class="stack">C++ &middot; JUCE 8 &middot; real-time DSP</div>
+        </div>
+      </section>
+
+    </main>
+
+    <aside class="side">
+      <section>
+        <h2>Education</h2>
+        <div class="edu">
+          <div class="edu__what">Epitech Technology</div>
+          <div class="edu__when">2022 &mdash; 2027 &middot; Nice</div>
+          <div class="edu__note">Master&rsquo;s, Computer Engineering. Functional and object-oriented programming, Unix, assembly, systems and network programming. Specialisations in DevOps, AI, web/mobile and cybersecurity.</div>
+        </div>
+        <div class="edu">
+          <div class="edu__what">Beijing Jiaotong University</div>
+          <div class="edu__when">2025 &mdash; 2026 &middot; Beijing</div>
+          <div class="edu__note">Fourth year abroad, software engineering, alongside Mandarin to HSK 3.</div>
+        </div>
+        <div class="edu">
+          <div class="edu__what">Lyc&eacute;e Simone Veil</div>
+          <div class="edu__when">2022 &middot; Baccalaureate</div>
+          <div class="edu__note">Computer Science (NSI) and Mathematics.</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Core stack</h2>
+        <div class="logos">
+          <div class="logo"><svg viewBox="0 0 24 24"><g fill="none" stroke="#61DAFB" stroke-width="1.5"><ellipse cx="12" cy="12" rx="10.2" ry="4.1"/><ellipse cx="12" cy="12" rx="10.2" ry="4.1" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10.2" ry="4.1" transform="rotate(120 12 12)"/></g><circle cx="12" cy="12" r="2.1" fill="#61DAFB"/></svg><span>React</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 1.6 2.5 5l1.4 12.5L12 22.4l8.1-4.9L21.5 5 12 1.6Z" fill="#DD0031"/><path d="M12 5.4 6.5 17.4h2.1l1.1-2.8h4.6l1.1 2.8h2.1L12 5.4Zm1.6 7.5h-3.2L12 9l1.6 3.9Z" fill="#fff"/></svg><span>Angular</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="3.5" fill="#3178C6"/><text x="12" y="16.4" text-anchor="middle" font-family="Archivo,Arial" font-size="10.5" font-weight="700" fill="#fff">TS</text></svg><span>TypeScript</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 1.6l9 5.2v10.4l-9 5.2-9-5.2V6.8l9-5.2Z" fill="#5FA04E"/><text x="12" y="15.6" text-anchor="middle" font-family="Archivo,Arial" font-size="7.6" font-weight="700" fill="#fff">JS</text></svg><span>Node.js</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><path d="M4.5 6.2v11c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-11" fill="#31648C"/><ellipse cx="12" cy="6.2" rx="7.5" ry="2.9" fill="#4169E1"/><ellipse cx="12" cy="6.2" rx="4.6" ry="1.5" fill="#31648C" opacity=".5"/></svg><span>PostgreSQL</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><g fill="#2496ED"><rect x="4" y="10.5" width="3.2" height="3" rx=".4"/><rect x="7.7" y="10.5" width="3.2" height="3" rx=".4"/><rect x="11.4" y="10.5" width="3.2" height="3" rx=".4"/><rect x="7.7" y="7.2" width="3.2" height="3" rx=".4"/><rect x="11.4" y="7.2" width="3.2" height="3" rx=".4"/><rect x="11.4" y="3.9" width="3.2" height="3" rx=".4"/></g><path d="M2 15c2.6 3.6 7.4 4.6 11.2 3.4 3-1 5.2-3 6.2-5.6 1 .5 2.2.4 2.6-.5-1-.7-2-.6-2.7-.3-.3-1-1-1.9-1.9-2.4-.7.8-.9 2-.5 3H2Z" fill="#2496ED"/></svg><span>Docker</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><g fill="none" stroke="#F05032" stroke-width="1.8"><circle cx="6" cy="18" r="2.6"/><circle cx="6" cy="6" r="2.6"/><circle cx="18" cy="10.5" r="2.6"/><path d="M6 8.6v6.8M15.5 11.8 8.2 16.6"/></g></svg><span>Git</span></div>
+          <div class="logo"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="3.5" fill="#00599C"/><text x="12" y="16.2" text-anchor="middle" font-family="Archivo,Arial" font-size="9.5" font-weight="700" fill="#fff">C++</text></svg><span>C++</span></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Also worked with</h2>
+        <div class="skill">
+          <div class="skill__k">Web &amp; mobile</div>
+          <div class="skill__v">React Native, Ionic, Expo, Tailwind, Vite</div>
+        </div>
+        <div class="skill">
+          <div class="skill__k">Backend</div>
+          <div class="skill__v">Express, FastAPI, Flask, Prisma, REST, SOAP/XML</div>
+        </div>
+        <div class="skill">
+          <div class="skill__k">AI &amp; generative</div>
+          <div class="skill__v">Python, PyTorch, diffusers/SDXL, ControlNet, LoRA, CUDA, OpenAI API, Anthropic Claude API, Gemini, TensorFlow</div>
+        </div>
+        <div class="skill">
+          <div class="skill__k">Data &amp; infrastructure</div>
+          <div class="skill__v">MongoDB, MySQL, GitLab&nbsp;CI</div>
+        </div>
+        <div class="skill">
+          <div class="skill__k">Systems &amp; audio</div>
+          <div class="skill__v">JUCE, real-time DSP, Unix, assembly, network programming</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Languages</h2>
+        <div class="lang"><b>French</b><span>Native</span></div>
+        <div class="lang"><b>English</b><span>Bilingual</span></div>
+        <div class="lang"><b>Mandarin</b><span>HSK 3</span></div>
+        <div class="lang"><b>Italian</b><span>Basic</span></div>
+      </section>
+
+      <section>
+        <h2>Interests</h2>
+        <div class="skill__v">
+          Skiing and taekwondo &middot; motorsport &middot; music production in a DAW, which is
+          where the sampler came from &middot; travel, most recently a year in Beijing.
+          <br><br>Full driving licence.
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <div class="foot">
+    <span>Raphael Pelerin &middot; Resume 2026</span>
+    <span>portfolio-raphael-pelerin.vercel.app</span>
+  </div>
+</div>
+</body>
+</html>

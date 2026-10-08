@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Raphael Pelerin — Resume (Apple IS&amp;T Technical Internship)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* Built to be parsed before it is read. Applicant tracking systems read the PDF
+   as a text stream, so this variant is deliberately plain:
+   - one column, so reading order is the visual order
+   - no letter-spacing anywhere: spaced glyphs extract as "D a t a" and the
+     keyword is lost
+   - no logos, icons or photo
+   - standard section names (Summary, Technical Skills, Experience, ...)
+   It keeps the portfolio's typeface and accent so it still looks like his. */
+:root{
+  --ink:#14171a;
+  --dim:#3f464d;
+  --faint:#6d767e;
+  --rule:#d9dee2;
+  --accent:#3f5a00;
+  --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+@page{ size:A4; margin:0; }
+html,body{background:#fff}
+body{
+  font-family:var(--font); color:var(--ink);
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  -webkit-font-smoothing:antialiased;
+}
+.page{
+  width:210mm; height:297mm; padding:12mm 15mm 9mm;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+@media screen{ .page{margin:0 auto;box-shadow:0 0 0 1px #e3e6ea} }
+
+/* ---------- header ---------- */
+.head{ border-bottom:2px solid var(--ink); padding-bottom:6px; }
+h1{ font-size:27px; font-weight:700; line-height:1.05; }
+.role{ font-size:10.6px; font-weight:600; color:var(--accent); margin-top:4px; }
+.links{ font-size:9px; color:var(--dim); margin-top:5px; line-height:1.5; }
+.links a{ color:var(--dim); text-decoration:none; }
+.links b{ color:var(--ink); font-weight:500; }
+.links .sep{ color:var(--rule); padding:0 5px; }
+
+/* ---------- sections ---------- */
+h2{
+  font-size:10.4px; font-weight:700; color:var(--accent);
+  border-bottom:1px solid var(--rule); padding-bottom:2px;
+  margin:9px 0 5px;
+}
+p, li{ font-size:9.4px; line-height:1.42; color:var(--dim); }
+b{ color:var(--ink); font-weight:600; }
+
+.summary{ font-size:9.5px; line-height:1.48; }
+
+/* skills: label column + values column */
+.skills{ display:grid; grid-template-columns:34mm 1fr; gap:2px 8px; }
+.skills dt{ font-size:9.2px; font-weight:600; color:var(--ink); line-height:1.42; }
+.skills dd{ font-size:9.2px; color:var(--dim); line-height:1.42; }
+
+/* entries */
+.entry{ margin-bottom:6px; }
+.entry:last-child{ margin-bottom:0; }
+.entry__top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+.entry__name{ font-size:10.4px; font-weight:600; color:var(--ink); }
+.entry__name span{ font-weight:400; color:var(--dim); }
+.entry__when{ font-size:8.8px; color:var(--faint); white-space:nowrap; }
+.entry__where{ font-size:8.8px; color:var(--accent); margin-top:0; }
+ul{ list-style:none; margin-top:1px; }
+li{ position:relative; padding-left:9px; margin-top:1px; }
+li::before{
+  content:""; position:absolute; left:0; top:6px;
+  width:3px; height:1px; background:var(--faint);
+}
+li b{ color:var(--ink); font-weight:500; }
+
+/* education + languages */
+.edu{ margin-bottom:3px; }
+.edu__top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+.edu__what{ font-size:9.8px; font-weight:600; color:var(--ink); }
+.edu__what span{ font-weight:400; color:var(--dim); }
+.edu__when{ font-size:8.8px; color:var(--faint); white-space:nowrap; }
+.edu p{ font-size:9px; line-height:1.38; }
+
+.foot{
+  margin-top:auto; padding-top:4px; border-top:1px solid var(--rule);
+  font-size:8px; color:var(--faint); display:flex; justify-content:space-between;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="head">
+    <h1>Raphael Pelerin</h1>
+    <p class="role">Software Engineering Intern &middot; Application Development, Front-end, Back-end, Full-stack &mdash; available from March 2027</p>
+    <p class="links">
+      <b>raphael_pelerin@yahoo.com.au</b><span class="sep">|</span><b>+33 6 11 72 45 88</b><span class="sep">|</span>Biot, France<br>
+      <a href="https://portfolio-raphael-pelerin.vercel.app"><b>portfolio-raphael-pelerin.vercel.app</b></a><span class="sep">|</span>
+      <a href="https://github.com/RaphaelPelerin"><b>github.com/RaphaelPelerin</b></a><span class="sep">|</span>
+      <a href="https://www.linkedin.com/in/raphael-pelerin-a2b389272/"><b>linkedin.com/in/raphael-pelerin</b></a>
+    </p>
+  </header>
+
+  <section>
+    <h2>Summary</h2>
+    <p class="summary">
+      Fifth-year <b>Computer Engineering</b> student at Epitech (Master&rsquo;s, graduating 2027) applying for the
+      <b>Technical Internship: Information Systems and Technology</b>. Programming experience in <b>Python</b>
+      (server-side: FastAPI, Flask), <b>JavaScript</b> and TypeScript, <b>HTML</b> and <b>CSS3</b> (web development),
+      and C++. I have shipped <b>full-stack</b> products, led the web client of a product with real users, completed
+      two software engineering internships (<b>related internship experience</b>) and worked in a remote team spread
+      over three countries. I measure before I decide (quantitative habits) and I work directly with the people who
+      use what I build (interpersonal skills). Bilingual in English and French, with a year studying in Beijing.
+      Drawn to quality engineering, data engineering and site reliability as much as to application development.
+    </p>
+  </section>
+
+  <section>
+    <h2>Technical Skills</h2>
+    <dl class="skills">
+      <dt>Languages</dt>
+      <dd>Python, JavaScript, TypeScript, HTML5, CSS3, C++, SQL, Assembly</dd>
+      <dt>Web &amp; application development</dt>
+      <dd>React, React Native, Angular, Ionic, Expo, Tailwind CSS, Vite, REST APIs, component-driven front-end development</dd>
+      <dt>Server-side &amp; back-end</dt>
+      <dd>Python (FastAPI, Flask), Node.js, Express, Prisma, REST, SOAP/XML</dd>
+      <dt>Data engineering</dt>
+      <dd>PostgreSQL, MongoDB, MySQL, SQL</dd>
+      <dt>Quality engineering</dt>
+      <dd>pytest, automated testing, unit testing, GitLab CI</dd>
+      <dt>DevOps &amp; site reliability</dt>
+      <dd>Docker, Git, GitLab CI, Unix (Epitech DevOps specialisation)</dd>
+      <dt>AI &amp; machine learning</dt>
+      <dd>PyTorch, TensorFlow, diffusers/SDXL, ControlNet, OpenAI API, Claude API, Gemini</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Experience</h2>
+
+    <div class="entry">
+      <div class="entry__top">
+        <span class="entry__name">Appolonia <span>&mdash; Front-end Software Engineer, Intern</span></span>
+        <span class="entry__when">Apr &ndash; Aug 2025</span>
+      </div>
+      <div class="entry__where">Casino floor management systems (production)</div>
+      <ul>
+        <li>Rebuilt the <b>KT Updater</b> module as a component-driven admin panel (Angular, TypeScript) automating terminal shutdown and locking &mdash; production software where a UI mistake takes a slot machine offline.</li>
+        <li>Shipped the same feature set across <b>Angular (web) and Ionic (hybrid mobile)</b> from one codebase, consuming SOAP/XML APIs; worked in GitLab.</li>
+        <li>Built an internal email-generation tool from scratch: templating, live preview and send flow.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry__top">
+        <span class="entry__name">ARD <span>&mdash; Mobile Application Development, Intern</span></span>
+        <span class="entry__when">2023</span>
+      </div>
+      <div class="entry__where">NFC access-control software</div>
+      <ul>
+        <li>Built an Angular application managing <b>NFC cards</b> and user profiles for alarm-system installers, from component structure to state.</li>
+        <li>Implemented the <b>card-scanning flow</b>: a tag read renders the cardholder&rsquo;s information in the UI in real time.</li>
+        <li>Owned the interface end to end, working directly with the installers who used it daily.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry__top">
+        <span class="entry__name">Intel AI for Youth <span>&mdash; competition</span></span>
+        <span class="entry__when">2022</span>
+      </div>
+      <ul>
+        <li>Computer vision and object recognition in Python with TensorFlow. <b>2nd place</b>, team category.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+
+    <div class="entry">
+      <div class="entry__top">
+        <span class="entry__name">Syntheza <span>&mdash; Lead Frontend Web (leadership)</span></span>
+        <span class="entry__when">2025 &ndash; 2026</span>
+      </div>
+      <div class="entry__where">syntheza.ovh &middot; remote team of 3 across three countries</div>
+      <ul>
+        <li><b>Led the web client</b>: interface, design system and React component layer, kept to a ~330&nbsp;kB gzipped bundle. Stack: React 19, TypeScript, Tailwind, Node.js, Express, Prisma, PostgreSQL.</li>
+        <li>Scope set by a field study of 20 professionals before any code was written: <b>85% reported daily information overload</b> and 70% lose one to two hours a day sorting noise.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry__top">
+        <span class="entry__name">Forge <span>&mdash; solo, open-source</span></span>
+        <span class="entry__when">2026</span>
+      </div>
+      <div class="entry__where">github.com/RaphaelPelerin/forge-asset-generator</div>
+      <ul>
+        <li><b>Python back-end</b>: FastAPI REST service running SDXL and ControlNet on a single local 8&nbsp;GB GPU, fully offline, with a React front end. ~4,100 lines.</li>
+        <li><b>59 automated tests (pytest)</b> that run in about 5 seconds with no GPU; a test fails any recipe that exceeds the 75-token prompt budget. Measured failure modes (French prompts failed 6/6) before fixing them.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry__top">
+        <span class="entry__name">Keys GPT <span>&mdash; solo, open-source</span></span>
+        <span class="entry__when">2025 &ndash; 2026</span>
+      </div>
+      <div class="entry__where">github.com/RaphaelPelerin/keys-gpt</div>
+      <ul>
+        <li>JavaScript/React web app: describe a part in text, get a playable piano roll and a downloadable MIDI file via the OpenAI API.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry__top">
+        <span class="entry__name">Keys <span>&mdash; VST3 sampler, solo, open-source</span></span>
+        <span class="entry__when">2025</span>
+      </div>
+      <div class="entry__where">github.com/RaphaelPelerin/keys-gpt-vst</div>
+      <ul>
+        <li>C++/JUCE instrument with 16 voices, ADSR envelope and filter; every control drawn by hand with the graphics API, no GUI library.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <div class="edu">
+      <div class="edu__top">
+        <span class="edu__what">Epitech Technology <span>&mdash; Master&rsquo;s, Computer Engineering, Nice (graduating 2027)</span></span>
+        <span class="edu__when">2022 &ndash; 2027</span>
+      </div>
+      <p>Functional and object-oriented programming, Unix, assembly, systems and network programming. Specialisations: DevOps, AI, web/mobile, cybersecurity.</p>
+    </div>
+    <div class="edu">
+      <div class="edu__top">
+        <span class="edu__what">Beijing Jiaotong University <span>&mdash; fourth year abroad, software engineering</span></span>
+        <span class="edu__when">2025 &ndash; 2026</span>
+      </div>
+    </div>
+    <div class="edu">
+      <div class="edu__top">
+        <span class="edu__what">Lyc&eacute;e Simone Veil <span>&mdash; Baccalaureate: Computer Science (NSI) and Mathematics</span></span>
+        <span class="edu__when">2022</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Languages</h2>
+    <p><b>English</b> bilingual (working language) &middot; <b>French</b> native &middot; <b>Mandarin</b> HSK 3 &middot; <b>Italian</b> basic</p>
+  </section>
+
+  <div class="foot">
+    <span>Raphael Pelerin &middot; Resume 2026</span>
+    <span>portfolio-raphael-pelerin.vercel.app</span>
+  </div>
+</div>
+</body>
+</html>

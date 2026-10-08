@@ -26,6 +26,9 @@ TARGETS = [
     # instead of the AI framing, for web/mobile front-end postings.
     (HERE / "resume-frontend.html", HERE / "Raphael-Pelerin-Resume-Frontend.pdf",
      HERE / "Raphael-Pelerin-Resume-Frontend-no-photo.pdf"),
+    # Apple IS&T internship: single-column, no photo in the source at all, so
+    # there is no second variant to build (None).
+    (HERE / "resume-apple.html", HERE / "Raphael-Pelerin-Resume-Apple.pdf", None),
 ]
 
 HIDE_PHOTO = "<style>.photo{display:none}.head{gap:0}</style>"
@@ -75,6 +78,8 @@ def main():
 
         html = src.read_text(encoding="utf-8")
         render(src.as_uri(), out)
+        if out_no_photo is None:
+            continue
 
         # written beside the source so relative asset paths (photo.jpg) hold
         variant = src.with_name(f"_{src.stem}-no-photo.html")

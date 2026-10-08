@@ -26,9 +26,10 @@ TARGETS = [
     # instead of the AI framing, for web/mobile front-end postings.
     (HERE / "resume-frontend.html", HERE / "Raphael-Pelerin-Resume-Frontend.pdf",
      HERE / "Raphael-Pelerin-Resume-Frontend-no-photo.pdf"),
-    # Apple IS&T internship: single-column, no photo in the source at all, so
-    # there is no second variant to build (None).
-    (HERE / "resume-apple.html", HERE / "Raphael-Pelerin-Resume-Apple.pdf", None),
+    # Apple IS&T internship: single-column and ATS-safe. Photo version is the
+    # default; the no-photo one is there for a US/UK recruiter if he prefers.
+    (HERE / "resume-apple.html", HERE / "Raphael-Pelerin-Resume-Apple.pdf",
+     HERE / "Raphael-Pelerin-Resume-Apple-no-photo.pdf"),
 ]
 
 HIDE_PHOTO = "<style>.photo{display:none}.head{gap:0}</style>"

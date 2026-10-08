@@ -12,7 +12,7 @@
    - one column, so reading order is the visual order
    - no letter-spacing anywhere: spaced glyphs extract as "D a t a" and the
      keyword is lost
-   - no logos, icons or photo
+   - no logos or icons; the photo is an <img> and carries no text
    - standard section names (Summary, Technical Skills, Experience, ...)
    It keeps the portfolio's typeface and accent so it still looks like his. */
 :root{
@@ -38,7 +38,16 @@ body{
 @media screen{ .page{margin:0 auto;box-shadow:0 0 0 1px #e3e6ea} }
 
 /* ---------- header ---------- */
-.head{ border-bottom:2px solid var(--ink); padding-bottom:6px; }
+.head{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:6mm;
+  border-bottom:2px solid var(--ink); padding-bottom:6px;
+}
+.head__text{ flex:1; min-width:0; }
+.photo{
+  width:22mm; height:26mm; flex:0 0 auto;
+  object-fit:cover; object-position:center 20%;
+  border-radius:2px; border:1px solid var(--rule);
+}
 h1{ font-size:27px; font-weight:700; line-height:1.05; }
 .role{ font-size:10.6px; font-weight:600; color:var(--accent); margin-top:4px; }
 .links{ font-size:9px; color:var(--dim); margin-top:5px; line-height:1.5; }
@@ -96,6 +105,7 @@ li b{ color:var(--ink); font-weight:500; }
 <div class="page">
 
   <header class="head">
+    <div class="head__text">
     <h1>Raphael Pelerin</h1>
     <p class="role">Software Engineering Intern &middot; Application Development, Front-end, Back-end, Full-stack &mdash; available from March 2027</p>
     <p class="links">
@@ -104,6 +114,8 @@ li b{ color:var(--ink); font-weight:500; }
       <a href="https://github.com/RaphaelPelerin"><b>github.com/RaphaelPelerin</b></a><span class="sep">|</span>
       <a href="https://www.linkedin.com/in/raphael-pelerin-a2b389272/"><b>linkedin.com/in/raphael-pelerin</b></a>
     </p>
+    </div>
+    <img class="photo" src="photo.jpg" alt="Raphael Pelerin" />
   </header>
 
   <section>
